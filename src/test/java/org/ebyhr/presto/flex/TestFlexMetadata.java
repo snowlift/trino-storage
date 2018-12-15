@@ -59,7 +59,7 @@ public class TestFlexMetadata
     @Test
     public void testListSchemaNames()
     {
-        assertEquals(metadata.listSchemaNames(SESSION), ImmutableSet.of("tsv", "csv"));
+        assertEquals(metadata.listSchemaNames(SESSION), ImmutableSet.of("csv", "tsv", "txt"));
     }
 
     @Test

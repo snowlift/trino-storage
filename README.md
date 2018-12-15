@@ -9,4 +9,7 @@ select * from free.csv."https://raw.githubusercontent.com/ebyhr/presto-flex/mast
 
 select * from free.tsv."file:///tmp/numbers.tsv";
 select * from free.tsv."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv";
-```
+
+select * from free.txt."file:///tmp/numbers.tsv";
+select * from free.txt."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv";
+``` 

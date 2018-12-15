@@ -21,6 +21,9 @@ import org.testng.annotations.Test;
 
 import java.net.URI;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import static com.facebook.presto.spi.type.BigintType.BIGINT;
@@ -100,6 +103,23 @@ public class TestFlexRecordSet
                 .put("two", "2")
                 .put("three", "3")
                 .build());
+    }
+
+    @Test
+    public void testTxtCursorSimple()
+    {
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "txt", CSV.toString(), CSV), ImmutableList.of(
+                new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0)));
+        RecordCursor cursor = recordSet.cursor();
+
+        assertEquals(cursor.getType(0), createUnboundedVarcharType());
+
+        List<String> data = new LinkedList<>();
+        while (cursor.advanceNextPosition()) {
+            data.add(cursor.getSlice(0).toStringUtf8());
+            assertFalse(cursor.isNull(0));
+        }
+        assertEquals(data, ImmutableList.of("eleven, 11", "twelve, 12"));
     }
 
     @Test

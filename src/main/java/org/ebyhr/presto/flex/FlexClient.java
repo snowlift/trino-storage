@@ -13,6 +13,7 @@
  */
 package org.ebyhr.presto.flex;
 
+import com.google.common.collect.ImmutableSet;
 import io.airlift.json.JsonCodec;
 
 import javax.inject.Inject;
@@ -28,7 +29,7 @@ import static java.util.Objects.requireNonNull;
 
 public class FlexClient
 {
-    private final Set<String> schemas = new HashSet<>(Arrays.asList("csv", "tsv"));
+    private final Set<String> schemas = ImmutableSet.of("csv", "tsv", "txt");
 
     @Inject
     public FlexClient(FlexConfig config, JsonCodec<Map<String, List<FlexTable>>> catalogCodec)
