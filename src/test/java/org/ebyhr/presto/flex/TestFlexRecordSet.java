@@ -32,36 +32,35 @@ import static org.testng.Assert.assertFalse;
 
 public class TestFlexRecordSet
 {
-    private FlexHttpServer flexHttpServer;
-    private URI dataUri;
+    private static final URI dataUri = URI.create("https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers-2.csv");
 
     @Test
     public void testGetColumnTypes()
     {
-        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "schema", "table", dataUri), ImmutableList.of(
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", dataUri), ImmutableList.of(
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0),
                 new FlexColumnHandle("test", "value", BIGINT, 1)));
         assertEquals(recordSet.getColumnTypes(), ImmutableList.of(createUnboundedVarcharType(), BIGINT));
 
-        recordSet = new FlexRecordSet(new FlexSplit("test", "schema", "table", dataUri), ImmutableList.of(
+        recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", dataUri), ImmutableList.of(
                 new FlexColumnHandle("test", "value", BIGINT, 1),
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0)));
         assertEquals(recordSet.getColumnTypes(), ImmutableList.of(BIGINT, createUnboundedVarcharType()));
 
-        recordSet = new FlexRecordSet(new FlexSplit("test", "schema", "table", dataUri), ImmutableList.of(
+        recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", dataUri), ImmutableList.of(
                 new FlexColumnHandle("test", "value", BIGINT, 1),
                 new FlexColumnHandle("test", "value", BIGINT, 1),
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0)));
         assertEquals(recordSet.getColumnTypes(), ImmutableList.of(BIGINT, BIGINT, createUnboundedVarcharType()));
 
-        recordSet = new FlexRecordSet(new FlexSplit("test", "schema", "table", dataUri), ImmutableList.of());
+        recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", dataUri), ImmutableList.of());
         assertEquals(recordSet.getColumnTypes(), ImmutableList.of());
     }
 
     @Test
     public void testCursorSimple()
     {
-        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "schema", "table", dataUri), ImmutableList.of(
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", dataUri), ImmutableList.of(
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0),
                 new FlexColumnHandle("test", "value", BIGINT, 1)));
         RecordCursor cursor = recordSet.cursor();
@@ -84,7 +83,7 @@ public class TestFlexRecordSet
     @Test
     public void testCursorMixedOrder()
     {
-        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "schema", "table", dataUri), ImmutableList.of(
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", dataUri), ImmutableList.of(
                 new FlexColumnHandle("test", "value", BIGINT, 1),
                 new FlexColumnHandle("test", "value", BIGINT, 1),
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0)));
@@ -99,30 +98,5 @@ public class TestFlexRecordSet
                 .put("eleven", 11L)
                 .put("twelve", 12L)
                 .build());
-    }
-
-    //
-    // TODO: your code should also have tests for all types that you support and for the state machine of your cursor
-    //
-
-    //
-    // Start http server for testing
-    //
-
-    @BeforeClass
-    public void setUp()
-            throws Exception
-    {
-        flexHttpServer = new FlexHttpServer();
-        dataUri = flexHttpServer.resolve("/example-data/numbers-2.csv");
-    }
-
-    @AfterClass(alwaysRun = true)
-    public void tearDown()
-            throws Exception
-    {
-        if (flexHttpServer != null) {
-            flexHttpServer.stop();
-        }
     }
 }

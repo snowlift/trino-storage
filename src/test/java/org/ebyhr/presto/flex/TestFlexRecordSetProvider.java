@@ -40,34 +40,30 @@ public class TestFlexRecordSetProvider
     public void testGetRecordSet()
     {
         FlexRecordSetProvider recordSetProvider = new FlexRecordSetProvider(new FlexConnectorId("test"));
-        RecordSet recordSet = recordSetProvider.getRecordSet(FlexTransactionHandle.INSTANCE, SESSION, new FlexSplit("test", "schema", "table", dataUri), ImmutableList.of(
+        RecordSet recordSet = recordSetProvider.getRecordSet(FlexTransactionHandle.INSTANCE, SESSION, new FlexSplit("test", "csv", "http://s3.amazonaws.com/presto-example/v2/numbers-1.csv", dataUri), ImmutableList.of(
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0),
-                new FlexColumnHandle("test", "value", BIGINT, 1)));
+                new FlexColumnHandle("test", "value", createUnboundedVarcharType(), 1)));
         assertNotNull(recordSet, "recordSet is null");
 
         RecordCursor cursor = recordSet.cursor();
         assertNotNull(cursor, "cursor is null");
 
-        Map<String, Long> data = new LinkedHashMap<>();
+        Map<String, String> data = new LinkedHashMap<>();
         while (cursor.advanceNextPosition()) {
-            data.put(cursor.getSlice(0).toStringUtf8(), cursor.getLong(1));
+            data.put(cursor.getSlice(0).toStringUtf8(), cursor.getSlice(1).toStringUtf8());
         }
-        assertEquals(data, ImmutableMap.<String, Long>builder()
-                .put("eleven", 11L)
-                .put("twelve", 12L)
+        assertEquals(data, ImmutableMap.<String, String> builder()
+                .put("two", "2")
+                .put("three", "3")
                 .build());
     }
-
-    //
-    // Start http server for testing
-    //
 
     @BeforeClass
     public void setUp()
             throws Exception
     {
         flexHttpServer = new FlexHttpServer();
-        dataUri = flexHttpServer.resolve("/example-data/numbers-2.csv");
+        dataUri = flexHttpServer.resolve("http://s3.amazonaws.com/presto-example/v2/numbers-1.csv");
     }
 
     @AfterClass(alwaysRun = true)
