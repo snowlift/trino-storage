@@ -32,7 +32,7 @@ public class FlexRecordSet
     private final List<FlexColumnHandle> columnHandles;
     private final List<Type> columnTypes;
     private final ByteSource byteSource;
-    private final URI uri;
+    private final String schemaName;
 
     public FlexRecordSet(FlexSplit split, List<FlexColumnHandle> columnHandles)
     {
@@ -44,7 +44,7 @@ public class FlexRecordSet
             types.add(column.getColumnType());
         }
         this.columnTypes = types.build();
-        this.uri = split.getUri();
+        this.schemaName = split.getSchemaName();
 
         try {
             byteSource = Resources.asByteSource(split.getUri().toURL());
@@ -63,6 +63,6 @@ public class FlexRecordSet
     @Override
     public RecordCursor cursor()
     {
-        return new FlexRecordCursor(columnHandles, byteSource, uri);
+        return new FlexRecordCursor(columnHandles, byteSource, schemaName);
     }
 }

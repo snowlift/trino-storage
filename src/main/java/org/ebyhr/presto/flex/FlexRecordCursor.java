@@ -24,7 +24,6 @@ import io.airlift.slice.Slices;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,8 +38,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class FlexRecordCursor
         implements RecordCursor
 {
-    private static final Splitter LINE_SPLITTER = Splitter.on(",").trimResults();
-
+    private final Splitter splitter;
     private final List<FlexColumnHandle> columnHandles;
     private final int[] fieldToColumnIndex;
 
@@ -49,9 +47,13 @@ public class FlexRecordCursor
 
     private List<String> fields;
 
-    public FlexRecordCursor(List<FlexColumnHandle> columnHandles, ByteSource byteSource, URI uri)
+    public FlexRecordCursor(List<FlexColumnHandle> columnHandles, ByteSource byteSource, String schemaName)
     {
         this.columnHandles = columnHandles;
+
+        String delimiter = schemaName.equalsIgnoreCase("csv") ? "," : "\t";
+        System.out.println(delimiter);
+        this.splitter = Splitter.on(delimiter).trimResults();
 
         fieldToColumnIndex = new int[columnHandles.size()];
         for (int i = 0; i < columnHandles.size(); i++) {
@@ -95,7 +97,8 @@ public class FlexRecordCursor
             return false;
         }
         String line = lines.next();
-        fields = LINE_SPLITTER.splitToList(line);
+        fields = splitter.splitToList(line);
+        System.out.println(fields);
 
         return true;
     }
