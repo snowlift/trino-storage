@@ -119,7 +119,7 @@ public class TestFlexRecordSet
             data.add(cursor.getSlice(0).toStringUtf8());
             assertFalse(cursor.isNull(0));
         }
-        assertEquals(data, ImmutableList.of("eleven, 11", "twelve, 12"));
+        assertEquals(data, ImmutableList.of("ten, 10", "eleven, 11", "twelve, 12"));
     }
 
     @Test

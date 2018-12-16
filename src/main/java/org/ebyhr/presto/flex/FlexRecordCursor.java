@@ -48,6 +48,7 @@ public class FlexRecordCursor
 
     private final Iterator<String> lines;
     private final long totalBytes;
+    private final FileType fileType;
 
     private List<String> fields;
 
@@ -55,6 +56,7 @@ public class FlexRecordCursor
     {
         this.schemaName = schemaName;
         this.columnHandles = columnHandles;
+        this.fileType = FileType.valueOf(schemaName.toUpperCase());
 
         String delimiter = delimiterFromExtension(schemaName);
         this.splitter = Splitter.on(delimiter).trimResults();
@@ -67,7 +69,11 @@ public class FlexRecordCursor
 
         try (CountingInputStream input = new CountingInputStream(byteSource.openStream())) {
             lines = byteSource.asCharSource(UTF_8).readLines().iterator();
-            lines.next(); // HACK: Currently always skip first line. This should be avoided.
+
+            // HACK: This logic should be modified.
+            if (fileType != TXT) {
+                lines.next();
+            }
             totalBytes = input.getCount();
         }
         catch (IOException e) {

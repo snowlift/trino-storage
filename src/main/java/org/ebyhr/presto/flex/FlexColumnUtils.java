@@ -30,6 +30,7 @@ import java.util.List;
 
 import static com.facebook.presto.spi.type.VarcharType.VARCHAR;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.ebyhr.presto.flex.FileType.TXT;
 
 class FlexColumnUtils
 {
@@ -42,7 +43,6 @@ class FlexColumnUtils
         String delimiter = delimiterFromExtension(schemaName);
         Splitter splitter = Splitter.on(delimiter).trimResults();
 
-        List<FlexColumn> columnTypes = new LinkedList<>();
         ByteSource byteSource;
         try {
             byteSource = Resources.asByteSource(URI.create(tableName).toURL());
@@ -51,6 +51,11 @@ class FlexColumnUtils
             throw new TableNotFoundException(new SchemaTableName(schemaName, tableName));
         }
 
+        if (schemaName.equalsIgnoreCase(TXT.toString())) {
+            return ImmutableList.of(new FlexColumn("value", VARCHAR));
+        }
+
+        List<FlexColumn> columnTypes = new LinkedList<>();
         try {
             ImmutableList<String> lines = byteSource.asCharSource(UTF_8).readLines();
             List<String> fields = splitter.splitToList(lines.get(0));
