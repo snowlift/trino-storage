@@ -5,6 +5,7 @@ import org.apache.commons.lang3.EnumUtils;
 import org.ebyhr.presto.flex.FileType;
 
 import static org.ebyhr.presto.flex.FileType.CSV;
+import static org.ebyhr.presto.flex.FileType.RAW;
 import static org.ebyhr.presto.flex.FileType.TSV;
 import static org.ebyhr.presto.flex.FileType.TXT;
 
@@ -23,6 +24,8 @@ public class PluginFactory {
             return new TsvPlugin();
         } else if (fileType == TXT) {
             return new TextPlugin();
+        } else if (fileType == RAW) {
+            return new RawPlugin();
         }
         throw new IllegalArgumentException("The file type is not supported " + typeName);
     }

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,8 +60,9 @@ public class TsvPlugin implements FilePlugin {
     }
 
     @Override
-    public List<String> splitToList(String line)
+    public List<String> splitToList(Iterator<String> lines)
     {
+        String line = lines.next();
         Splitter splitter = Splitter.on(DELIMITER).trimResults();
         return splitter.splitToList(line);
     }

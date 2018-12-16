@@ -34,6 +34,6 @@ public class TestFlexClient
         assertNotNull(metadataUrl, "metadataUrl is null");
         URI metadata = metadataUrl.toURI();
         FlexClient client = new FlexClient(new FlexConfig().setMetadata(metadata), MetadataUtil.CATALOG_CODEC);
-        assertEquals(client.getSchemaNames(), ImmutableList.of("csv", "tsv", "txt"));
+        assertEquals(client.getSchemaNames(), ImmutableList.of("csv", "tsv", "txt", "raw"));
     }
 }

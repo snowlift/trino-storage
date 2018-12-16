@@ -102,9 +102,8 @@ public class FlexRecordCursor
         if (!lines.hasNext()) {
             return false;
         }
-        String line = lines.next();
-        fields = plugin.splitToList(line);
 
+        fields = plugin.splitToList(lines);
         return true;
     }
 

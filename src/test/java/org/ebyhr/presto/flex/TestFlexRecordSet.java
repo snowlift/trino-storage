@@ -123,6 +123,23 @@ public class TestFlexRecordSet
     }
 
     @Test
+    public void testJsonCursorSimple()
+    {
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "raw", CSV.toString(), CSV), ImmutableList.of(
+                new FlexColumnHandle("test", "data", createUnboundedVarcharType(), 0)));
+        RecordCursor cursor = recordSet.cursor();
+
+        assertEquals(cursor.getType(0), createUnboundedVarcharType());
+
+        List<String> data = new LinkedList<>();
+        while (cursor.advanceNextPosition()) {
+            data.add(cursor.getSlice(0).toStringUtf8());
+            assertFalse(cursor.isNull(0));
+        }
+        assertEquals(data, ImmutableList.of("ten, 10\neleven, 11\ntwelve, 12"));
+    }
+
+    @Test
     public void testCursorMixedOrder()
     {
         RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", CSV), ImmutableList.of(
