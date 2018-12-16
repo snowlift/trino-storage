@@ -15,7 +15,6 @@ package org.ebyhr.presto.flex;
 
 import com.facebook.presto.spi.RecordCursor;
 import com.facebook.presto.spi.type.Type;
-import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CountingInputStream;
@@ -26,7 +25,6 @@ import org.ebyhr.presto.flex.operator.PluginFactory;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,8 +35,6 @@ import static com.facebook.presto.spi.type.VarcharType.createUnboundedVarcharTyp
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.ebyhr.presto.flex.FileType.TXT;
-import static org.ebyhr.presto.flex.FlexColumnUtils.delimiterFromExtension;
 
 public class FlexRecordCursor
         implements RecordCursor

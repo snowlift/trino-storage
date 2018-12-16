@@ -16,6 +16,7 @@ package org.ebyhr.presto.flex;
 import com.facebook.presto.spi.ColumnMetadata;
 import com.facebook.presto.spi.ConnectorTableMetadata;
 import com.facebook.presto.spi.PrestoException;
+import com.facebook.presto.spi.SchemaNotFoundException;
 import com.facebook.presto.spi.SchemaTableName;
 import com.facebook.presto.spi.TableNotFoundException;
 import com.google.common.collect.ImmutableList;
@@ -83,10 +84,10 @@ public class TestFlexMetadata
             metadata.getColumnHandles(SESSION, new FlexTableHandle(CONNECTOR_ID, "unknown", "unknown"));
             fail("Expected getColumnHandle of unknown table to throw a TableNotFoundException");
         }
-        catch (TableNotFoundException expected) {
+        catch (SchemaNotFoundException expected) {
         }
         try {
-            metadata.getColumnHandles(SESSION, new FlexTableHandle(CONNECTOR_ID, "example", "unknown"));
+            metadata.getColumnHandles(SESSION, new FlexTableHandle(CONNECTOR_ID, "csv", "unknown"));
             fail("Expected getColumnHandle of unknown table to throw a TableNotFoundException");
         }
         catch (TableNotFoundException expected) {

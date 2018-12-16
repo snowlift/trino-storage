@@ -14,6 +14,8 @@
 package org.ebyhr.presto.flex;
 
 import io.airlift.json.JsonCodec;
+import org.ebyhr.presto.flex.operator.FilePlugin;
+import org.ebyhr.presto.flex.operator.PluginFactory;
 
 import javax.inject.Inject;
 import java.net.URI;
@@ -54,7 +56,8 @@ public class FlexClient
         requireNonNull(schema, "schema is null");
         requireNonNull(tableName, "tableName is null");
 
-        List<FlexColumn> columns = FlexColumnUtils.typeOf(schema, tableName);
+        FilePlugin plugin = PluginFactory.create(schema);
+        List<FlexColumn> columns = plugin.getFields(schema, tableName);
         List<URI> uris = Arrays.asList(URI.create(tableName));
         FlexTable table = new FlexTable(tableName, columns, uris);
         return table;
