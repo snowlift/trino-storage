@@ -67,9 +67,9 @@ class FlexColumnUtils
         return columnTypes;
     }
 
-    private static String delimiterFromExtension(String type)
+    public static String delimiterFromExtension(String type)
     {
-        return type.equalsIgnoreCase("csv") ? "," : "\t";
+        return type.equalsIgnoreCase(FileType.CSV.toString()) ? "," : "\t";
     }
 
     private static Type typeOf(String value)

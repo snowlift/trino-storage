@@ -107,9 +107,9 @@ public class FlexMetadata
     @Override
     public List<SchemaTableName> listTables(ConnectorSession session, String schemaNameOrNull)
     {
-        Set<String> schemaNames;
+        List<String> schemaNames;
         if (schemaNameOrNull != null) {
-            schemaNames = ImmutableSet.of(schemaNameOrNull);
+            schemaNames = ImmutableList.of(schemaNameOrNull);
         }
         else {
             schemaNames = flexClient.getSchemaNames();

@@ -35,6 +35,8 @@ import static com.facebook.presto.spi.type.VarcharType.createUnboundedVarcharTyp
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.ebyhr.presto.flex.FileType.TXT;
+import static org.ebyhr.presto.flex.FlexColumnUtils.delimiterFromExtension;
 
 public class FlexRecordCursor
         implements RecordCursor
@@ -54,7 +56,7 @@ public class FlexRecordCursor
         this.schemaName = schemaName;
         this.columnHandles = columnHandles;
 
-        String delimiter = schemaName.equalsIgnoreCase("csv") ? "," : "\t";
+        String delimiter = delimiterFromExtension(schemaName);
         this.splitter = Splitter.on(delimiter).trimResults();
 
         fieldToColumnIndex = new int[columnHandles.size()];
@@ -100,7 +102,7 @@ public class FlexRecordCursor
         }
         String line = lines.next();
 
-        if (schemaName.equalsIgnoreCase("txt")) {
+        if (schemaName.equalsIgnoreCase(TXT.toString())) {
             fields = Arrays.asList(line);
         } else {
             fields = splitter.splitToList(line);

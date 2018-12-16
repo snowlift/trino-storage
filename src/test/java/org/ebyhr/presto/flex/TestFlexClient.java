@@ -13,6 +13,7 @@
  */
 package org.ebyhr.presto.flex;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
 import org.testng.annotations.Test;
@@ -33,6 +34,6 @@ public class TestFlexClient
         assertNotNull(metadataUrl, "metadataUrl is null");
         URI metadata = metadataUrl.toURI();
         FlexClient client = new FlexClient(new FlexConfig().setMetadata(metadata), MetadataUtil.CATALOG_CODEC);
-        assertEquals(client.getSchemaNames(), ImmutableSet.of("csv", "tsv", "txt"));
+        assertEquals(client.getSchemaNames(), ImmutableList.of("csv", "tsv", "txt"));
     }
 }

@@ -13,24 +13,22 @@
  */
 package org.ebyhr.presto.flex;
 
-import com.google.common.collect.ImmutableSet;
 import io.airlift.json.JsonCodec;
 
 import javax.inject.Inject;
-
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
 public class FlexClient
 {
-    private final Set<String> schemas = ImmutableSet.of("csv", "tsv", "txt");
-
     @Inject
     public FlexClient(FlexConfig config, JsonCodec<Map<String, List<FlexTable>>> catalogCodec)
     {
@@ -38,9 +36,11 @@ public class FlexClient
         requireNonNull(catalogCodec, "catalogCodec is null");
     }
 
-    public Set<String> getSchemaNames()
+    public List<String> getSchemaNames()
     {
-        return schemas;
+        return Stream.of(FileType.values())
+                .map(FileType::toString)
+                .collect(Collectors.toList());
     }
 
     public Set<String> getTableNames(String schema)
