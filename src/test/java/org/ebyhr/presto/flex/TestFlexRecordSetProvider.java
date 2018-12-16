@@ -17,15 +17,12 @@ import com.facebook.presto.spi.RecordCursor;
 import com.facebook.presto.spi.RecordSet;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.facebook.presto.spi.type.BigintType.BIGINT;
 import static com.facebook.presto.spi.type.VarcharType.createUnboundedVarcharType;
 import static com.facebook.presto.testing.TestingConnectorSession.SESSION;
 import static org.testng.Assert.assertEquals;
@@ -33,14 +30,13 @@ import static org.testng.Assert.assertNotNull;
 
 public class TestFlexRecordSetProvider
 {
-    private FlexHttpServer flexHttpServer;
-    private URI dataUri;
+    private URI CSV_URI = URI.create("http://s3.amazonaws.com/presto-example/v2/numbers-1.csv");
 
     @Test
     public void testGetRecordSet()
     {
         FlexRecordSetProvider recordSetProvider = new FlexRecordSetProvider(new FlexConnectorId("test"));
-        RecordSet recordSet = recordSetProvider.getRecordSet(FlexTransactionHandle.INSTANCE, SESSION, new FlexSplit("test", "csv", "http://s3.amazonaws.com/presto-example/v2/numbers-1.csv", dataUri), ImmutableList.of(
+        RecordSet recordSet = recordSetProvider.getRecordSet(FlexTransactionHandle.INSTANCE, SESSION, new FlexSplit("test", "csv", CSV_URI.toString(), CSV_URI), ImmutableList.of(
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0),
                 new FlexColumnHandle("test", "value", createUnboundedVarcharType(), 1)));
         assertNotNull(recordSet, "recordSet is null");
@@ -56,22 +52,5 @@ public class TestFlexRecordSetProvider
                 .put("two", "2")
                 .put("three", "3")
                 .build());
-    }
-
-    @BeforeClass
-    public void setUp()
-            throws Exception
-    {
-        flexHttpServer = new FlexHttpServer();
-        dataUri = flexHttpServer.resolve("http://s3.amazonaws.com/presto-example/v2/numbers-1.csv");
-    }
-
-    @AfterClass(alwaysRun = true)
-    public void tearDown()
-            throws Exception
-    {
-        if (flexHttpServer != null) {
-            flexHttpServer.stop();
-        }
     }
 }
