@@ -13,3 +13,19 @@ select * from free.tsv."https://raw.githubusercontent.com/ebyhr/presto-flex/mast
 select * from free.txt."file:///tmp/numbers.tsv";
 select * from free.txt."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv";
 ``` 
+
+# Build
+Run all the unit test classes.
+```
+mvn test
+```
+
+Creates a deployable jar file
+```
+mvn clean compile package
+```
+
+Copy jar files in target directory to use flex connector in your presto cluster.
+```
+cp -p target/*.jar ${PLUGIN_DIRECTORY}/flex/
+```
