@@ -21,6 +21,8 @@ import com.google.common.io.ByteSource;
 import com.google.common.io.CountingInputStream;
 import io.airlift.slice.Slice;
 import io.airlift.slice.Slices;
+import org.ebyhr.presto.flex.operator.FilePlugin;
+import org.ebyhr.presto.flex.operator.PluginFactory;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -42,24 +44,23 @@ public class FlexRecordCursor
         implements RecordCursor
 {
     private final String schemaName;
-    private final Splitter splitter;
     private final List<FlexColumnHandle> columnHandles;
     private final int[] fieldToColumnIndex;
 
     private final Iterator<String> lines;
     private final long totalBytes;
     private final FileType fileType;
+    private final FilePlugin plugin;
 
     private List<String> fields;
 
     public FlexRecordCursor(List<FlexColumnHandle> columnHandles, ByteSource byteSource, String schemaName)
     {
+
         this.schemaName = schemaName;
         this.columnHandles = columnHandles;
         this.fileType = FileType.valueOf(schemaName.toUpperCase());
-
-        String delimiter = delimiterFromExtension(schemaName);
-        this.splitter = Splitter.on(delimiter).trimResults();
+        this.plugin = PluginFactory.create(schemaName);
 
         fieldToColumnIndex = new int[columnHandles.size()];
         for (int i = 0; i < columnHandles.size(); i++) {
@@ -70,8 +71,7 @@ public class FlexRecordCursor
         try (CountingInputStream input = new CountingInputStream(byteSource.openStream())) {
             lines = byteSource.asCharSource(UTF_8).readLines().iterator();
 
-            // HACK: This logic should be modified.
-            if (fileType != TXT) {
+            if (plugin.skipFirstLine()) {
                 lines.next();
             }
             totalBytes = input.getCount();
@@ -107,12 +107,7 @@ public class FlexRecordCursor
             return false;
         }
         String line = lines.next();
-
-        if (schemaName.equalsIgnoreCase(TXT.toString())) {
-            fields = Arrays.asList(line);
-        } else {
-            fields = splitter.splitToList(line);
-        }
+        fields = plugin.splitToList(line);
 
         return true;
     }
