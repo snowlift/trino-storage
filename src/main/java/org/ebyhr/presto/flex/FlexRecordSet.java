@@ -15,13 +15,13 @@ package org.ebyhr.presto.flex;
 
 import com.facebook.presto.spi.RecordCursor;
 import com.facebook.presto.spi.RecordSet;
+import com.facebook.presto.spi.SchemaTableName;
 import com.facebook.presto.spi.type.Type;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -31,8 +31,7 @@ public class FlexRecordSet
 {
     private final List<FlexColumnHandle> columnHandles;
     private final List<Type> columnTypes;
-    private final ByteSource byteSource;
-    private final String schemaName;
+    private final SchemaTableName schemaTableName;
 
     public FlexRecordSet(FlexSplit split, List<FlexColumnHandle> columnHandles)
     {
@@ -44,14 +43,7 @@ public class FlexRecordSet
             types.add(column.getColumnType());
         }
         this.columnTypes = types.build();
-        this.schemaName = split.getSchemaName();
-
-        try {
-            byteSource = Resources.asByteSource(split.getUri().toURL());
-        }
-        catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        this.schemaTableName = new SchemaTableName(split.getSchemaName(), split.getTableName());
     }
 
     @Override
@@ -63,6 +55,6 @@ public class FlexRecordSet
     @Override
     public RecordCursor cursor()
     {
-        return new FlexRecordCursor(columnHandles, byteSource, schemaName);
+        return new FlexRecordCursor(columnHandles, schemaTableName);
     }
 }

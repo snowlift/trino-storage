@@ -14,10 +14,12 @@
 package org.ebyhr.presto.flex;
 
 import com.facebook.presto.spi.RecordCursor;
+import com.facebook.presto.spi.SchemaTableName;
 import com.facebook.presto.spi.type.Type;
 import com.google.common.base.Strings;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CountingInputStream;
+import com.google.common.io.Resources;
 import io.airlift.slice.Slice;
 import io.airlift.slice.Slices;
 import org.ebyhr.presto.flex.operator.FilePlugin;
@@ -25,6 +27,8 @@ import org.ebyhr.presto.flex.operator.PluginFactory;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,29 +38,23 @@ import static com.facebook.presto.spi.type.DoubleType.DOUBLE;
 import static com.facebook.presto.spi.type.VarcharType.createUnboundedVarcharType;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class FlexRecordCursor
         implements RecordCursor
 {
-    private final String schemaName;
     private final List<FlexColumnHandle> columnHandles;
     private final int[] fieldToColumnIndex;
 
-    private final Iterator<String> lines;
+    private final Iterator lines;
     private final long totalBytes;
-    private final FileType fileType;
     private final FilePlugin plugin;
 
     private List<String> fields;
 
-    public FlexRecordCursor(List<FlexColumnHandle> columnHandles, ByteSource byteSource, String schemaName)
+    public FlexRecordCursor(List<FlexColumnHandle> columnHandles, SchemaTableName schemaTableName)
     {
-
-        this.schemaName = schemaName;
         this.columnHandles = columnHandles;
-        this.fileType = FileType.valueOf(schemaName.toUpperCase());
-        this.plugin = PluginFactory.create(schemaName);
+        this.plugin = PluginFactory.create(schemaTableName.getSchemaName());
 
         fieldToColumnIndex = new int[columnHandles.size()];
         for (int i = 0; i < columnHandles.size(); i++) {
@@ -64,9 +62,18 @@ public class FlexRecordCursor
             fieldToColumnIndex[i] = columnHandle.getOrdinalPosition();
         }
 
-        try (CountingInputStream input = new CountingInputStream(byteSource.openStream())) {
-            lines = byteSource.asCharSource(UTF_8).readLines().iterator();
 
+        URI uri = URI.create(schemaTableName.getTableName());
+        ByteSource byteSource;
+        try {
+            byteSource = Resources.asByteSource(uri.toURL());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+
+        try (CountingInputStream input = new CountingInputStream(byteSource.openStream())) {
+            lines = plugin.getIterator(byteSource);
             if (plugin.skipFirstLine()) {
                 lines.next();
             }
@@ -102,7 +109,6 @@ public class FlexRecordCursor
         if (!lines.hasNext()) {
             return false;
         }
-
         fields = plugin.splitToList(lines);
         return true;
     }

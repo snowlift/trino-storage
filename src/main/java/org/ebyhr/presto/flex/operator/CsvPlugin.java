@@ -1,5 +1,6 @@
 package org.ebyhr.presto.flex.operator;
 
+import com.facebook.presto.spi.PrestoException;
 import com.facebook.presto.spi.SchemaTableName;
 import com.facebook.presto.spi.TableNotFoundException;
 import com.facebook.presto.spi.type.Type;
@@ -17,6 +18,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.facebook.presto.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
 import static com.facebook.presto.spi.type.VarcharType.VARCHAR;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.ebyhr.presto.flex.FileType.TXT;
@@ -60,9 +62,19 @@ public class CsvPlugin implements FilePlugin {
     }
 
     @Override
-    public List<String> splitToList(Iterator<String> lines)
+    public Iterator<String> getIterator(ByteSource byteSource)
     {
-        String line = lines.next();
+        try {
+            return byteSource.asCharSource(UTF_8).readLines().iterator();
+        } catch (IOException e) {
+            throw new PrestoException(GENERIC_INTERNAL_ERROR, "Failed to get iterator");
+        }
+    }
+
+    @Override
+    public List<String> splitToList(Iterator lines)
+    {
+        String line = (String) lines.next();
         Splitter splitter = Splitter.on(DELIMITER).trimResults();
         return splitter.splitToList(line);
     }
