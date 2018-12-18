@@ -22,6 +22,7 @@ Supported schemas are below.
 - `csv`
 - `txt`
 - `raw`
+- `excel`
 
 `tsv` plugin extract each line with `\t` delimiter. Currently first line is used as column names.
 ```sql
@@ -65,6 +66,19 @@ select * from free.txt."https://raw.githubusercontent.com/ebyhr/presto-flex/mast
 The main difference is `txt` plugin may return multiple rows, but `raw` plugin always return only one row.
 ```sql
 select * from free.raw."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv";
+``` 
+```
+  data  
+--------
+ one    1   
+ two    2   
+ three  3 
+(1 row)
+```
+
+`excel` plugin currently read first sheet.
+```sql
+select * from free.excel."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/sample.xlsx";
 ``` 
 ```
   data  
