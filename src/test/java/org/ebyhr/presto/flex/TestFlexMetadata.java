@@ -53,7 +53,7 @@ public class TestFlexMetadata
 
         URL metadataUrl = Resources.getResource(TestFlexClient.class, "/example-data/example-metadata.json");
         assertNotNull(metadataUrl, "metadataUrl is null");
-        FlexClient client = new FlexClient(new FlexConfig().setMetadata(metadataUrl.toURI()), CATALOG_CODEC);
+        FlexClient client = new FlexClient(new FlexConfig());
         metadata = new FlexMetadata(new FlexConnectorId(CONNECTOR_ID), client);
     }
 

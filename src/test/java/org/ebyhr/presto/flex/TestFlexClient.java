@@ -28,12 +28,8 @@ public class TestFlexClient
 {
     @Test
     public void testMetadata()
-            throws Exception
     {
-        URL metadataUrl = Resources.getResource(TestFlexClient.class, "/example-data/example-metadata.json");
-        assertNotNull(metadataUrl, "metadataUrl is null");
-        URI metadata = metadataUrl.toURI();
-        FlexClient client = new FlexClient(new FlexConfig().setMetadata(metadata), MetadataUtil.CATALOG_CODEC);
+        FlexClient client = new FlexClient(new FlexConfig());
         assertEquals(client.getSchemaNames(), ImmutableList.of("csv", "tsv", "txt", "raw", "excel"));
     }
 }

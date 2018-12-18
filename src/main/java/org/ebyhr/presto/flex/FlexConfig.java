@@ -15,21 +15,18 @@ package org.ebyhr.presto.flex;
 
 import io.airlift.configuration.Config;
 
-import javax.validation.constraints.NotNull;
-
 import java.net.URI;
 
 public class FlexConfig
 {
     private URI metadata;
 
-    @NotNull
     public URI getMetadata()
     {
         return metadata;
     }
 
-    @Config("free.metadata-uri")
+    @Config("flex.metadata-uri")
     public FlexConfig setMetadata(URI metadata)
     {
         this.metadata = metadata;

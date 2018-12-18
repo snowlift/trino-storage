@@ -7,13 +7,13 @@ You need to specify file type by schema name and use absolute path.
 select
   * 
 from 
- free.csv."file:///tmp/numbers-2.csv"
+ flex.csv."file:///tmp/numbers-2.csv"
 ;
 
 select
   * 
 from 
- free.csv."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers-2.csv"
+ flex.csv."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers-2.csv"
 ;
 ``` 
 
@@ -26,7 +26,7 @@ Supported schemas are below.
 
 `tsv` plugin extract each line with `\t` delimiter. Currently first line is used as column names.
 ```sql
-select * from free.tsv."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv";
+select * from flex.tsv."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv";
 ``` 
 ```
   one  | 1 
@@ -39,7 +39,7 @@ select * from free.tsv."https://raw.githubusercontent.com/ebyhr/presto-flex/mast
 
 `csv` plugin extract each line with `,` delimiter. Currently first line is used as column names.
 ```sql
-select * from free.csv."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers-2.csv";
+select * from flex.csv."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers-2.csv";
 ```
 ```
   ten   | 10 
@@ -51,7 +51,7 @@ select * from free.csv."https://raw.githubusercontent.com/ebyhr/presto-flex/mast
 
 `txt` plugin doesn't extract each line. Currently column name is always `value`.
 ```sql
-select * from free.txt."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv";
+select * from flex.txt."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv";
 ``` 
 ```
  value  
@@ -65,7 +65,7 @@ select * from free.txt."https://raw.githubusercontent.com/ebyhr/presto-flex/mast
 `raw` plugin doesn't extract each line. Currently column name is always `data`. This connector is similar to `txt` plugin. 
 The main difference is `txt` plugin may return multiple rows, but `raw` plugin always return only one row.
 ```sql
-select * from free.raw."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv";
+select * from flex.raw."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv";
 ``` 
 ```
   data  
@@ -78,7 +78,7 @@ select * from free.raw."https://raw.githubusercontent.com/ebyhr/presto-flex/mast
 
 `excel` plugin currently read first sheet.
 ```sql
-select * from free.excel."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/sample.xlsx";
+select * from flex.excel."https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/sample.xlsx";
 ``` 
 ```
   data  

@@ -13,7 +13,6 @@
  */
 package org.ebyhr.presto.flex;
 
-import io.airlift.json.JsonCodec;
 import org.ebyhr.presto.flex.operator.FilePlugin;
 import org.ebyhr.presto.flex.operator.PluginFactory;
 
@@ -22,7 +21,6 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,10 +30,9 @@ import static java.util.Objects.requireNonNull;
 public class FlexClient
 {
     @Inject
-    public FlexClient(FlexConfig config, JsonCodec<Map<String, List<FlexTable>>> catalogCodec)
+    public FlexClient(FlexConfig config)
     {
         requireNonNull(config, "config is null");
-        requireNonNull(catalogCodec, "catalogCodec is null");
     }
 
     public List<String> getSchemaNames()
