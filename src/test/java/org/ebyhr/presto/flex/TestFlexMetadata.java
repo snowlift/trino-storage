@@ -29,7 +29,6 @@ import org.testng.annotations.Test;
 import java.net.URL;
 import java.util.Optional;
 
-import static org.ebyhr.presto.flex.MetadataUtil.CATALOG_CODEC;
 import static com.facebook.presto.spi.type.VarcharType.createUnboundedVarcharType;
 import static com.facebook.presto.testing.TestingConnectorSession.SESSION;
 import static org.testng.Assert.assertEquals;
@@ -46,7 +45,6 @@ public class TestFlexMetadata
 
     @BeforeMethod
     public void setUp()
-            throws Exception
     {
         URL numbersUrl = Resources.getResource(TestFlexClient.class, "/example-data/numbers-1.csv");
         numbersTableHandle = new FlexTableHandle(CONNECTOR_ID, "csv", numbersUrl.toString());
