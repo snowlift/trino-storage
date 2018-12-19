@@ -36,7 +36,7 @@ public class TestFlexRecordSetProvider
     public void testGetRecordSet()
     {
         FlexRecordSetProvider recordSetProvider = new FlexRecordSetProvider(new FlexConnectorId("test"));
-        RecordSet recordSet = recordSetProvider.getRecordSet(FlexTransactionHandle.INSTANCE, SESSION, new FlexSplit("test", "csv", CSV_URI.toString(), CSV_URI), ImmutableList.of(
+        RecordSet recordSet = recordSetProvider.getRecordSet(FlexTransactionHandle.INSTANCE, SESSION, new FlexSplit("test", "csv", CSV_URI.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0),
                 new FlexColumnHandle("test", "value", createUnboundedVarcharType(), 1)));
         assertNotNull(recordSet, "recordSet is null");

@@ -23,25 +23,25 @@ import static org.testng.Assert.assertEquals;
 
 public class TestFlexSplit
 {
-    private final FlexSplit split = new FlexSplit("connectorId", "schemaName", "tableName", URI.create("http://127.0.0.1/test.file"));
+    private final FlexSplit split = new FlexSplit("connectorId", "schemaName", "tableName");
 
     @Test
     public void testAddresses()
     {
         // http split with default port
-        FlexSplit httpSplit = new FlexSplit("connectorId", "schemaName", "tableName", URI.create("http://example.com/example"));
+        FlexSplit httpSplit = new FlexSplit("connectorId", "schemaName", "tableName");
         assertEquals(httpSplit.isRemotelyAccessible(), true);
 
         // http split with custom port
-        httpSplit = new FlexSplit("connectorId", "schemaName", "tableName", URI.create("http://example.com:8080/example"));
+        httpSplit = new FlexSplit("connectorId", "schemaName", "tableName");
         assertEquals(httpSplit.isRemotelyAccessible(), true);
 
         // http split with default port
-        FlexSplit httpsSplit = new FlexSplit("connectorId", "schemaName", "tableName", URI.create("https://example.com/example"));
+        FlexSplit httpsSplit = new FlexSplit("connectorId", "schemaName", "tableName");
         assertEquals(httpsSplit.isRemotelyAccessible(), true);
 
         // http split with custom port
-        httpsSplit = new FlexSplit("connectorId", "schemaName", "tableName", URI.create("https://example.com:8443/example"));
+        httpsSplit = new FlexSplit("connectorId", "schemaName", "tableName");
         assertEquals(httpsSplit.isRemotelyAccessible(), true);
     }
 
@@ -54,7 +54,6 @@ public class TestFlexSplit
         assertEquals(copy.getConnectorId(), split.getConnectorId());
         assertEquals(copy.getSchemaName(), split.getSchemaName());
         assertEquals(copy.getTableName(), split.getTableName());
-        assertEquals(copy.getUri(), split.getUri());
 
         assertEquals(copy.isRemotelyAccessible(), true);
     }

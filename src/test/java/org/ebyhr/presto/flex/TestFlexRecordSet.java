@@ -39,30 +39,30 @@ public class TestFlexRecordSet
     @Test
     public void testGetColumnTypes()
     {
-        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", CSV), ImmutableList.of(
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "csv", CSV.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0),
                 new FlexColumnHandle("test", "value", BIGINT, 1)));
         assertEquals(recordSet.getColumnTypes(), ImmutableList.of(createUnboundedVarcharType(), BIGINT));
 
-        recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", CSV), ImmutableList.of(
+        recordSet = new FlexRecordSet(new FlexSplit("test", "csv", CSV.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "value", BIGINT, 1),
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0)));
         assertEquals(recordSet.getColumnTypes(), ImmutableList.of(BIGINT, createUnboundedVarcharType()));
 
-        recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", CSV), ImmutableList.of(
+        recordSet = new FlexRecordSet(new FlexSplit("test", "csv", CSV.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "value", BIGINT, 1),
                 new FlexColumnHandle("test", "value", BIGINT, 1),
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0)));
         assertEquals(recordSet.getColumnTypes(), ImmutableList.of(BIGINT, BIGINT, createUnboundedVarcharType()));
 
-        recordSet = new FlexRecordSet(new FlexSplit("test", "csv", "table", CSV), ImmutableList.of());
+        recordSet = new FlexRecordSet(new FlexSplit("test", "csv", CSV.toString()), ImmutableList.of());
         assertEquals(recordSet.getColumnTypes(), ImmutableList.of());
     }
 
     @Test
     public void testCursorSimple()
     {
-        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "csv", CSV.toString(), CSV), ImmutableList.of(
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "csv", CSV.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0),
                 new FlexColumnHandle("test", "value", BIGINT, 1)));
         RecordCursor cursor = recordSet.cursor();
@@ -85,7 +85,7 @@ public class TestFlexRecordSet
     @Test
     public void testTsvCursorSimple()
     {
-        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "tsv", TSV.toString(), TSV), ImmutableList.of(
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "tsv", TSV.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0),
                 new FlexColumnHandle("test", "value", createUnboundedVarcharType(), 1)));
         RecordCursor cursor = recordSet.cursor();
@@ -108,7 +108,7 @@ public class TestFlexRecordSet
     @Test
     public void testTxtCursorSimple()
     {
-        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "txt", CSV.toString(), CSV), ImmutableList.of(
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "txt", CSV.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0)));
         RecordCursor cursor = recordSet.cursor();
 
@@ -125,7 +125,7 @@ public class TestFlexRecordSet
     @Test
     public void testJsonCursorSimple()
     {
-        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "raw", CSV.toString(), CSV), ImmutableList.of(
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "raw", CSV.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "data", createUnboundedVarcharType(), 0)));
         RecordCursor cursor = recordSet.cursor();
 
@@ -142,7 +142,7 @@ public class TestFlexRecordSet
     @Test
     public void testExcelCursorSimple()
     {
-        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "excel", EXCEL.toString(), EXCEL), ImmutableList.of(
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "excel", EXCEL.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "c1", createUnboundedVarcharType(), 0),
                 new FlexColumnHandle("test", "c2", createUnboundedVarcharType(), 1)
                 )
@@ -168,7 +168,7 @@ public class TestFlexRecordSet
     @Test
     public void testCursorMixedOrder()
     {
-        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "csv", CSV.toString(), CSV), ImmutableList.of(
+        RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "csv", CSV.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "value", BIGINT, 1),
                 new FlexColumnHandle("test", "value", BIGINT, 1),
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0)));

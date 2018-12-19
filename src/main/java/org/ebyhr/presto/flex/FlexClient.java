@@ -55,8 +55,6 @@ public class FlexClient
 
         FilePlugin plugin = PluginFactory.create(schema);
         List<FlexColumn> columns = plugin.getFields(schema, tableName);
-        List<URI> uris = Arrays.asList(URI.create(tableName));
-        FlexTable table = new FlexTable(tableName, columns, uris);
-        return table;
+        return new FlexTable(tableName, columns);
     }
 }

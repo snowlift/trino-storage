@@ -54,9 +54,7 @@ public class FlexSplitManager
         checkState(table != null, "Table %s.%s no longer exists", tableHandle.getSchemaName(), tableHandle.getTableName());
 
         List<ConnectorSplit> splits = new ArrayList<>();
-        for (URI uri : table.getSources()) {
-            splits.add(new FlexSplit(connectorId, tableHandle.getSchemaName(), tableHandle.getTableName(), uri));
-        }
+        splits.add(new FlexSplit(connectorId, tableHandle.getSchemaName(), tableHandle.getTableName()));
         Collections.shuffle(splits);
 
         return new FixedSplitSource(splits);

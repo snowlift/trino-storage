@@ -27,8 +27,7 @@ import static org.testng.Assert.assertEquals;
 public class TestFlexTable
 {
     private final FlexTable flexTable = new FlexTable("tableName",
-            ImmutableList.of(new FlexColumn("a", createUnboundedVarcharType()), new FlexColumn("b", BIGINT)),
-            ImmutableList.of(URI.create("file://table-1.json"), URI.create("file://table-2.json")));
+            ImmutableList.of(new FlexColumn("a", createUnboundedVarcharType()), new FlexColumn("b", BIGINT)));
 
     @Test
     public void testColumnMetadata()
@@ -46,6 +45,5 @@ public class TestFlexTable
 
         assertEquals(flexTableCopy.getName(), flexTable.getName());
         assertEquals(flexTableCopy.getColumns(), flexTable.getColumns());
-        assertEquals(flexTableCopy.getSources(), flexTable.getSources());
     }
 }

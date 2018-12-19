@@ -30,20 +30,17 @@ public class FlexSplit
     private final String connectorId;
     private final String schemaName;
     private final String tableName;
-    private final URI uri;
     private final boolean remotelyAccessible;
 
     @JsonCreator
     public FlexSplit(
             @JsonProperty("connectorId") String connectorId,
             @JsonProperty("schemaName") String schemaName,
-            @JsonProperty("tableName") String tableName,
-            @JsonProperty("uri") URI uri)
+            @JsonProperty("tableName") String tableName)
     {
         this.schemaName = requireNonNull(schemaName, "schema name is null");
         this.connectorId = requireNonNull(connectorId, "connector id is null");
         this.tableName = requireNonNull(tableName, "table name is null");
-        this.uri = requireNonNull(uri, "uri is null");
 
 //        if ("http".equalsIgnoreCase(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme())) {
         remotelyAccessible = true;
@@ -65,12 +62,6 @@ public class FlexSplit
     public String getTableName()
     {
         return tableName;
-    }
-
-    @JsonProperty
-    public URI getUri()
-    {
-        return uri;
     }
 
     @Override
