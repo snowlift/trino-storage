@@ -141,7 +141,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <scope>provided</scope>
             <version>${dep.jackson.version}</version>
         </dependency>
 
