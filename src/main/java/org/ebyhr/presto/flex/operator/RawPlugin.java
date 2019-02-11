@@ -1,8 +1,8 @@
 package org.ebyhr.presto.flex.operator;
 
-import com.facebook.presto.spi.PrestoException;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteSource;
+import io.prestosql.spi.PrestoException;
 import org.ebyhr.presto.flex.FlexColumn;
 
 import java.io.IOException;
@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static com.facebook.presto.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
-import static com.facebook.presto.spi.type.VarcharType.VARCHAR;
+import static io.prestosql.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
+import static io.prestosql.spi.type.VarcharType.VARCHAR;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class RawPlugin implements FilePlugin {

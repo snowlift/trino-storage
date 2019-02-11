@@ -13,15 +13,15 @@
  */
 package org.ebyhr.presto.flex;
 
-import com.facebook.presto.spi.RecordCursor;
-import com.facebook.presto.spi.SchemaTableName;
-import com.facebook.presto.spi.type.Type;
 import com.google.common.base.Strings;
 import com.google.common.io.ByteSource;
 import com.google.common.io.CountingInputStream;
 import com.google.common.io.Resources;
 import io.airlift.slice.Slice;
 import io.airlift.slice.Slices;
+import io.prestosql.spi.connector.RecordCursor;
+import io.prestosql.spi.connector.SchemaTableName;
+import io.prestosql.spi.type.Type;
 import org.ebyhr.presto.flex.operator.FilePlugin;
 import org.ebyhr.presto.flex.operator.PluginFactory;
 
@@ -32,12 +32,12 @@ import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.facebook.presto.spi.type.BigintType.BIGINT;
-import static com.facebook.presto.spi.type.BooleanType.BOOLEAN;
-import static com.facebook.presto.spi.type.DoubleType.DOUBLE;
-import static com.facebook.presto.spi.type.VarcharType.createUnboundedVarcharType;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
+import static io.prestosql.spi.type.BigintType.BIGINT;
+import static io.prestosql.spi.type.BooleanType.BOOLEAN;
+import static io.prestosql.spi.type.DoubleType.DOUBLE;
+import static io.prestosql.spi.type.VarcharType.createUnboundedVarcharType;
 
 public class FlexRecordCursor
         implements RecordCursor

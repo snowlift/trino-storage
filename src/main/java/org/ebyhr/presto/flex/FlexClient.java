@@ -17,8 +17,6 @@ import org.ebyhr.presto.flex.operator.FilePlugin;
 import org.ebyhr.presto.flex.operator.PluginFactory;
 
 import javax.inject.Inject;
-import java.net.URI;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

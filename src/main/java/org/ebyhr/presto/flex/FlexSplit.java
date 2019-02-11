@@ -13,13 +13,12 @@
  */
 package org.ebyhr.presto.flex;
 
-import com.facebook.presto.spi.ConnectorSplit;
-import com.facebook.presto.spi.HostAddress;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
+import io.prestosql.spi.HostAddress;
+import io.prestosql.spi.connector.ConnectorSplit;
 
-import java.net.URI;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;

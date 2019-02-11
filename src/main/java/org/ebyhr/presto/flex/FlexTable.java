@@ -13,12 +13,11 @@
  */
 package org.ebyhr.presto.flex;
 
-import com.facebook.presto.spi.ColumnMetadata;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
+import io.prestosql.spi.connector.ColumnMetadata;
 
-import java.net.URI;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;

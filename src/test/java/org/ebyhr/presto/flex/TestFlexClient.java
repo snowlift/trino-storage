@@ -14,15 +14,9 @@
 package org.ebyhr.presto.flex;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.io.Resources;
 import org.testng.annotations.Test;
 
-import java.net.URI;
-import java.net.URL;
-
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
 public class TestFlexClient
 {

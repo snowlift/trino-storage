@@ -5,7 +5,7 @@
     <groupId>org.ebyhr</groupId>
     <artifactId>presto-flex</artifactId>
     <description>Presto Flex Connector</description>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <licenses>
@@ -32,7 +32,7 @@
         <air.java.version>1.8.0-151</air.java.version>
         <air.maven.version>3.3.9</air.maven.version>
 
-        <dep.presto.version>0.215</dep.presto.version>
+        <dep.presto.version>302</dep.presto.version>
         <dep.guava.version>24.1-jre</dep.guava.version>
         <dep.guice.version>4.2.0</dep.guice.version>
         <dep.javax.version>1.1.0.Final</dep.javax.version>
@@ -118,7 +118,7 @@
 
         <!-- Presto SPI -->
         <dependency>
-            <groupId>com.facebook.presto</groupId>
+            <groupId>io.prestosql</groupId>
             <artifactId>presto-spi</artifactId>
             <scope>provided</scope>
             <version>${dep.presto.version}</version>
@@ -146,7 +146,7 @@
 
         <!-- for testing -->
         <dependency>
-            <groupId>com.facebook.presto</groupId>
+            <groupId>io.prestosql</groupId>
             <artifactId>presto-main</artifactId>
             <scope>test</scope>
             <version>${dep.presto.version}</version>

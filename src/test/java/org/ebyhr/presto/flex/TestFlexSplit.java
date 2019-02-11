@@ -16,8 +16,6 @@ package org.ebyhr.presto.flex;
 import io.airlift.json.JsonCodec;
 import org.testng.annotations.Test;
 
-import java.net.URI;
-
 import static io.airlift.json.JsonCodec.jsonCodec;
 import static org.testng.Assert.assertEquals;
 

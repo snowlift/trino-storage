@@ -1,6 +1,6 @@
 package org.ebyhr.presto.flex.operator;
 
-import com.facebook.presto.spi.SchemaNotFoundException;
+import io.prestosql.spi.connector.SchemaNotFoundException;
 import org.apache.commons.lang3.EnumUtils;
 import org.ebyhr.presto.flex.FileType;
 
