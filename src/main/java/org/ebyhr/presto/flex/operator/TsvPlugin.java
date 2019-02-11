@@ -7,7 +7,6 @@ import com.google.common.io.Resources;
 import io.prestosql.spi.PrestoException;
 import io.prestosql.spi.connector.SchemaTableName;
 import io.prestosql.spi.connector.TableNotFoundException;
-import io.prestosql.spi.type.Type;
 import org.ebyhr.presto.flex.FlexColumn;
 
 import java.io.IOException;
@@ -47,12 +46,7 @@ public class TsvPlugin implements FilePlugin {
         try {
             ImmutableList<String> lines = byteSource.asCharSource(UTF_8).readLines();
             List<String> fields = splitter.splitToList(lines.get(0));
-//            List<String> data = splitter.splitToList(lines.get(1));
-
-            for (int i = 0; i < fields.size(); i++) {
-                Type type = VARCHAR;
-                columnTypes.add(new FlexColumn(fields.get(i), type));
-            }
+            fields.forEach(field -> columnTypes.add(new FlexColumn(field, VARCHAR)));
         }
         catch (IOException e) {
             throw new UncheckedIOException(e);

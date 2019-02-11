@@ -50,11 +50,10 @@ public class ExcelPlugin implements FilePlugin {
         try {
             Workbook workbook = WorkbookFactory.create(byteSource.openStream());
             Sheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rows = sheet.iterator();
-            return rows;
+            return sheet.iterator();
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException(String.format("Failed to operate s file"));
+            throw new RuntimeException("Failed to operate s file");
         }
     }
 
