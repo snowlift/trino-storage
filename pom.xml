@@ -6,7 +6,7 @@
     <artifactId>presto-flex</artifactId>
     <description>Presto Flex Connector</description>
     <version>0.2-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>presto-plugin</packaging>
 
     <licenses>
         <license>
@@ -32,7 +32,7 @@
         <air.java.version>1.8.0-151</air.java.version>
         <air.maven.version>3.3.9</air.maven.version>
 
-        <dep.presto.version>302</dep.presto.version>
+        <dep.presto.version>306</dep.presto.version>
         <dep.guava.version>24.1-jre</dep.guava.version>
         <dep.guice.version>4.2.0</dep.guice.version>
         <dep.javax.version>1.1.0.Final</dep.javax.version>
@@ -142,6 +142,7 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${dep.jackson.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- for testing -->
@@ -190,6 +191,13 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>io.prestosql</groupId>
+                <artifactId>presto-maven-plugin</artifactId>
+                <version>6</version>
+                <extensions>true</extensions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

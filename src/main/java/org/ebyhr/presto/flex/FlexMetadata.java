@@ -103,11 +103,11 @@ public class FlexMetadata
     }
 
     @Override
-    public List<SchemaTableName> listTables(ConnectorSession session, String schemaNameOrNull)
+    public List<SchemaTableName> listTables(ConnectorSession session, Optional<String> schemaNameOrNull)
     {
         List<String> schemaNames;
-        if (schemaNameOrNull != null) {
-            schemaNames = ImmutableList.of(schemaNameOrNull);
+        if (schemaNameOrNull.isPresent()) {
+            schemaNames = ImmutableList.of(schemaNameOrNull.get());
         }
         else {
             schemaNames = flexClient.getSchemaNames();
@@ -173,10 +173,11 @@ public class FlexMetadata
 
     private List<SchemaTableName> listTables(ConnectorSession session, SchemaTablePrefix prefix)
     {
-        if (prefix.getSchemaName() == null) {
-            return listTables(session, prefix.getSchemaName());
+        if(prefix.getSchema().isPresent() && prefix.getTable().isPresent()){
+            return ImmutableList.of(new SchemaTableName(prefix.getSchema().get(), prefix.getTable().get()));
+        } else {
+            return listTables(session, prefix.getSchema());
         }
-        return ImmutableList.of(new SchemaTableName(prefix.getSchemaName(), prefix.getTableName()));
     }
 
     @Override
