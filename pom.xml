@@ -32,7 +32,7 @@
         <air.java.version>1.8.0-151</air.java.version>
         <air.maven.version>3.3.9</air.maven.version>
 
-        <dep.presto.version>306</dep.presto.version>
+        <dep.presto.version>307</dep.presto.version>
         <dep.guava.version>24.1-jre</dep.guava.version>
         <dep.guice.version>4.2.0</dep.guice.version>
         <dep.javax.version>1.1.0.Final</dep.javax.version>
