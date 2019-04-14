@@ -55,30 +55,30 @@
     <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-compress:1.18" level="project" />
     <orderEntry type="library" name="Maven: com.github.virtuald:curvesapi:1.05" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: io.prestosql:presto-spi:302" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: io.prestosql:presto-spi:308" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.openjdk.jol:jol-core:0.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.airlift:slice:0.36" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.airlift:units:1.3" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.8" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-main:302" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.8" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-main:308" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.locationtech.jts:jts-core:1.15.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.esri.geometry:esri-geometry-api:2.2.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-geospatial-toolkit:302" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-geospatial-toolkit:308" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: it.unimi.dsi:fastutil:6.5.9" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-array:302" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-client:302" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-array:308" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-client:308" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.squareup.okhttp3:okhttp:3.9.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.squareup.okio:okio:1.13.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.squareup.okhttp3:okhttp-urlconnection:3.9.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-parser:302" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-parser:308" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.antlr:antlr4-runtime:4.7.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-matching:302" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-memory-context:302" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-matching:308" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-memory-context:308" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.airlift:aircompressor:0.13" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:concurrent:0.178" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:discovery:0.178" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:event:0.178" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:jaxrs:0.178" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:concurrent:0.179" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:discovery:0.179" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:event:0.179" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:jaxrs:0.179" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: javax.activation:activation:1.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.glassfish.jersey.core:jersey-common:2.26" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.glassfish.hk2:osgi-resource-locator:1.0.1" level="project" />
@@ -93,8 +93,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.glassfish.hk2:hk2-utils:2.5.0-b42" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.javassist:javassist:3.22.0-CR2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.9.7" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:jmx:0.178" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:jmx-http:0.178" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:jmx:0.179" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:jmx-http:0.179" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.airlift.resolver:resolver:1.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.sonatype.aether:aether-spi:1.13.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.sonatype.aether:aether-impl:1.13.1" level="project" />
@@ -124,15 +124,15 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.xbean:xbean-reflect:3.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.plexus:plexus-classworlds:2.4" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-api:1.7.12" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:security:0.178" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:stats:0.178" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:security:0.179" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:stats:0.179" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.hdrhistogram:HdrHistogram:2.1.9" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:trace-token:0.178" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:trace-token:0.179" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.airlift:bytecode:1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ow2.asm:asm-tree:6.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ow2.asm:asm-util:6.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.ow2.asm:asm-analysis:6.2.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:joni:2.1.5.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:joni:2.1.5.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.airlift:joda-to-java-time-bridge:3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.teradata:re2j-td:1.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.airlift.discovery:discovery-server:1.29" level="project" />
@@ -141,8 +141,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.iq80.leveldb:leveldb-api:0.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.iq80.leveldb:leveldb:0.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: javax.ws.rs:javax.ws.rs-api:2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.weakref:jmxutils:1.20" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:http-client:0.178" level="project" />
+    <orderEntry type="library" name="Maven: org.weakref:jmxutils:1.21" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.airlift:http-client:0.179" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-client:9.4.14.v20181114" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty.http2:http2-client:9.4.14.v20181114" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-alpn-client:9.4.14.v20181114" level="project" />
@@ -153,7 +153,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.pcollections:pcollections:2.1.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.lucene:lucene-analyzers-common:7.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.jsonwebtoken:jjwt:0.9.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-plugin-toolkit:302" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: io.prestosql:presto-plugin-toolkit:308" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.testng:testng:6.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.beust:jcommander:1.48" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.airlift:testing:0.177" level="project" />

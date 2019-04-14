@@ -79,7 +79,7 @@ public class FlexMetadata
     }
 
     @Override
-    public List<ConnectorTableLayoutResult> getTableLayouts(ConnectorSession session, ConnectorTableHandle table, Constraint<ColumnHandle> constraint, Optional<Set<ColumnHandle>> desiredColumns)
+    public List<ConnectorTableLayoutResult> getTableLayouts(ConnectorSession session, ConnectorTableHandle table, Constraint constraint, Optional<Set<ColumnHandle>> desiredColumns)
     {
         FlexTableHandle tableHandle = (FlexTableHandle) table;
         ConnectorTableLayout layout = new ConnectorTableLayout(new FlexTableLayoutHandle(tableHandle));
