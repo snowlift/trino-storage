@@ -1,35 +1,37 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.ebyhr.presto.flex.operator;
 
 import io.prestosql.spi.connector.SchemaNotFoundException;
-import org.apache.commons.lang3.EnumUtils;
-import org.ebyhr.presto.flex.FileType;
 
-import static org.ebyhr.presto.flex.FileType.CSV;
-import static org.ebyhr.presto.flex.FileType.EXCEL;
-import static org.ebyhr.presto.flex.FileType.RAW;
-import static org.ebyhr.presto.flex.FileType.TSV;
-import static org.ebyhr.presto.flex.FileType.TXT;
-
-public class PluginFactory {
+public class PluginFactory
+{
     public static FilePlugin create(String typeName)
     {
-        if (!EnumUtils.isValidEnum(FileType.class, typeName.toUpperCase())) {
-            throw new SchemaNotFoundException(typeName);
+        switch (typeName.toLowerCase()) {
+            case "csv":
+                return new CsvPlugin();
+            case "tsv":
+                return new TsvPlugin();
+            case "txt":
+                return new TextPlugin();
+            case "raw":
+                return new RawPlugin();
+            case "excel":
+                return new ExcelPlugin();
+            default:
+                throw new SchemaNotFoundException(typeName);
         }
-
-        FileType fileType = FileType.valueOf(typeName.toUpperCase());
-
-        if (fileType == CSV) {
-            return new CsvPlugin();
-        } else if (fileType == TSV) {
-            return new TsvPlugin();
-        } else if (fileType == TXT) {
-            return new TextPlugin();
-        } else if (fileType == RAW) {
-            return new RawPlugin();
-        } else if (fileType == EXCEL) {
-            return new ExcelPlugin();
-        }
-        throw new IllegalArgumentException("The file type is not supported " + typeName);
     }
 }
