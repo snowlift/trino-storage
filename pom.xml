@@ -5,7 +5,7 @@
     <groupId>org.ebyhr</groupId>
     <artifactId>presto-flex</artifactId>
     <description>Presto Flex Connector</description>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <packaging>presto-plugin</packaging>
 
     <licenses>
@@ -15,12 +15,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
-    <scm>
-        <connection>scm:git:git@github.com:ebyhr/presto-flex.git</connection>
-        <url>https://github.com/ebyhr/presto-flex.git</url>
-        <tag>HEAD</tag>
-    </scm>
 
     <properties>
         <air.main.basedir>${project.basedir}</air.main.basedir>
@@ -32,7 +26,7 @@
         <air.java.version>1.8.0-151</air.java.version>
         <air.maven.version>3.3.9</air.maven.version>
 
-        <dep.presto.version>308</dep.presto.version>
+        <dep.presto.version>309</dep.presto.version>
         <dep.guava.version>24.1-jre</dep.guava.version>
         <dep.guice.version>4.2.0</dep.guice.version>
         <dep.javax.version>1.1.0.Final</dep.javax.version>
@@ -40,7 +34,7 @@
         <dep.jackson.version>2.9.8</dep.jackson.version>
         <dep.antlr.version>4.7.1</dep.antlr.version>
         <dep.servlet-api.version>3.1.0</dep.servlet-api.version>
-        <dep.airlift.version>0.177</dep.airlift.version>
+        <dep.airlift.version>0.180</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.slice.version>0.36</dep.slice.version>
         <dep.testng.version>6.10</dep.testng.version>
@@ -298,34 +292,4 @@
         </plugins>
 
     </build>
-
-    <profiles>
-        <profile>
-            <id>release-sign-artifacts</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
