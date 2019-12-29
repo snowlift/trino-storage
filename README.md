@@ -1,4 +1,5 @@
-# Presto Flex Connector [![Build Status](https://travis-ci.org/ebyhr/presto-flex.svg?branch=master)](https://travis-ci.org/ebyhr/presto-flex)
+# Presto Flex Connector 
+[![Build Status](https://github.com/ebyhr/presto-flex/workflows/CI/badge.svg)](https://github.com/ebyhr/presto-flex/actions?query=workflow%3ACI+event%3Apush+branch%3Amaster)
 This is a presto connector to access local file (e.g. csv, tsv). Please keep in mind that this is not production ready and it was created for tests.
 
 # Query
