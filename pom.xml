@@ -26,7 +26,7 @@
         <air.java.version>1.8.0-151</air.java.version>
         <air.maven.version>3.3.9</air.maven.version>
 
-        <dep.presto.version>314</dep.presto.version>
+        <dep.presto.version>329</dep.presto.version>
         <dep.airlift.version>0.183</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.jackson.version>2.9.9</dep.jackson.version>
@@ -90,8 +90,7 @@
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>units</artifactId>
-            <scope>provided</scope>
-            <version>1.3</version>
+            <version>1.5</version>
         </dependency>
 
         <dependency>

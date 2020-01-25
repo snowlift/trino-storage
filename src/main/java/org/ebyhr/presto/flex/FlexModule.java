@@ -20,6 +20,7 @@ import com.google.inject.Module;
 import com.google.inject.Scopes;
 import io.prestosql.spi.type.Type;
 import io.prestosql.spi.type.TypeManager;
+import io.prestosql.spi.type.TypeSignature;
 
 import javax.inject.Inject;
 
@@ -27,7 +28,6 @@ import static io.airlift.configuration.ConfigBinder.configBinder;
 import static io.airlift.json.JsonBinder.jsonBinder;
 import static io.airlift.json.JsonCodec.listJsonCodec;
 import static io.airlift.json.JsonCodecBinder.jsonCodecBinder;
-import static io.prestosql.spi.type.TypeSignature.parseTypeSignature;
 import static java.util.Objects.requireNonNull;
 
 public class FlexModule
@@ -74,7 +74,7 @@ public class FlexModule
         @Override
         protected Type _deserialize(String value, DeserializationContext context)
         {
-            return typeManager.getType(parseTypeSignature(value));
+            return typeManager.getType(new TypeSignature(value));
         }
     }
 }
