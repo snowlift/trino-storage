@@ -13,6 +13,11 @@
  */
 package org.ebyhr.presto.flex;
 
+import static io.airlift.json.JsonBinder.jsonBinder;
+import static io.airlift.json.JsonCodec.listJsonCodec;
+import static io.airlift.json.JsonCodecBinder.jsonCodecBinder;
+import static java.util.Objects.requireNonNull;
+
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import com.google.inject.Binder;
@@ -21,14 +26,7 @@ import com.google.inject.Scopes;
 import io.prestosql.spi.type.Type;
 import io.prestosql.spi.type.TypeManager;
 import io.prestosql.spi.type.TypeSignature;
-
 import javax.inject.Inject;
-
-import static io.airlift.configuration.ConfigBinder.configBinder;
-import static io.airlift.json.JsonBinder.jsonBinder;
-import static io.airlift.json.JsonCodec.listJsonCodec;
-import static io.airlift.json.JsonCodecBinder.jsonCodecBinder;
-import static java.util.Objects.requireNonNull;
 
 public class FlexModule
         implements Module
@@ -53,7 +51,6 @@ public class FlexModule
         binder.bind(FlexClient.class).in(Scopes.SINGLETON);
         binder.bind(FlexSplitManager.class).in(Scopes.SINGLETON);
         binder.bind(FlexRecordSetProvider.class).in(Scopes.SINGLETON);
-        configBinder(binder).bindConfig(FlexConfig.class);
 
         jsonBinder(binder).addDeserializerBinding(Type.class).to(TypeDeserializer.class);
         jsonCodecBinder(binder).bindMapJsonCodec(String.class, listJsonCodec(FlexTable.class));
