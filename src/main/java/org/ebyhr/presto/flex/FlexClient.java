@@ -13,25 +13,21 @@
  */
 package org.ebyhr.presto.flex;
 
-import org.ebyhr.presto.flex.operator.FilePlugin;
-import org.ebyhr.presto.flex.operator.PluginFactory;
+import static java.util.Objects.requireNonNull;
 
-import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Objects.requireNonNull;
+import javax.inject.Inject;
+import org.ebyhr.presto.flex.operator.FilePlugin;
+import org.ebyhr.presto.flex.operator.PluginFactory;
 
 public class FlexClient
 {
     @Inject
-    public FlexClient(FlexConfig config)
-    {
-        requireNonNull(config, "config is null");
-    }
+    public FlexClient() {}
 
     public List<String> getSchemaNames()
     {
