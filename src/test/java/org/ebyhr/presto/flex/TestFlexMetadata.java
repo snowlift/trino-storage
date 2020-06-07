@@ -13,6 +13,10 @@
  */
 package org.ebyhr.presto.flex;
 
+import static io.prestosql.spi.type.VarcharType.createUnboundedVarcharType;
+import static io.prestosql.testing.TestingConnectorSession.SESSION;
+import static org.testng.Assert.*;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -23,18 +27,10 @@ import io.prestosql.spi.connector.ConnectorTableMetadata;
 import io.prestosql.spi.connector.SchemaNotFoundException;
 import io.prestosql.spi.connector.SchemaTableName;
 import io.prestosql.spi.connector.TableNotFoundException;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import java.net.URL;
 import java.util.Optional;
-
-import static io.prestosql.spi.type.VarcharType.createUnboundedVarcharType;
-import static io.prestosql.testing.TestingConnectorSession.SESSION;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
-import static org.testng.Assert.fail;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 @Test(singleThreaded = true)
 public class TestFlexMetadata
@@ -51,7 +47,7 @@ public class TestFlexMetadata
 
         URL metadataUrl = Resources.getResource(TestFlexClient.class, "/example-data/example-metadata.json");
         assertNotNull(metadataUrl, "metadataUrl is null");
-        FlexClient client = new FlexClient(new FlexConfig());
+        FlexClient client = new FlexClient();
         metadata = new FlexMetadata(new FlexConnectorId(CONNECTOR_ID), client);
     }
 
