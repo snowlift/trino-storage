@@ -13,7 +13,6 @@
  */
 package org.ebyhr.presto.flex;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.prestosql.spi.connector.RecordCursor;
 import io.prestosql.spi.connector.RecordSet;
@@ -21,6 +20,7 @@ import org.testng.annotations.Test;
 
 import java.net.URI;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static io.prestosql.spi.type.VarcharType.createUnboundedVarcharType;
@@ -36,7 +36,7 @@ public class TestFlexRecordSetProvider
     public void testGetRecordSet()
     {
         FlexRecordSetProvider recordSetProvider = new FlexRecordSetProvider(new FlexConnectorId("test"));
-        RecordSet recordSet = recordSetProvider.getRecordSet(FlexTransactionHandle.INSTANCE, SESSION, new FlexSplit("test", "csv", CSV_URI.toString()), ImmutableList.of(
+        RecordSet recordSet = recordSetProvider.getRecordSet(FlexTransactionHandle.INSTANCE, SESSION, new FlexSplit("test", "csv", CSV_URI.toString()), List.of(
                 new FlexColumnHandle("test", "text", createUnboundedVarcharType(), 0),
                 new FlexColumnHandle("test", "value", createUnboundedVarcharType(), 1)));
         assertNotNull(recordSet, "recordSet is null");

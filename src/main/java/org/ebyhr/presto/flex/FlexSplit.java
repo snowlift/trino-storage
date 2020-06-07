@@ -15,7 +15,6 @@ package org.ebyhr.presto.flex;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.ImmutableList;
 import io.prestosql.spi.HostAddress;
 import io.prestosql.spi.connector.ConnectorSplit;
 
@@ -72,7 +71,7 @@ public class FlexSplit
     @Override
     public List<HostAddress> getAddresses()
     {
-        return ImmutableList.of();
+        return List.of();
     }
 
     @Override

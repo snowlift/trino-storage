@@ -54,7 +54,7 @@ public class TsvPlugin
         }
 
         if (schema.equalsIgnoreCase(TXT.toString())) {
-            return ImmutableList.of(new FlexColumn("value", VARCHAR));
+            return List.of(new FlexColumn("value", VARCHAR));
         }
 
         List<FlexColumn> columnTypes = new LinkedList<>();

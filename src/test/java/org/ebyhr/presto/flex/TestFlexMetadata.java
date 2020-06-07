@@ -13,9 +13,6 @@
  */
 package org.ebyhr.presto.flex;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
 import io.prestosql.spi.PrestoException;
 import io.prestosql.spi.connector.ColumnMetadata;
@@ -27,10 +24,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static io.prestosql.spi.type.VarcharType.createUnboundedVarcharType;
 import static io.prestosql.testing.TestingConnectorSession.SESSION;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
@@ -58,7 +59,7 @@ public class TestFlexMetadata
     @Test
     public void testListSchemaNames()
     {
-        assertEquals(metadata.listSchemaNames(SESSION), ImmutableSet.of("csv", "tsv", "txt", "raw", "excel"));
+        assertThat(metadata.listSchemaNames(SESSION)).containsOnly("csv", "tsv", "txt", "raw", "excel");
     }
 
     @Test
@@ -73,7 +74,7 @@ public class TestFlexMetadata
     public void testGetColumnHandles()
     {
         // known table
-        assertEquals(metadata.getColumnHandles(SESSION, numbersTableHandle), ImmutableMap.of(
+        assertEquals(metadata.getColumnHandles(SESSION, numbersTableHandle), Map.of(
                 "one", new FlexColumnHandle(CONNECTOR_ID, "one", createUnboundedVarcharType(), 0),
                 "1", new FlexColumnHandle(CONNECTOR_ID, "1", createUnboundedVarcharType(), 1)));
 
@@ -98,7 +99,7 @@ public class TestFlexMetadata
         // known table
         ConnectorTableMetadata tableMetadata = metadata.getTableMetadata(SESSION, numbersTableHandle);
         assertEquals(tableMetadata.getTable().getSchemaName(), "csv");
-        assertEquals(tableMetadata.getColumns(), ImmutableList.of(
+        assertEquals(tableMetadata.getColumns(), List.of(
                 new ColumnMetadata("one", createUnboundedVarcharType()),
                 new ColumnMetadata("1", createUnboundedVarcharType())));
 
@@ -112,14 +113,14 @@ public class TestFlexMetadata
     public void testListTables()
     {
         // all schemas
-        assertEquals(ImmutableSet.copyOf(metadata.listTables(SESSION, Optional.empty())), ImmutableSet.of());
+        assertEquals(Set.copyOf(metadata.listTables(SESSION, Optional.empty())), Set.of());
 
         // specific schema
-        assertEquals(ImmutableSet.copyOf(metadata.listTables(SESSION, Optional.of("tsv"))), ImmutableSet.of());
-        assertEquals(ImmutableSet.copyOf(metadata.listTables(SESSION, Optional.of("csv"))), ImmutableSet.of());
+        assertEquals(Set.copyOf(metadata.listTables(SESSION, Optional.of("tsv"))), Set.of());
+        assertEquals(Set.copyOf(metadata.listTables(SESSION, Optional.of("csv"))), Set.of());
 
         // unknown schema
-        assertEquals(ImmutableSet.copyOf(metadata.listTables(SESSION, Optional.of("unknown"))), ImmutableSet.of());
+        assertEquals(Set.copyOf(metadata.listTables(SESSION, Optional.of("unknown"))), Set.of());
     }
 
     @Test
@@ -142,7 +143,7 @@ public class TestFlexMetadata
                 SESSION,
                 new ConnectorTableMetadata(
                         new SchemaTableName("example", "foo"),
-                        ImmutableList.of(new ColumnMetadata("text", createUnboundedVarcharType()))),
+                        List.of(new ColumnMetadata("text", createUnboundedVarcharType()))),
                 false);
     }
 

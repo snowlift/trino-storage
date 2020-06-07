@@ -37,7 +37,7 @@ public class FlexTable
     {
         checkArgument(!isNullOrEmpty(name), "name is null or is empty");
         this.name = requireNonNull(name, "name is null");
-        this.columns = ImmutableList.copyOf(requireNonNull(columns, "columns is null"));
+        this.columns = List.copyOf(requireNonNull(columns, "columns is null"));
 
         ImmutableList.Builder<ColumnMetadata> columnsMetadata = ImmutableList.builder();
         for (FlexColumn column : this.columns) {

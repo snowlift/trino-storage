@@ -13,8 +13,9 @@
  */
 package org.ebyhr.presto.flex;
 
-import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
@@ -24,6 +25,6 @@ public class TestFlexClient
     public void testMetadata()
     {
         FlexClient client = new FlexClient();
-        assertEquals(client.getSchemaNames(), ImmutableList.of("csv", "tsv", "txt", "raw", "excel"));
+        assertEquals(client.getSchemaNames(), List.of("csv", "tsv", "txt", "raw", "excel"));
     }
 }

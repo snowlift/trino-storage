@@ -13,7 +13,6 @@
  */
 package org.ebyhr.presto.flex.operator;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteSource;
 import io.prestosql.spi.PrestoException;
 import org.ebyhr.presto.flex.FlexColumn;
@@ -35,7 +34,7 @@ public class RawPlugin
     @Override
     public List<FlexColumn> getFields(String schema, String table)
     {
-        return ImmutableList.of(new FlexColumn("data", VARCHAR));
+        return List.of(new FlexColumn("data", VARCHAR));
     }
 
     @Override

@@ -11,7 +11,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>97</version>
+        <version>101</version>
     </parent>
 
     <licenses>
@@ -32,14 +32,13 @@
         <air.java.version>1.8.0-151</air.java.version>
         <air.maven.version>3.3.9</air.maven.version>
 
-        <dep.presto.version>329</dep.presto.version>
-        <dep.airlift.version>0.192</dep.airlift.version>
+        <dep.presto.version>334</dep.presto.version>
+        <dep.airlift.version>0.197</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.jackson.version>2.10.0</dep.jackson.version>
+        <dep.jackson.version>2.10.3</dep.jackson.version>
         <dep.testng.version>6.10</dep.testng.version>
         <air.javadoc.lint>-missing</air.javadoc.lint>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.targetJdk>11</project.build.targetJdk>
     </properties>
 
     <dependencies>
@@ -71,13 +70,13 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>26.0-jre</version>
+            <version>29.0-jre</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>4.2.2</version>
+            <version>4.2.3</version>
         </dependency>
 
         <dependency>
@@ -146,6 +145,13 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>4.0.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.16.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
