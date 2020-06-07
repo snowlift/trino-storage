@@ -26,5 +26,7 @@ public interface FilePlugin {
 
     Iterator getIterator(ByteSource byteSource);
 
+    Iterator getIterator(ByteSource byteSource, Integer excelIndex);
+
     boolean skipFirstLine();
 }

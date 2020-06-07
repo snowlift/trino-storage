@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -62,18 +64,29 @@ public class FlexRecordCursor
             fieldToColumnIndex[i] = columnHandle.getOrdinalPosition();
         }
 
-
-        URI uri = URI.create(schemaTableName.getTableName());
+        String tblName = schemaTableName.getTableName();
+        URI uri = null;
         ByteSource byteSource;
+        String[] splitted;
+        String tblNameForBytes = tblName;
+        Integer excelIndex = 0;
+        if (tblName.contains(" ")) {
+            splitted = tblName.split(" ");
+            tblNameForBytes = splitted[0];
+            excelIndex = Integer.parseInt(splitted[1]);
+        }
+
         try {
-            byteSource = Resources.asByteSource(uri.toURL());
+            byteSource = Resources.asByteSource(URI.create(tblNameForBytes).toURL());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e.getMessage());
         }
 
-
         try (CountingInputStream input = new CountingInputStream(byteSource.openStream())) {
-            lines = plugin.getIterator(byteSource);
+            if (excelIndex > 0)
+                lines = plugin.getIterator(byteSource, excelIndex);
+            else
+                lines = plugin.getIterator(byteSource);
             if (plugin.skipFirstLine()) {
                 lines.next();
             }
@@ -118,7 +131,12 @@ public class FlexRecordCursor
         checkState(fields != null, "Cursor has not been advanced yet");
 
         int columnIndex = fieldToColumnIndex[field];
-        return fields.get(columnIndex);
+        try {
+            return fields.get(columnIndex);
+        }
+        catch (Exception e) {
+            return "";
+        }
     }
 
     @Override

@@ -52,6 +52,16 @@ public class TextPlugin implements FilePlugin {
     }
 
     @Override
+    public Iterator<String> getIterator(ByteSource byteSource, Integer excelIndex)
+    {
+        try {
+            return byteSource.asCharSource(UTF_8).readLines().iterator();
+        } catch (IOException e) {
+            throw new PrestoException(GENERIC_INTERNAL_ERROR, "Failed to get iterator");
+        }
+    }
+
+    @Override
     public boolean skipFirstLine()
     {
         return false;

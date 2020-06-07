@@ -40,10 +40,21 @@ public class ExcelPlugin implements FilePlugin {
     public List<FlexColumn> getFields(String schema, String table)
     {
         try {
-            URI uri = URI.create(table);
-            ByteSource byteSource = Resources.asByteSource(uri.toURL());
-            Workbook workbook = WorkbookFactory.create(byteSource.openStream());
-            Sheet sheet = workbook.getSheetAt(0);
+            String[] splitted;
+            Sheet sheet;
+            if (table.contains(" ")) {
+                splitted = table.split(" ");
+                URI uri = URI.create(splitted[0]);
+                ByteSource byteSource = Resources.asByteSource(uri.toURL());
+                Workbook workbook = WorkbookFactory.create(byteSource.openStream());
+                sheet = workbook.getSheetAt(Integer.parseInt(splitted[1]));
+            } else {
+                URI uri = URI.create(table);
+                ByteSource byteSource = Resources.asByteSource(uri.toURL());
+                Workbook workbook = WorkbookFactory.create(byteSource.openStream());
+                sheet = workbook.getSheetAt(0);
+            }
+
             Iterator<Row> rows = sheet.iterator();
             List<FlexColumn> columnTypes = new LinkedList<>();
             Row row = rows.next();
@@ -63,6 +74,19 @@ public class ExcelPlugin implements FilePlugin {
         try {
             Workbook workbook = WorkbookFactory.create(byteSource.openStream());
             Sheet sheet = workbook.getSheetAt(0);
+            return sheet.iterator();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to operate s file");
+        }
+    }
+
+    @Override
+    public Iterator getIterator(ByteSource byteSource, Integer excelIndex)
+    {
+        try {
+            Workbook workbook = WorkbookFactory.create(byteSource.openStream());
+            Sheet sheet = workbook.getSheetAt(excelIndex);
             return sheet.iterator();
         } catch (IOException e) {
             e.printStackTrace();
