@@ -13,9 +13,10 @@
  */
 package org.ebyhr.presto.flex;
 
-import com.google.common.collect.ImmutableList;
 import io.prestosql.spi.Plugin;
 import io.prestosql.spi.connector.ConnectorFactory;
+
+import java.util.List;
 
 public class FlexPlugin
         implements Plugin
@@ -23,6 +24,6 @@ public class FlexPlugin
     @Override
     public Iterable<ConnectorFactory> getConnectorFactories()
     {
-        return ImmutableList.of(new FlexConnectorFactory());
+        return List.of(new FlexConnectorFactory());
     }
 }

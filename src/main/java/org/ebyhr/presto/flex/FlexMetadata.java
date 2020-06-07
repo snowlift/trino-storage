@@ -61,7 +61,7 @@ public class FlexMetadata
 
     public List<String> listSchemaNames()
     {
-        return ImmutableList.copyOf(flexClient.getSchemaNames());
+        return List.copyOf(flexClient.getSchemaNames());
     }
 
     @Override
@@ -84,7 +84,7 @@ public class FlexMetadata
     {
         FlexTableHandle tableHandle = (FlexTableHandle) table;
         ConnectorTableLayout layout = new ConnectorTableLayout(new FlexTableLayoutHandle(tableHandle));
-        return ImmutableList.of(new ConnectorTableLayoutResult(layout, constraint.getSummary()));
+        return List.of(new ConnectorTableLayoutResult(layout, constraint.getSummary()));
     }
 
     @Override
@@ -108,7 +108,7 @@ public class FlexMetadata
     {
         List<String> schemaNames;
         if (schemaNameOrNull.isPresent()) {
-            schemaNames = ImmutableList.of(schemaNameOrNull.get());
+            schemaNames = List.of(schemaNameOrNull.get());
         }
         else {
             schemaNames = flexClient.getSchemaNames();
@@ -175,7 +175,7 @@ public class FlexMetadata
     private List<SchemaTableName> listTables(ConnectorSession session, SchemaTablePrefix prefix)
     {
         if (prefix.getSchema().isPresent() && prefix.getTable().isPresent()) {
-            return ImmutableList.of(new SchemaTableName(prefix.getSchema().get(), prefix.getTable().get()));
+            return List.of(new SchemaTableName(prefix.getSchema().get(), prefix.getTable().get()));
         }
         return listTables(session, prefix.getSchema());
     }
