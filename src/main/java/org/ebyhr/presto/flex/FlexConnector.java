@@ -24,8 +24,8 @@ import io.prestosql.spi.transaction.IsolationLevel;
 
 import javax.inject.Inject;
 
-import static org.ebyhr.presto.flex.FlexTransactionHandle.INSTANCE;
 import static java.util.Objects.requireNonNull;
+import static org.ebyhr.presto.flex.FlexTransactionHandle.INSTANCE;
 
 public class FlexConnector
         implements Connector

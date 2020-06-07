@@ -29,7 +29,9 @@ import static io.prestosql.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
 import static io.prestosql.spi.type.VarcharType.VARCHAR;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class RawPlugin implements FilePlugin {
+public class RawPlugin
+        implements FilePlugin
+{
     @Override
     public List<FlexColumn> getFields(String schema, String table)
     {
@@ -49,7 +51,8 @@ public class RawPlugin implements FilePlugin {
     {
         try {
             return byteSource.asCharSource(UTF_8).readLines().iterator();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new PrestoException(GENERIC_INTERNAL_ERROR, "Failed to get iterator");
         }
     }

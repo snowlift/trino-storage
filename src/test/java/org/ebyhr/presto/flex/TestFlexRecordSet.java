@@ -144,9 +144,7 @@ public class TestFlexRecordSet
     {
         RecordSet recordSet = new FlexRecordSet(new FlexSplit("test", "excel", EXCEL.toString()), ImmutableList.of(
                 new FlexColumnHandle("test", "c1", createUnboundedVarcharType(), 0),
-                new FlexColumnHandle("test", "c2", createUnboundedVarcharType(), 1)
-                )
-        );
+                new FlexColumnHandle("test", "c2", createUnboundedVarcharType(), 1)));
         RecordCursor cursor = recordSet.cursor();
 
         assertEquals(cursor.getType(0), createUnboundedVarcharType());

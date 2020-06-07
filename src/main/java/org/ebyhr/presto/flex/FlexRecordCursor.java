@@ -62,15 +62,14 @@ public class FlexRecordCursor
             fieldToColumnIndex[i] = columnHandle.getOrdinalPosition();
         }
 
-
         URI uri = URI.create(schemaTableName.getTableName());
         ByteSource byteSource;
         try {
             byteSource = Resources.asByteSource(uri.toURL());
-        } catch (MalformedURLException e) {
+        }
+        catch (MalformedURLException e) {
             throw new RuntimeException(e.getMessage());
         }
-
 
         try (CountingInputStream input = new CountingInputStream(byteSource.openStream())) {
             lines = plugin.getIterator(byteSource);

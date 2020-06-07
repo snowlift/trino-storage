@@ -13,10 +13,10 @@
  */
 package org.ebyhr.presto.flex;
 
-import static org.testng.Assert.assertEquals;
-
 import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
 
 public class TestFlexClient
 {

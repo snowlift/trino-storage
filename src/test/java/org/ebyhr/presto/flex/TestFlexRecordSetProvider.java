@@ -30,7 +30,7 @@ import static org.testng.Assert.assertNotNull;
 
 public class TestFlexRecordSetProvider
 {
-    private URI CSV_URI = URI.create("http://s3.amazonaws.com/presto-example/v2/numbers-1.csv");
+    private static final URI CSV_URI = URI.create("http://s3.amazonaws.com/presto-example/v2/numbers-1.csv");
 
     @Test
     public void testGetRecordSet()
@@ -48,7 +48,7 @@ public class TestFlexRecordSetProvider
         while (cursor.advanceNextPosition()) {
             data.put(cursor.getSlice(0).toStringUtf8(), cursor.getSlice(1).toStringUtf8());
         }
-        assertEquals(data, ImmutableMap.<String, String> builder()
+        assertEquals(data, ImmutableMap.<String, String>builder()
                 .put("two", "2")
                 .put("three", "3")
                 .build());

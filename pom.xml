@@ -8,6 +8,12 @@
     <version>0.3-SNAPSHOT</version>
     <packaging>presto-plugin</packaging>
 
+    <parent>
+        <groupId>io.airlift</groupId>
+        <artifactId>airbase</artifactId>
+        <version>97</version>
+    </parent>
+
     <licenses>
         <license>
             <name>Apache License 2.0</name>
@@ -27,9 +33,9 @@
         <air.maven.version>3.3.9</air.maven.version>
 
         <dep.presto.version>329</dep.presto.version>
-        <dep.airlift.version>0.183</dep.airlift.version>
+        <dep.airlift.version>0.192</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.jackson.version>2.9.9</dep.jackson.version>
+        <dep.jackson.version>2.10.0</dep.jackson.version>
         <dep.testng.version>6.10</dep.testng.version>
         <air.javadoc.lint>-missing</air.javadoc.lint>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -57,19 +63,32 @@
 
         <dependency>
             <groupId>io.airlift</groupId>
-            <artifactId>configuration</artifactId>
-            <version>${dep.airlift.version}</version>
+            <artifactId>slice</artifactId>
+            <version>0.38</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>26.0-jre</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>4.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
             <version>4.0.1</version>
         </dependency>
 
@@ -85,12 +104,6 @@
             <artifactId>presto-spi</artifactId>
             <scope>provided</scope>
             <version>${dep.presto.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.airlift</groupId>
-            <artifactId>units</artifactId>
-            <version>1.5</version>
         </dependency>
 
         <dependency>
@@ -122,6 +135,19 @@
             <version>${dep.airlift.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>3.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.0.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
