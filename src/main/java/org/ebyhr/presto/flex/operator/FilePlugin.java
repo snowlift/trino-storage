@@ -19,7 +19,8 @@ import org.ebyhr.presto.flex.FlexColumn;
 import java.util.Iterator;
 import java.util.List;
 
-public interface FilePlugin {
+public interface FilePlugin
+{
     List<FlexColumn> getFields(String schema, String table);
 
     List<String> splitToList(Iterator lines);

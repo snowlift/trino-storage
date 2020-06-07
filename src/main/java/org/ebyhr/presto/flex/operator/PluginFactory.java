@@ -15,8 +15,10 @@ package org.ebyhr.presto.flex.operator;
 
 import io.prestosql.spi.connector.SchemaNotFoundException;
 
-public class PluginFactory
+public final class PluginFactory
 {
+    private PluginFactory() {}
+
     public static FilePlugin create(String typeName)
     {
         switch (typeName.toLowerCase()) {

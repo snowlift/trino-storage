@@ -32,8 +32,9 @@ import java.util.List;
 
 import static io.prestosql.spi.type.VarcharType.VARCHAR;
 
-public class ExcelPlugin implements FilePlugin {
-
+public class ExcelPlugin
+        implements FilePlugin
+{
     private static final DataFormatter DATA_FORMATTER = new DataFormatter();
 
     @Override
@@ -47,12 +48,13 @@ public class ExcelPlugin implements FilePlugin {
             Iterator<Row> rows = sheet.iterator();
             List<FlexColumn> columnTypes = new LinkedList<>();
             Row row = rows.next();
-            for(Cell cell: row) {
+            for (Cell cell : row) {
                 String cellValue = DATA_FORMATTER.formatCellValue(cell);
                 columnTypes.add(new FlexColumn(cellValue, VARCHAR));
             }
             return columnTypes;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException(String.format("Failed to operate %s file", table));
         }
     }
@@ -64,7 +66,8 @@ public class ExcelPlugin implements FilePlugin {
             Workbook workbook = WorkbookFactory.create(byteSource.openStream());
             Sheet sheet = workbook.getSheetAt(0);
             return sheet.iterator();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to operate s file");
         }
@@ -75,7 +78,7 @@ public class ExcelPlugin implements FilePlugin {
     {
         List<String> values = new ArrayList<>();
         Row row = (Row) lines.next();
-        for(Cell cell: row) {
+        for (Cell cell : row) {
             String cellValue = DATA_FORMATTER.formatCellValue(cell);
             values.add(cellValue);
         }

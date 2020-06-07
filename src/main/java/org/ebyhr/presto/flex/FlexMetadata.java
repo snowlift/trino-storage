@@ -30,6 +30,7 @@ import io.prestosql.spi.connector.SchemaTablePrefix;
 import io.prestosql.spi.connector.TableNotFoundException;
 
 import javax.inject.Inject;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -173,11 +174,10 @@ public class FlexMetadata
 
     private List<SchemaTableName> listTables(ConnectorSession session, SchemaTablePrefix prefix)
     {
-        if(prefix.getSchema().isPresent() && prefix.getTable().isPresent()){
+        if (prefix.getSchema().isPresent() && prefix.getTable().isPresent()) {
             return ImmutableList.of(new SchemaTableName(prefix.getSchema().get(), prefix.getTable().get()));
-        } else {
-            return listTables(session, prefix.getSchema());
         }
+        return listTables(session, prefix.getSchema());
     }
 
     @Override

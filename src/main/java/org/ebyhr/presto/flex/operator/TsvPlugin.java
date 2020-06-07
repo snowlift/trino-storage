@@ -35,7 +35,9 @@ import static io.prestosql.spi.type.VarcharType.VARCHAR;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.ebyhr.presto.flex.FileType.TXT;
 
-public class TsvPlugin implements FilePlugin {
+public class TsvPlugin
+        implements FilePlugin
+{
     private static final String DELIMITER = "\t";
 
     @Override
@@ -65,7 +67,6 @@ public class TsvPlugin implements FilePlugin {
             throw new UncheckedIOException(e);
         }
         return columnTypes;
-
     }
 
     @Override
@@ -73,7 +74,8 @@ public class TsvPlugin implements FilePlugin {
     {
         try {
             return byteSource.asCharSource(UTF_8).readLines().iterator();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new PrestoException(GENERIC_INTERNAL_ERROR, "Failed to get iterator");
         }
     }

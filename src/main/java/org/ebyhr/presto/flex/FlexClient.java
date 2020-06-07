@@ -13,16 +13,18 @@
  */
 package org.ebyhr.presto.flex;
 
-import static java.util.Objects.requireNonNull;
+import org.ebyhr.presto.flex.operator.FilePlugin;
+import org.ebyhr.presto.flex.operator.PluginFactory;
+
+import javax.inject.Inject;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.inject.Inject;
-import org.ebyhr.presto.flex.operator.FilePlugin;
-import org.ebyhr.presto.flex.operator.PluginFactory;
+
+import static java.util.Objects.requireNonNull;
 
 public class FlexClient
 {
