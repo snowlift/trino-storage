@@ -74,6 +74,30 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.19</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auxilii.msgparser</groupId>
+            <artifactId>msgparser</artifactId>
+            <version>1.1.15</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.20</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${dep.jackson.version}</version>
