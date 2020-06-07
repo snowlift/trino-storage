@@ -29,6 +29,7 @@ import java.net.URI;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static io.prestosql.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
 import static io.prestosql.spi.type.VarcharType.VARCHAR;
@@ -36,12 +37,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.ebyhr.presto.flex.FileType.TXT;
 
 public class CsvPlugin implements FilePlugin {
-    private static final String DELIMITER = ",";
+    Pattern pattern = Pattern.compile(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
     @Override
     public List<FlexColumn> getFields(String schema, String table)
     {
-        Splitter splitter = Splitter.on(DELIMITER).trimResults();
+        Splitter splitter = Splitter.on(pattern).trimResults();
 
         ByteSource byteSource;
         try {
@@ -82,7 +83,7 @@ public class CsvPlugin implements FilePlugin {
     public List<String> splitToList(Iterator lines)
     {
         String line = (String) lines.next();
-        Splitter splitter = Splitter.on(DELIMITER).trimResults();
+        Splitter splitter = Splitter.on(pattern).trimResults();
         return splitter.splitToList(line);
     }
 
