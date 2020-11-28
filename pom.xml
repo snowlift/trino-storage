@@ -32,10 +32,10 @@
         <project.build.targetJdk>11</project.build.targetJdk>
         <air.maven.version>3.3.9</air.maven.version>
 
-        <dep.presto.version>334</dep.presto.version>
-        <dep.airlift.version>0.197</dep.airlift.version>
+        <dep.presto.version>347</dep.presto.version>
+        <dep.airlift.version>201</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.jackson.version>2.10.3</dep.jackson.version>
+        <dep.jackson.version>2.10.5</dep.jackson.version>
         <dep.testng.version>6.10</dep.testng.version>
         <air.javadoc.lint>-missing</air.javadoc.lint>
         <project.build.targetJdk>11</project.build.targetJdk>
@@ -63,7 +63,7 @@
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>slice</artifactId>
-            <version>0.38</version>
+            <version>0.39</version>
             <scope>provided</scope>
         </dependency>
 
@@ -77,6 +77,13 @@
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>4.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.10.6</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
