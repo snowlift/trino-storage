@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.ebyhr</groupId>
-    <artifactId>presto-flex</artifactId>
-    <description>Presto Flex Connector</description>
+    <artifactId>trino-flex</artifactId>
+    <description>Trino Flex Connector</description>
     <version>0.3-SNAPSHOT</version>
     <packaging>presto-plugin</packaging>
 
