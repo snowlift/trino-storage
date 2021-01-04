@@ -12,4 +12,4 @@ jobs:
           java-version: 11
       - name: Maven Checks
         run: |
-          ./mvnw install
+          ./mvnw clean install

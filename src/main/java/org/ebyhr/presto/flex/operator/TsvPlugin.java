@@ -17,9 +17,9 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Resources;
-import io.prestosql.spi.PrestoException;
-import io.prestosql.spi.connector.SchemaTableName;
-import io.prestosql.spi.connector.TableNotFoundException;
+import io.trino.spi.TrinoException;
+import io.trino.spi.connector.SchemaTableName;
+import io.trino.spi.connector.TableNotFoundException;
 import org.ebyhr.presto.flex.FlexColumn;
 
 import java.io.IOException;
@@ -30,8 +30,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import static io.prestosql.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
-import static io.prestosql.spi.type.VarcharType.VARCHAR;
+import static io.trino.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
+import static io.trino.spi.type.VarcharType.VARCHAR;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.ebyhr.presto.flex.FileType.TXT;
 
@@ -76,7 +76,7 @@ public class TsvPlugin
             return byteSource.asCharSource(UTF_8).readLines().iterator();
         }
         catch (IOException e) {
-            throw new PrestoException(GENERIC_INTERNAL_ERROR, "Failed to get iterator");
+            throw new TrinoException(GENERIC_INTERNAL_ERROR, "Failed to get iterator");
         }
     }
 

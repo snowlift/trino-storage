@@ -13,7 +13,7 @@
  */
 package org.ebyhr.presto.flex;
 
-import io.prestosql.spi.connector.ConnectorTransactionHandle;
+import io.trino.spi.connector.ConnectorTransactionHandle;
 
 public enum FlexTransactionHandle
         implements ConnectorTransactionHandle

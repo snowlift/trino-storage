@@ -14,12 +14,12 @@
 package org.ebyhr.presto.flex;
 
 import com.google.common.io.Resources;
-import io.prestosql.spi.PrestoException;
-import io.prestosql.spi.connector.ColumnMetadata;
-import io.prestosql.spi.connector.ConnectorTableMetadata;
-import io.prestosql.spi.connector.SchemaNotFoundException;
-import io.prestosql.spi.connector.SchemaTableName;
-import io.prestosql.spi.connector.TableNotFoundException;
+import io.trino.spi.TrinoException;
+import io.trino.spi.connector.ColumnMetadata;
+import io.trino.spi.connector.ConnectorTableMetadata;
+import io.trino.spi.connector.SchemaNotFoundException;
+import io.trino.spi.connector.SchemaTableName;
+import io.trino.spi.connector.TableNotFoundException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static io.prestosql.spi.type.VarcharType.createUnboundedVarcharType;
-import static io.prestosql.testing.TestingConnectorSession.SESSION;
+import static io.trino.spi.type.VarcharType.createUnboundedVarcharType;
+import static io.trino.testing.TestingConnectorSession.SESSION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -136,7 +136,7 @@ public class TestFlexMetadata
         // directly.
     }
 
-    @Test(expectedExceptions = PrestoException.class)
+    @Test(expectedExceptions = TrinoException.class)
     public void testCreateTable()
     {
         metadata.createTable(
@@ -147,7 +147,7 @@ public class TestFlexMetadata
                 false);
     }
 
-    @Test(expectedExceptions = PrestoException.class)
+    @Test(expectedExceptions = TrinoException.class)
     public void testDropTableTable()
     {
         metadata.dropTable(SESSION, numbersTableHandle);

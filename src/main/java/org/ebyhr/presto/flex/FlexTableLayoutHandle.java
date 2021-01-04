@@ -15,7 +15,7 @@ package org.ebyhr.presto.flex;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.prestosql.spi.connector.ConnectorTableLayoutHandle;
+import io.trino.spi.connector.ConnectorTableLayoutHandle;
 
 import java.util.Objects;
 
