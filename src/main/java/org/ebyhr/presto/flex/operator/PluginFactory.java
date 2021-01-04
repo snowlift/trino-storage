@@ -13,7 +13,7 @@
  */
 package org.ebyhr.presto.flex.operator;
 
-import io.prestosql.spi.connector.SchemaNotFoundException;
+import io.trino.spi.connector.SchemaNotFoundException;
 
 public final class PluginFactory
 {

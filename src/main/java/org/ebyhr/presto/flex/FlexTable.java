@@ -16,7 +16,7 @@ package org.ebyhr.presto.flex;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
-import io.prestosql.spi.connector.ColumnMetadata;
+import io.trino.spi.connector.ColumnMetadata;
 
 import java.util.List;
 
