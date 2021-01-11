@@ -15,7 +15,7 @@ package org.ebyhr.presto.flex;
 
 public enum FileType
 {
-    CSV, TSV, TXT, RAW, EXCEL;
+    CSV, TSV, TXT, RAW, EXCEL, DELTA_LAKE;
 
     @Override
     public String toString()

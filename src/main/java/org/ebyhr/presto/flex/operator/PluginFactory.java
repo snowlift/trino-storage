@@ -32,6 +32,8 @@ public final class PluginFactory
                 return new RawPlugin();
             case "excel":
                 return new ExcelPlugin();
+            case "delta_lake":
+                return new DeltaLakePlugin();
             default:
                 throw new SchemaNotFoundException(typeName);
         }
