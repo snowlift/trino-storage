@@ -25,9 +25,9 @@ import java.util.Map;
 import static io.airlift.testing.Closeables.closeAllSuppress;
 import static io.trino.testing.TestingSession.testSessionBuilder;
 
-public final class FlexQueryRunner
+public final class StorageQueryRunner
 {
-    private FlexQueryRunner() {}
+    private StorageQueryRunner() {}
 
     private static final String TPCH_SCHEMA = "tpch";
 
@@ -46,7 +46,7 @@ public final class FlexQueryRunner
             connectorProperties = new HashMap<>(Map.copyOf(connectorProperties));
 
             queryRunner.installPlugin(new StoragePlugin());
-            queryRunner.createCatalog("flex", "flex", connectorProperties);
+            queryRunner.createCatalog("storage", "storage", connectorProperties);
 
             return queryRunner;
         }
@@ -59,7 +59,7 @@ public final class FlexQueryRunner
     private static Session createSession()
     {
         return testSessionBuilder()
-                .setCatalog("flex")
+                .setCatalog("storage")
                 .setSchema(TPCH_SCHEMA)
                 .build();
     }
@@ -73,7 +73,7 @@ public final class FlexQueryRunner
                 Map.of("http-server.http.port", "8080"),
                 Map.of());
 
-        Logger log = Logger.get(FlexQueryRunner.class);
+        Logger log = Logger.get(StorageQueryRunner.class);
         log.info("======== SERVER STARTED ========");
         log.info("\n====\n%s\n====", queryRunner.getCoordinator().getBaseUrl());
     }
