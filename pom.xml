@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.ebyhr</groupId>
-    <artifactId>trino-flex</artifactId>
-    <description>Trino Flex Connector</description>
+    <artifactId>trino-storage</artifactId>
+    <description>Trino Storage Connector</description>
     <version>0.3-SNAPSHOT</version>
     <packaging>trino-plugin</packaging>
 
@@ -118,7 +118,7 @@
             <version>${dep.jackson.version}</version>
         </dependency>
 
-        <!-- Presto SPI -->
+        <!-- Trino SPI -->
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-spi</artifactId>
