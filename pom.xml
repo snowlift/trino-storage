@@ -32,7 +32,7 @@
         <project.build.targetJdk>11</project.build.targetJdk>
         <air.maven.version>3.3.9</air.maven.version>
 
-        <dep.trino.version>353</dep.trino.version>
+        <dep.trino.version>354</dep.trino.version>
         <dep.airlift.version>203</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.errorprone.version>2.5.1</dep.errorprone.version>
