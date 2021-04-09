@@ -13,6 +13,8 @@
  */
 package org.ebyhr.trino.storage;
 
+import static java.util.Locale.ENGLISH;
+
 public enum FileType
 {
     CSV, TSV, TXT, RAW, EXCEL;
@@ -20,6 +22,6 @@ public enum FileType
     @Override
     public String toString()
     {
-        return name().toLowerCase();
+        return name().toLowerCase(ENGLISH);
     }
 }

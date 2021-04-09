@@ -15,13 +15,15 @@ package org.ebyhr.trino.storage.operator;
 
 import io.trino.spi.connector.SchemaNotFoundException;
 
+import static java.util.Locale.ENGLISH;
+
 public final class PluginFactory
 {
     private PluginFactory() {}
 
     public static FilePlugin create(String typeName)
     {
-        switch (typeName.toLowerCase()) {
+        switch (typeName.toLowerCase(ENGLISH)) {
             case "csv":
                 return new CsvPlugin();
             case "tsv":
