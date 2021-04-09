@@ -2,94 +2,86 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.ebyhr</groupId>
-    <artifactId>trino-storage</artifactId>
-    <description>Trino Storage Connector</description>
-    <version>0.3-SNAPSHOT</version>
-    <packaging>trino-plugin</packaging>
-
     <parent>
-        <groupId>io.airlift</groupId>
-        <artifactId>airbase</artifactId>
-        <version>101</version>
+        <groupId>io.trino</groupId>
+        <artifactId>trino-root</artifactId>
+        <version>355</version>
     </parent>
 
-    <licenses>
-        <license>
-            <name>Apache License 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+    <artifactId>trino-storage</artifactId>
+    <description>Trino - Storage Connector</description>
+    <packaging>trino-plugin</packaging>
 
     <properties>
         <air.main.basedir>${project.basedir}</air.main.basedir>
-
-        <air.check.skip-spotbugs>true</air.check.skip-spotbugs>
-        <air.check.skip-pmd>true</air.check.skip-pmd>
-        <air.check.skip-jacoco>true</air.check.skip-jacoco>
-
-        <project.build.targetJdk>11</project.build.targetJdk>
-        <air.maven.version>3.3.9</air.maven.version>
-
-        <dep.trino.version>354</dep.trino.version>
-        <dep.airlift.version>203</dep.airlift.version>
-        <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.errorprone.version>2.5.1</dep.errorprone.version>
-        <dep.jackson.version>2.11.4</dep.jackson.version>
-        <dep.testng.version>6.10</dep.testng.version>
-        <air.javadoc.lint>-missing</air.javadoc.lint>
-        <project.build.targetJdk>11</project.build.targetJdk>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>Trino Storage connector</name>
+            <url>https://maven.pkg.github.com/ebyhr/trino-storage</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>${dep.airlift.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>json</artifactId>
-            <version>${dep.airlift.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>log</artifactId>
-            <version>${dep.airlift.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>log-manager</artifactId>
-            <version>${dep.airlift.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>io.airlift</groupId>
-            <artifactId>slice</artifactId>
-            <version>0.39</version>
-            <scope>provided</scope>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>30.1-jre</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>4.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>units</artifactId>
+            <version>1.6</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.google.errorprone</groupId>
             <artifactId>error_prone_annotations</artifactId>
-            <version>${dep.errorprone.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -101,28 +93,10 @@
         </dependency>
 
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
             <version>1.20</version>
             <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>4.0.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${dep.jackson.version}</version>
         </dependency>
 
         <!-- Trino SPI -->
@@ -130,13 +104,18 @@
             <groupId>io.trino</groupId>
             <artifactId>trino-spi</artifactId>
             <scope>provided</scope>
-            <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>slice</artifactId>
+            <version>0.39</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${dep.jackson.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -145,21 +124,24 @@
             <groupId>io.trino</groupId>
             <artifactId>trino-main</artifactId>
             <scope>test</scope>
-            <version>${dep.trino.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-testing</artifactId>
             <scope>test</scope>
-            <version>${dep.trino.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-tpch</artifactId>
             <scope>test</scope>
-            <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>testing</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -167,34 +149,6 @@
             <artifactId>jna</artifactId>
             <scope>test</scope>
             <version>5.5.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <scope>test</scope>
-            <version>${dep.testng.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.airlift</groupId>
-            <artifactId>testing</artifactId>
-            <scope>test</scope>
-            <version>${dep.airlift.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.airlift</groupId>
-            <artifactId>units</artifactId>
-            <version>1.6</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
-            <version>3.0</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -210,50 +164,35 @@
             <version>3.18.1</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>3.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>io.trino</groupId>
-                <artifactId>trino-maven-plugin</artifactId>
-                <version>10</version>
-                <extensions>true</extensions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.0.2</version>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>false</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <profiles>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
