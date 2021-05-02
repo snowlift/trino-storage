@@ -30,9 +30,9 @@ import static org.testng.Assert.assertFalse;
 
 public class TestStorageRecordSet
 {
-    private static final URI CSV = URI.create("https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers-2.csv");
-    private static final URI TSV = URI.create("https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/numbers.tsv");
-    private static final URI EXCEL = URI.create("https://raw.githubusercontent.com/ebyhr/presto-flex/master/src/test/resources/example-data/sample.xlsx");
+    private static final URI CSV = URI.create("https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers-2.csv");
+    private static final URI TSV = URI.create("https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers.tsv");
+    private static final URI EXCEL = URI.create("https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/sample.xlsx");
 
     @Test
     public void testGetColumnTypes()
