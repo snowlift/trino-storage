@@ -31,7 +31,7 @@ public final class StorageQueryRunner
 
     private static final String TPCH_SCHEMA = "tpch";
 
-    public static DistributedQueryRunner createFlexQueryRunner(
+    public static DistributedQueryRunner createStorageQueryRunner(
             Map<String, String> extraProperties,
             Map<String, String> connectorProperties)
             throws Exception
@@ -69,7 +69,7 @@ public final class StorageQueryRunner
     {
         Logging.initialize();
 
-        DistributedQueryRunner queryRunner = createFlexQueryRunner(
+        DistributedQueryRunner queryRunner = createStorageQueryRunner(
                 Map.of("http-server.http.port", "8080"),
                 Map.of());
 
