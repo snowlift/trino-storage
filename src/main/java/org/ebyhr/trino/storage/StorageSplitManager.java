@@ -48,7 +48,7 @@ public class StorageSplitManager
     {
         StorageTableLayoutHandle layoutHandle = (StorageTableLayoutHandle) layout;
         StorageTableHandle tableHandle = layoutHandle.getTable();
-        StorageTable table = storageClient.getTable(tableHandle.getSchemaName(), tableHandle.getTableName());
+        StorageTable table = storageClient.getTable(session, tableHandle.getSchemaName(), tableHandle.getTableName());
         // this can happen if table is removed during a query
         checkState(table != null, "Table %s.%s no longer exists", tableHandle.getSchemaName(), tableHandle.getTableName());
 

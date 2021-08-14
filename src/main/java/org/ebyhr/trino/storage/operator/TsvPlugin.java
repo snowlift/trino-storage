@@ -14,18 +14,15 @@
 package org.ebyhr.trino.storage.operator;
 
 import com.google.common.base.Splitter;
-import com.google.common.collect.ImmutableList;
 import com.google.common.io.ByteSource;
-import com.google.common.io.Resources;
 import io.trino.spi.TrinoException;
-import io.trino.spi.connector.SchemaTableName;
-import io.trino.spi.connector.TableNotFoundException;
 import org.ebyhr.trino.storage.StorageColumn;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,7 +30,6 @@ import java.util.List;
 import static io.trino.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
 import static io.trino.spi.type.VarcharType.VARCHAR;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.ebyhr.trino.storage.FileType.TXT;
 
 public class TsvPlugin
         implements FilePlugin
@@ -41,26 +37,13 @@ public class TsvPlugin
     private static final String DELIMITER = "\t";
 
     @Override
-    public List<StorageColumn> getFields(String schema, String table)
+    public List<StorageColumn> getFields(InputStream inputStream)
     {
         Splitter splitter = Splitter.on(DELIMITER).trimResults();
 
-        ByteSource byteSource;
-        try {
-            byteSource = Resources.asByteSource(URI.create(table).toURL());
-        }
-        catch (IllegalArgumentException | MalformedURLException e) {
-            throw new TableNotFoundException(new SchemaTableName(schema, table));
-        }
-
-        if (schema.equalsIgnoreCase(TXT.toString())) {
-            return List.of(new StorageColumn("value", VARCHAR));
-        }
-
         List<StorageColumn> columnTypes = new LinkedList<>();
-        try {
-            ImmutableList<String> lines = byteSource.asCharSource(UTF_8).readLines();
-            List<String> fields = splitter.splitToList(lines.get(0));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            List<String> fields = splitter.splitToList(reader.readLine());
             fields.forEach(field -> columnTypes.add(new StorageColumn(field, VARCHAR)));
         }
         catch (IOException e) {

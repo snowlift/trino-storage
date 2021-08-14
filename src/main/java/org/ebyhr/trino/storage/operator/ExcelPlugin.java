@@ -14,7 +14,6 @@
 package org.ebyhr.trino.storage.operator;
 
 import com.google.common.io.ByteSource;
-import com.google.common.io.Resources;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -24,7 +23,8 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.ebyhr.trino.storage.StorageColumn;
 
 import java.io.IOException;
-import java.net.URI;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -38,12 +38,10 @@ public class ExcelPlugin
     private static final DataFormatter DATA_FORMATTER = new DataFormatter();
 
     @Override
-    public List<StorageColumn> getFields(String schema, String table)
+    public List<StorageColumn> getFields(InputStream inputStream)
     {
         try {
-            URI uri = URI.create(table);
-            ByteSource byteSource = Resources.asByteSource(uri.toURL());
-            Workbook workbook = WorkbookFactory.create(byteSource.openStream());
+            Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rows = sheet.iterator();
             List<StorageColumn> columnTypes = new LinkedList<>();
@@ -55,7 +53,7 @@ public class ExcelPlugin
             return columnTypes;
         }
         catch (IOException e) {
-            throw new RuntimeException(String.format("Failed to operate %s file", table));
+            throw new UncheckedIOException(e);
         }
     }
 

@@ -18,6 +18,7 @@ import io.trino.spi.TrinoException;
 import org.ebyhr.trino.storage.StorageColumn;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -32,7 +33,7 @@ public class RawPlugin
         implements FilePlugin
 {
     @Override
-    public List<StorageColumn> getFields(String schema, String table)
+    public List<StorageColumn> getFields(InputStream inputStream)
     {
         return List.of(new StorageColumn("data", VARCHAR));
     }

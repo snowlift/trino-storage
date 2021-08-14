@@ -16,12 +16,13 @@ package org.ebyhr.trino.storage.operator;
 import com.google.common.io.ByteSource;
 import org.ebyhr.trino.storage.StorageColumn;
 
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
 public interface FilePlugin
 {
-    List<StorageColumn> getFields(String schema, String table);
+    List<StorageColumn> getFields(InputStream inputStream);
 
     List<String> splitToList(Iterator lines);
 

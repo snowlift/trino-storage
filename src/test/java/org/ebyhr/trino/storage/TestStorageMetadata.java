@@ -13,7 +13,14 @@
  */
 package org.ebyhr.trino.storage;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
+import io.trino.plugin.hive.HdfsConfig;
+import io.trino.plugin.hive.HdfsConfiguration;
+import io.trino.plugin.hive.HdfsConfigurationInitializer;
+import io.trino.plugin.hive.HdfsEnvironment;
+import io.trino.plugin.hive.HiveHdfsConfiguration;
+import io.trino.plugin.hive.authentication.NoHdfsAuthentication;
 import io.trino.spi.TrinoException;
 import io.trino.spi.connector.ColumnMetadata;
 import io.trino.spi.connector.ConnectorTableMetadata;
@@ -52,7 +59,12 @@ public class TestStorageMetadata
 
         URL metadataUrl = Resources.getResource(TestStorageClient.class, "/example-data/example-metadata.json");
         assertNotNull(metadataUrl, "metadataUrl is null");
-        StorageClient client = new StorageClient();
+
+        HdfsConfig config = new HdfsConfig();
+        HdfsConfiguration configuration = new HiveHdfsConfiguration(new HdfsConfigurationInitializer(config), ImmutableSet.of());
+        HdfsEnvironment hdfsEnvironment = new HdfsEnvironment(configuration, config, new NoHdfsAuthentication());
+
+        StorageClient client = new StorageClient(hdfsEnvironment);
         metadata = new StorageMetadata(new StorageConnectorId(CONNECTOR_ID), client);
     }
 
