@@ -168,7 +168,5 @@ public class StorageRecordCursor
     }
 
     @Override
-    public void close()
-    {
-    }
+    public void close() {}
 }
