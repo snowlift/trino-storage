@@ -5,17 +5,11 @@ This is a [Trino](http://trino.io/) connector to access local file (e.g. csv, ts
 # Query
 You need to specify file type by schema name and use absolute path.
 ```sql
-select
-  * 
-from 
- storage.csv."file:///tmp/numbers-2.csv"
-;
+SELECT * FROM
+storage.csv."file:///tmp/numbers-2.csv";
 
-select
-  * 
-from 
- storage.csv."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers-2.csv"
-;
+SELECT * FROM
+storage.csv."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers-2.csv";
 ``` 
 
 Supported schemas are below.
@@ -27,7 +21,8 @@ Supported schemas are below.
 
 `tsv` plugin extract each line with `\t` delimiter. Currently first line is used as column names.
 ```sql
-select * from storage.tsv."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers.tsv";
+SELECT * FROM
+storage.tsv."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers.tsv";
 ``` 
 ```
   one  | 1 
@@ -40,7 +35,8 @@ select * from storage.tsv."https://raw.githubusercontent.com/ebyhr/trino-storage
 
 `csv` plugin extract each line with `,` delimiter. Currently first line is used as column names.
 ```sql
-select * from storage.csv."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers-2.csv";
+SELECT * FROM
+storage.csv."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers-2.csv";
 ```
 ```
   ten   | 10 
@@ -52,7 +48,8 @@ select * from storage.csv."https://raw.githubusercontent.com/ebyhr/trino-storage
 
 `txt` plugin doesn't extract each line. Currently column name is always `value`.
 ```sql
-select * from storage.txt."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers.tsv";
+SELECT * FROM
+storage.txt."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers.tsv";
 ``` 
 ```
  value  
@@ -66,7 +63,8 @@ select * from storage.txt."https://raw.githubusercontent.com/ebyhr/trino-storage
 `raw` plugin doesn't extract each line. Currently column name is always `data`. This connector is similar to `txt` plugin. 
 The main difference is `txt` plugin may return multiple rows, but `raw` plugin always return only one row.
 ```sql
-select * from storage.raw."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers.tsv";
+SELECT * FROM
+storage.raw."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/numbers.tsv";
 ``` 
 ```
   data  
@@ -79,7 +77,8 @@ select * from storage.raw."https://raw.githubusercontent.com/ebyhr/trino-storage
 
 `excel` plugin currently read first sheet.
 ```sql
-select * from storage.excel."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/sample.xlsx";
+SELECT * FROM
+storage.excel."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/test/resources/example-data/sample.xlsx";
 ``` 
 ```
   data  
