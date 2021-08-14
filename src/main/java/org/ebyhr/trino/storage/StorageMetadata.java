@@ -71,7 +71,7 @@ public class StorageMetadata
             return null;
         }
 
-        StorageTable table = storageClient.getTable(tableName.getSchemaName(), tableName.getTableName());
+        StorageTable table = storageClient.getTable(session, tableName.getSchemaName(), tableName.getTableName());
         if (table == null) {
             return null;
         }
@@ -100,7 +100,7 @@ public class StorageMetadata
         checkArgument(storageTableHandle.getConnectorId().equals(connectorId), "tableHandle is not for this connector");
         SchemaTableName tableName = new SchemaTableName(storageTableHandle.getSchemaName(), storageTableHandle.getTableName());
 
-        return getTableMetadata(tableName);
+        return getStorageTableMetadata(session, tableName);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class StorageMetadata
         StorageTableHandle storageTableHandle = (StorageTableHandle) tableHandle;
         checkArgument(storageTableHandle.getConnectorId().equals(connectorId), "tableHandle is not for this connector");
 
-        StorageTable table = storageClient.getTable(storageTableHandle.getSchemaName(), storageTableHandle.getTableName());
+        StorageTable table = storageClient.getTable(session, storageTableHandle.getSchemaName(), storageTableHandle.getTableName());
         if (table == null) {
             throw new TableNotFoundException(storageTableHandle.toSchemaTableName());
         }
@@ -149,7 +149,7 @@ public class StorageMetadata
         requireNonNull(prefix, "prefix is null");
         ImmutableMap.Builder<SchemaTableName, List<ColumnMetadata>> columns = ImmutableMap.builder();
         for (SchemaTableName tableName : listTables(session, prefix)) {
-            ConnectorTableMetadata tableMetadata = getTableMetadata(tableName);
+            ConnectorTableMetadata tableMetadata = getStorageTableMetadata(session, tableName);
             // table can disappear during listing operation
             if (tableMetadata != null) {
                 columns.put(tableName, tableMetadata.getColumns());
@@ -158,13 +158,13 @@ public class StorageMetadata
         return columns.build();
     }
 
-    private ConnectorTableMetadata getTableMetadata(SchemaTableName tableName)
+    private ConnectorTableMetadata getStorageTableMetadata(ConnectorSession session, SchemaTableName tableName)
     {
         if (!listSchemaNames().contains(tableName.getSchemaName())) {
             return null;
         }
 
-        StorageTable table = storageClient.getTable(tableName.getSchemaName(), tableName.getTableName());
+        StorageTable table = storageClient.getTable(session, tableName.getSchemaName(), tableName.getTableName());
         if (table == null) {
             return null;
         }

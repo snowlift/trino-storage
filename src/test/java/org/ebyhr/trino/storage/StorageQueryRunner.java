@@ -71,7 +71,7 @@ public final class StorageQueryRunner
 
         DistributedQueryRunner queryRunner = createStorageQueryRunner(
                 Map.of("http-server.http.port", "8080"),
-                Map.of());
+                Map.of("hive.hdfs.socks-proxy", "hadoop-master:1180"));
 
         Logger log = Logger.get(StorageQueryRunner.class);
         log.info("======== SERVER STARTED ========");

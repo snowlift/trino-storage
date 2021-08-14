@@ -13,11 +13,21 @@
  */
 package org.ebyhr.trino.storage;
 
+import io.airlift.log.Logger;
+import io.trino.plugin.hive.HdfsEnvironment;
+import io.trino.plugin.hive.HdfsEnvironment.HdfsContext;
+import io.trino.spi.connector.ConnectorSession;
+import org.apache.hadoop.fs.Path;
 import org.ebyhr.trino.storage.operator.FilePlugin;
 import org.ebyhr.trino.storage.operator.PluginFactory;
 
 import javax.inject.Inject;
+import javax.net.ssl.HttpsURLConnection;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,8 +38,15 @@ import static java.util.Objects.requireNonNull;
 
 public class StorageClient
 {
+    private static final Logger log = Logger.get(StorageClient.class);
+
+    private final HdfsEnvironment hdfsEnvironment;
+
     @Inject
-    public StorageClient() {}
+    public StorageClient(HdfsEnvironment hdfsEnvironment)
+    {
+        this.hdfsEnvironment = requireNonNull(hdfsEnvironment, "hdfsEnvironment is null");
+    }
 
     public List<String> getSchemaNames()
     {
@@ -44,13 +61,35 @@ public class StorageClient
         return new HashSet<>();
     }
 
-    public StorageTable getTable(String schema, String tableName)
+    public StorageTable getTable(ConnectorSession session, String schema, String tableName)
     {
         requireNonNull(schema, "schema is null");
         requireNonNull(tableName, "tableName is null");
 
         FilePlugin plugin = PluginFactory.create(schema);
-        List<StorageColumn> columns = plugin.getFields(schema, tableName);
-        return new StorageTable(tableName, columns);
+        try (InputStream inputStream = getInputStream(session, tableName)) {
+            List<StorageColumn> columns = plugin.getFields(inputStream);
+            return new StorageTable(tableName, columns);
+        }
+        catch (Exception e) {
+            log.debug(e, "Failed to get table: %s.%s", schema, tableName);
+            return null;
+        }
+    }
+
+    private InputStream getInputStream(ConnectorSession session, String path)
+            throws IOException
+    {
+        if (path.startsWith("http://") || path.startsWith("https://")) {
+            URL url = new URL(path);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            return connection.getInputStream();
+        }
+        if (path.startsWith("hdfs://")) {
+            Path hdfsPath = new Path(path);
+            return hdfsEnvironment.getFileSystem(new HdfsContext(session), hdfsPath).open(hdfsPath);
+        }
+
+        return URI.create(path).toURL().openStream();
     }
 }
