@@ -24,9 +24,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static io.trino.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
 import static io.trino.spi.type.VarcharType.VARCHAR;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -41,15 +41,13 @@ public class CsvPlugin
     {
         Splitter splitter = Splitter.on(DELIMITER).trimResults();
 
-        List<StorageColumn> columnTypes = new LinkedList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             List<String> fields = splitter.splitToList(reader.readLine());
-            fields.forEach(field -> columnTypes.add(new StorageColumn(field, VARCHAR)));
+            return fields.stream().map(field -> new StorageColumn(field, VARCHAR)).collect(toImmutableList());
         }
         catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-        return columnTypes;
     }
 
     @Override

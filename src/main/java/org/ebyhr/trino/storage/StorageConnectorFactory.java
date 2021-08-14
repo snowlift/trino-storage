@@ -62,7 +62,6 @@ public class StorageConnectorFactory
                     new HdfsAuthenticationModule());
 
             Injector injector = app
-                    .strictConfig()
                     .doNotInitializeLogging()
                     .setRequiredConfigurationProperties(requiredConfig)
                     .initialize();

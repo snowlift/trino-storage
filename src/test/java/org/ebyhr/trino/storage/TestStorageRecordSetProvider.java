@@ -36,9 +36,14 @@ public class TestStorageRecordSetProvider
     public void testGetRecordSet()
     {
         StorageRecordSetProvider recordSetProvider = new StorageRecordSetProvider(new StorageConnectorId("test"));
-        RecordSet recordSet = recordSetProvider.getRecordSet(StorageTransactionHandle.INSTANCE, SESSION, new StorageSplit("test", "csv", CSV_URI.toString()), List.of(
-                new StorageColumnHandle("test", "text", createUnboundedVarcharType(), 0),
-                new StorageColumnHandle("test", "value", createUnboundedVarcharType(), 1)));
+        RecordSet recordSet = recordSetProvider.getRecordSet(
+                StorageTransactionHandle.INSTANCE,
+                SESSION,
+                new StorageSplit("test", "csv", CSV_URI.toString()),
+                new StorageTableHandle("test", "csv", CSV_URI.toString()),
+                List.of(
+                        new StorageColumnHandle("test", "text", createUnboundedVarcharType(), 0),
+                        new StorageColumnHandle("test", "value", createUnboundedVarcharType(), 1)));
         assertNotNull(recordSet, "recordSet is null");
 
         RecordCursor cursor = recordSet.cursor();
