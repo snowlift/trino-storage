@@ -92,15 +92,13 @@ storage.excel."https://raw.githubusercontent.com/ebyhr/trino-storage/master/src/
 # Build
 Run all the unit test classes.
 ```
-mvn test
+./mvnw test
 ```
 
-Creates a deployable jar file
+Build without running tests
 ```
-mvn clean compile package
+./mvnw clean install -DskipTests
 ```
 
-Copy jar files in target directory to use storage connector in your Trino cluster.
-```
-cp -p target/*.jar ${PLUGIN_DIRECTORY}/storage/
-```
+# Deploy
+Unarchive trino-storage-{version}.zip and copy jar files in target directory to use storage connector in your Trino cluster.
