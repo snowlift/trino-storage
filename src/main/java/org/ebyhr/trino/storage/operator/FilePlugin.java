@@ -13,12 +13,12 @@
  */
 package org.ebyhr.trino.storage.operator;
 
-import com.google.common.io.ByteSource;
 import org.ebyhr.trino.storage.StorageColumn;
 
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public interface FilePlugin
 {
@@ -26,7 +26,7 @@ public interface FilePlugin
 
     List<String> splitToList(Iterator lines);
 
-    Iterator getIterator(ByteSource byteSource);
+    Stream getIterator(InputStream inputStream);
 
     boolean skipFirstLine();
 }

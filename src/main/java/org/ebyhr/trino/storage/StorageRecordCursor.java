@@ -14,11 +14,10 @@
 package org.ebyhr.trino.storage;
 
 import com.google.common.base.Strings;
-import com.google.common.io.ByteSource;
 import com.google.common.io.CountingInputStream;
-import com.google.common.io.Resources;
 import io.airlift.slice.Slice;
 import io.airlift.slice.Slices;
+import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.connector.RecordCursor;
 import io.trino.spi.connector.SchemaTableName;
 import io.trino.spi.type.Type;
@@ -26,9 +25,8 @@ import org.ebyhr.trino.storage.operator.FilePlugin;
 import org.ebyhr.trino.storage.operator.PluginFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,13 +43,14 @@ public class StorageRecordCursor
     private final List<StorageColumnHandle> columnHandles;
     private final int[] fieldToColumnIndex;
 
-    private final Iterator lines;
+    private final InputStream inputStream;
+    private final Iterator<?> lines;
     private final long totalBytes;
     private final FilePlugin plugin;
 
     private List<String> fields;
 
-    public StorageRecordCursor(List<StorageColumnHandle> columnHandles, SchemaTableName schemaTableName)
+    public StorageRecordCursor(StorageClient storageClient, ConnectorSession session, List<StorageColumnHandle> columnHandles, SchemaTableName schemaTableName)
     {
         this.columnHandles = columnHandles;
         this.plugin = PluginFactory.create(schemaTableName.getSchemaName());
@@ -62,21 +61,13 @@ public class StorageRecordCursor
             fieldToColumnIndex[i] = columnHandle.getOrdinalPosition();
         }
 
-        URI uri = URI.create(schemaTableName.getTableName());
-        ByteSource byteSource;
-        try {
-            byteSource = Resources.asByteSource(uri.toURL());
-        }
-        catch (MalformedURLException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        long skipRow = plugin.skipFirstLine() ? 1 : 0;
 
-        try (CountingInputStream input = new CountingInputStream(byteSource.openStream())) {
-            lines = plugin.getIterator(byteSource);
-            if (plugin.skipFirstLine()) {
-                lines.next();
-            }
-            totalBytes = input.getCount();
+        try {
+            inputStream = storageClient.getInputStream(session, schemaTableName.getTableName());
+            CountingInputStream countingInputStream = new CountingInputStream(inputStream);
+            lines = plugin.getIterator(inputStream).skip(skipRow).iterator();
+            totalBytes = countingInputStream.getCount();
         }
         catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -168,5 +159,13 @@ public class StorageRecordCursor
     }
 
     @Override
-    public void close() {}
+    public void close()
+    {
+        try {
+            inputStream.close();
+        }
+        catch (IOException ignore) {
+            // No-op
+        }
+    }
 }

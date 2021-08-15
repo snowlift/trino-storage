@@ -32,11 +32,13 @@ import static java.util.Objects.requireNonNull;
 public class StorageRecordSetProvider
         implements ConnectorRecordSetProvider
 {
+    private final StorageClient storageClient;
     private final String connectorId;
 
     @Inject
-    public StorageRecordSetProvider(StorageConnectorId connectorId)
+    public StorageRecordSetProvider(StorageClient storageClient, StorageConnectorId connectorId)
     {
+        this.storageClient = requireNonNull(storageClient, "storageClient is null");
         this.connectorId = requireNonNull(connectorId, "connectorId is null").toString();
     }
 
@@ -52,6 +54,6 @@ public class StorageRecordSetProvider
             handles.add((StorageColumnHandle) handle);
         }
 
-        return new StorageRecordSet(storageSplit, handles.build());
+        return new StorageRecordSet(storageClient, session, storageSplit, handles.build());
     }
 }
