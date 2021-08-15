@@ -1,5 +1,4 @@
-# Trino Storage Connector 
-[![Build Status](https://github.com/ebyhr/trino-storage/workflows/CI/badge.svg)](https://github.com/ebyhr/trino-storage/actions?query=workflow%3ACI+event%3Apush+branch%3Amaster)
+# Trino Storage Connector [![Build Status](https://github.com/ebyhr/trino-storage/workflows/CI/badge.svg)](https://github.com/ebyhr/trino-storage/actions?query=workflow%3ACI+event%3Apush+branch%3Amaster)
 This is a [Trino](http://trino.io/) connector to access local file (e.g. csv, tsv). Please keep in mind that this is not production ready and it was created for tests.
 
 # Supported scheme
