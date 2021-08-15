@@ -13,19 +13,17 @@
  */
 package org.ebyhr.trino.storage.operator;
 
-import com.google.common.io.ByteSource;
-import io.trino.spi.TrinoException;
 import org.ebyhr.trino.storage.StorageColumn;
 
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
-import static io.trino.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
 import static io.trino.spi.type.VarcharType.VARCHAR;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class TextPlugin
         implements FilePlugin
@@ -44,14 +42,10 @@ public class TextPlugin
     }
 
     @Override
-    public Iterator<String> getIterator(ByteSource byteSource)
+    public Stream<String> getIterator(InputStream inputStream)
     {
-        try {
-            return byteSource.asCharSource(UTF_8).readLines().iterator();
-        }
-        catch (IOException e) {
-            throw new TrinoException(GENERIC_INTERNAL_ERROR, "Failed to get iterator");
-        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        return reader.lines();
     }
 
     @Override

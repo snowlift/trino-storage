@@ -13,7 +13,6 @@
  */
 package org.ebyhr.trino.storage.operator;
 
-import com.google.common.io.ByteSource;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
@@ -29,6 +28,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static io.trino.spi.type.VarcharType.VARCHAR;
 
@@ -58,12 +61,13 @@ public class ExcelPlugin
     }
 
     @Override
-    public Iterator getIterator(ByteSource byteSource)
+    public Stream<?> getIterator(InputStream inputStream)
     {
         try {
-            Workbook workbook = WorkbookFactory.create(byteSource.openStream());
+            Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
-            return sheet.iterator();
+            Spliterator<Row> spliterator = Spliterators.spliteratorUnknownSize(sheet.iterator(), 0);
+            return StreamSupport.stream(spliterator, false);
         }
         catch (IOException e) {
             e.printStackTrace();

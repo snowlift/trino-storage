@@ -14,6 +14,7 @@
 package org.ebyhr.trino.storage;
 
 import com.google.common.collect.ImmutableList;
+import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.connector.RecordCursor;
 import io.trino.spi.connector.RecordSet;
 import io.trino.spi.connector.SchemaTableName;
@@ -26,12 +27,16 @@ import static java.util.Objects.requireNonNull;
 public class StorageRecordSet
         implements RecordSet
 {
+    private final StorageClient storageClient;
+    private final ConnectorSession session;
     private final List<StorageColumnHandle> columnHandles;
     private final List<Type> columnTypes;
     private final SchemaTableName schemaTableName;
 
-    public StorageRecordSet(StorageSplit split, List<StorageColumnHandle> columnHandles)
+    public StorageRecordSet(StorageClient storageClient, ConnectorSession session, StorageSplit split, List<StorageColumnHandle> columnHandles)
     {
+        this.storageClient = requireNonNull(storageClient, "storageClient is null");
+        this.session = requireNonNull(session, "session is null");
         requireNonNull(split, "split is null");
 
         this.columnHandles = requireNonNull(columnHandles, "column handles is null");
@@ -52,6 +57,6 @@ public class StorageRecordSet
     @Override
     public RecordCursor cursor()
     {
-        return new StorageRecordCursor(columnHandles, schemaTableName);
+        return new StorageRecordCursor(storageClient, session, columnHandles, schemaTableName);
     }
 }

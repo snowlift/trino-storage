@@ -77,7 +77,7 @@ public class StorageClient
         }
     }
 
-    private InputStream getInputStream(ConnectorSession session, String path)
+    public InputStream getInputStream(ConnectorSession session, String path)
             throws IOException
     {
         if (path.startsWith("http://") || path.startsWith("https://")) {
