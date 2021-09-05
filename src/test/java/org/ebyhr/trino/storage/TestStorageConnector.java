@@ -29,7 +29,7 @@ public final class TestStorageConnector
     protected QueryRunner createQueryRunner()
             throws Exception
     {
-        return createStorageQueryRunner(ImmutableMap.of(), ImmutableMap.of());
+        return createStorageQueryRunner(new TestingHadoopServer(), ImmutableMap.of(), ImmutableMap.of());
     }
 
     @Test

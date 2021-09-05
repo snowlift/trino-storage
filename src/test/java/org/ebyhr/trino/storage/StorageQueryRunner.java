@@ -32,6 +32,7 @@ public final class StorageQueryRunner
     private static final String TPCH_SCHEMA = "tpch";
 
     public static DistributedQueryRunner createStorageQueryRunner(
+            TestingHadoopServer server,
             Map<String, String> extraProperties,
             Map<String, String> connectorProperties)
             throws Exception
@@ -44,6 +45,7 @@ public final class StorageQueryRunner
             queryRunner.createCatalog("tpch", "tpch");
 
             connectorProperties = new HashMap<>(Map.copyOf(connectorProperties));
+            connectorProperties.putIfAbsent("hive.hdfs.socks-proxy", server.getSocksProxy());
 
             queryRunner.installPlugin(new StoragePlugin());
             queryRunner.createCatalog("storage", "storage", connectorProperties);
@@ -70,6 +72,7 @@ public final class StorageQueryRunner
         Logging.initialize();
 
         DistributedQueryRunner queryRunner = createStorageQueryRunner(
+                new TestingHadoopServer(),
                 Map.of("http-server.http.port", "8080"),
                 Map.of("hive.hdfs.socks-proxy", "hadoop-master:1180"));
 

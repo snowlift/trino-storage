@@ -167,6 +167,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.docker-java</groupId>
+            <artifactId>docker-java-api</artifactId>
+            <version>${dep.docker-java.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
             <version>5.8.0</version>
@@ -191,6 +198,12 @@
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
             <version>3.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
             <scope>test</scope>
         </dependency>
 
