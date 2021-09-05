@@ -50,6 +50,9 @@ public final class StorageQueryRunner
             queryRunner.installPlugin(new StoragePlugin());
             queryRunner.createCatalog("storage", "storage", connectorProperties);
 
+            server.copyFromLocal("example-data/lineitem-1.csv", "/tmp/lineitem-1.csv", "/tmp/lineitem-1");
+            server.copyFromLocal("example-data/numbers.tsv", "/tmp/numbers.tsv", "/tmp/numbers.tsv");
+
             return queryRunner;
         }
         catch (Throwable e) {

@@ -72,7 +72,7 @@ public class StorageClient
             return new StorageTable(tableName, columns);
         }
         catch (Exception e) {
-            log.debug(e, "Failed to get table: %s.%s", schema, tableName);
+            log.error(e, "Failed to get table: %s.%s", schema, tableName);
             return null;
         }
     }
