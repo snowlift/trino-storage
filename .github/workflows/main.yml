@@ -10,9 +10,6 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Set 'hadoop-master' to /etc/hosts
-        run: |
-          ifconfig docker0 | grep 'inet' | awk '{print $2 " hadoop-master"}' | sudo tee -a /etc/hosts
       - name: Maven Checks
         run: |
           ./mvnw clean install
