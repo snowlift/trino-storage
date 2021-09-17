@@ -14,6 +14,7 @@
 package org.ebyhr.trino.storage;
 
 import com.google.common.collect.ImmutableList;
+import org.apache.hadoop.net.NetUtils;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.startupcheck.IsRunningStartupCheckStrategy;
 import org.testcontainers.containers.wait.strategy.HostPortWaitStrategy;
@@ -22,6 +23,9 @@ import org.testcontainers.utility.MountableFile;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import static java.lang.String.format;
 
@@ -31,6 +35,7 @@ public class TestingHadoopServer
     private static final String HOSTNAME = "hadoop-master";
 
     private final GenericContainer<?> dockerContainer;
+    private final String hostname;
 
     public TestingHadoopServer()
     {
@@ -40,6 +45,13 @@ public class TestingHadoopServer
                 .waitingFor(new HostPortWaitStrategy());
         dockerContainer.setPortBindings(ImmutableList.of("1180:1180", "9000:9000"));
         dockerContainer.start();
+        hostname = getHostName();
+
+        // Even though Hadoop is accessed by proxy, Hadoop still tries to resolve hadoop-master
+        // (e.g: in: NameNodeProxies.createProxy)
+        // This adds a static resolution for hadoop-master to docker container internal ip
+        //noinspection deprecation
+        NetUtils.addStaticResolution(HOSTNAME, dockerContainer.getContainerInfo().getNetworkSettings().getIpAddress());
     }
 
     public void copyFromLocal(String resourceName, String containerPath, String hdfsPath)
@@ -51,12 +63,22 @@ public class TestingHadoopServer
 
     public String getSocksProxy()
     {
-        return format("%s:1180", HOSTNAME);
+        return format("%s:1180", hostname);
     }
 
     public String toHdfsPath(String path)
     {
-        return format("hdfs://%s:9000%s", HOSTNAME, path);
+        return format("hdfs://%s:9000%s", hostname, path);
+    }
+
+    private String getHostName()
+    {
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        }
+        catch (UnknownHostException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
     @Override
