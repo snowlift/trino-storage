@@ -39,7 +39,7 @@ public class TestingHadoopServer
 
     public TestingHadoopServer()
     {
-        dockerContainer = new GenericContainer<>(DockerImageName.parse("ghcr.io/trinodb/testing/hdp3.1-hive:41"))
+        dockerContainer = new GenericContainer<>(DockerImageName.parse("ghcr.io/trinodb/testing/hdp2.6-hive:50"))
                 .withCreateContainerCmdModifier(cmd -> cmd.withHostName(HOSTNAME))
                 .withStartupCheckStrategy(new IsRunningStartupCheckStrategy())
                 .waitingFor(new HostPortWaitStrategy());
