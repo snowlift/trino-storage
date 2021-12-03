@@ -16,6 +16,7 @@ package org.ebyhr.trino.storage;
 import com.google.common.collect.ImmutableList;
 import org.apache.hadoop.net.NetUtils;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.Network;
 import org.testcontainers.containers.startupcheck.IsRunningStartupCheckStrategy;
 import org.testcontainers.containers.wait.strategy.HostPortWaitStrategy;
 import org.testcontainers.utility.DockerImageName;
@@ -37,12 +38,14 @@ public class TestingHadoopServer
     private final GenericContainer<?> dockerContainer;
     private final String hostname;
 
-    public TestingHadoopServer()
+    public TestingHadoopServer(Network network)
     {
         dockerContainer = new GenericContainer<>(DockerImageName.parse("ghcr.io/trinodb/testing/hdp2.6-hive:50"))
                 .withCreateContainerCmdModifier(cmd -> cmd.withHostName(HOSTNAME))
+                .withCopyFileToContainer(MountableFile.forClasspathResource("minio/hive-core-site.xml"), "/etc/hadoop/conf/core-site.xml")
                 .withStartupCheckStrategy(new IsRunningStartupCheckStrategy())
-                .waitingFor(new HostPortWaitStrategy());
+                .waitingFor(new HostPortWaitStrategy())
+                .withNetwork(network);
         dockerContainer.setPortBindings(ImmutableList.of("1180:1180", "9000:9000"));
         dockerContainer.start();
         hostname = getHostName();

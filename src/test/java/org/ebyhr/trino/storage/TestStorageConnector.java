@@ -25,13 +25,13 @@ import static org.ebyhr.trino.storage.StorageQueryRunner.createStorageQueryRunne
 public final class TestStorageConnector
         extends AbstractTestQueryFramework
 {
-    private TestingHadoopServer server;
+    private TestingStorageServer server;
 
     @Override
     protected QueryRunner createQueryRunner()
             throws Exception
     {
-        server = closeAfterClass(new TestingHadoopServer());
+        server = closeAfterClass(new TestingStorageServer());
         return createStorageQueryRunner(server, ImmutableMap.of(), ImmutableMap.of());
     }
 
@@ -50,7 +50,7 @@ public final class TestStorageConnector
                 format("SELECT * FROM storage.tsv.\"%s\"", toAbsolutePath("example-data/numbers.tsv")),
                 "VALUES ('two', '2'), ('three', '3')");
         assertQuery(
-                format("SELECT * FROM storage.tsv.\"%s\"", server.toHdfsPath("/tmp/numbers.tsv")),
+                format("SELECT * FROM storage.tsv.\"%s\"", server.getHadoopServer().toHdfsPath("/tmp/numbers.tsv")),
                 "VALUES ('two', '2'), ('three', '3')");
     }
 

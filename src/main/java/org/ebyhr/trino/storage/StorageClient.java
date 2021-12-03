@@ -85,7 +85,7 @@ public class StorageClient
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             return connection.getInputStream();
         }
-        if (path.startsWith("hdfs://")) {
+        if (path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
             Path hdfsPath = new Path(path);
             return hdfsEnvironment.getFileSystem(new HdfsContext(session), hdfsPath).open(hdfsPath);
         }
