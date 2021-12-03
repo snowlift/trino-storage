@@ -32,7 +32,7 @@ public final class StorageQueryRunner
     private static final String TPCH_SCHEMA = "tpch";
 
     public static DistributedQueryRunner createStorageQueryRunner(
-            TestingHadoopServer server,
+            TestingStorageServer server,
             Map<String, String> extraProperties,
             Map<String, String> connectorProperties)
             throws Exception
@@ -45,13 +45,13 @@ public final class StorageQueryRunner
             queryRunner.createCatalog("tpch", "tpch");
 
             connectorProperties = new HashMap<>(Map.copyOf(connectorProperties));
-            connectorProperties.putIfAbsent("hive.hdfs.socks-proxy", server.getSocksProxy());
+            connectorProperties.putIfAbsent("hive.hdfs.socks-proxy", server.getHadoopServer().getSocksProxy());
 
             queryRunner.installPlugin(new StoragePlugin());
             queryRunner.createCatalog("storage", "storage", connectorProperties);
 
-            server.copyFromLocal("example-data/lineitem-1.csv", "/tmp/lineitem-1.csv", "/tmp/lineitem-1");
-            server.copyFromLocal("example-data/numbers.tsv", "/tmp/numbers.tsv", "/tmp/numbers.tsv");
+            server.getHadoopServer().copyFromLocal("example-data/lineitem-1.csv", "/tmp/lineitem-1.csv", "/tmp/lineitem-1");
+            server.getHadoopServer().copyFromLocal("example-data/numbers.tsv", "/tmp/numbers.tsv", "/tmp/numbers.tsv");
 
             return queryRunner;
         }
@@ -74,10 +74,15 @@ public final class StorageQueryRunner
     {
         Logging.initialize();
 
+        TestingStorageServer storageServer = new TestingStorageServer();
         DistributedQueryRunner queryRunner = createStorageQueryRunner(
-                new TestingHadoopServer(),
+                storageServer,
                 Map.of("http-server.http.port", "8080"),
-                Map.of("hive.hdfs.socks-proxy", "hadoop-master:1180"));
+                Map.of("hive.hdfs.socks-proxy", "hadoop-master:1180",
+                        "hive.s3.path-style-access", "true",
+                        "hive.s3.endpoint", storageServer.getMinioServer().getEndpoint(),
+                        "hive.s3.aws-access-key", TestingMinioServer.ACCESS_KEY,
+                        "hive.s3.aws-secret-key", TestingMinioServer.SECRET_KEY));
 
         Logger log = Logger.get(StorageQueryRunner.class);
         log.info("======== SERVER STARTED ========");

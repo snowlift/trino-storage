@@ -14,6 +14,7 @@
 
     <properties>
         <air.main.basedir>${project.basedir}</air.main.basedir>
+        <dep.aws-sdk.version>1.12.85</dep.aws-sdk.version>
     </properties>
 
     <distributionManagement>
@@ -53,6 +54,18 @@
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>log-manager</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-core</artifactId>
+            <version>${dep.aws-sdk.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>${dep.aws-sdk.version}</version>
         </dependency>
 
         <dependency>

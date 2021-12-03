@@ -3,6 +3,7 @@ This is a [Trino](http://trino.io/) connector to access local file (e.g. csv, ts
 
 # Supported scheme
 - hdfs
+- s3a
 - file
 - http
 - https
