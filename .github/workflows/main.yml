@@ -11,5 +11,8 @@ jobs:
         with:
           java-version: 11
       - name: Maven Checks
-        run: |
-          ./mvnw clean install
+        uses: thundra-io/thundra-maven-test-action@v1
+        with:
+          apikey: 65acfca5-e3bd-4cab-ac72-adf5b3f5cf00
+          project_id: 3bd123d1-d9e4-4689-ba5f-b5b2a57809ae
+          command: ./mvnw clean install -Dair.check.skip-all=true
