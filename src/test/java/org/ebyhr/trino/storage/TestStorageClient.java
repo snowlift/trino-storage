@@ -36,6 +36,6 @@ public class TestStorageClient
         HdfsEnvironment hdfsEnvironment = new HdfsEnvironment(configuration, config, new NoHdfsAuthentication());
 
         StorageClient client = new StorageClient(hdfsEnvironment);
-        assertEquals(client.getSchemaNames(), List.of("csv", "tsv", "txt", "raw", "excel"));
+        assertEquals(client.getSchemaNames(), List.of("csv", "tsv", "txt", "raw", "excel", "orc"));
     }
 }

@@ -62,6 +62,14 @@ public final class TestStorageConnector
                 "VALUES ('a', '1'), ('b', '2')");
     }
 
+    @Test
+    public void testSelectOrc()
+    {
+        assertQuery(
+                format("SELECT * FROM storage.orc.\"%s\" WHERE x = 1658882660", toAbsolutePath("example-data/apache-lz4.orc")),
+                "VALUES (1658882660, 639, -5557347160648450358)");
+    }
+
     private static String toAbsolutePath(String resourceName)
     {
         return Resources.getResource(resourceName).toString();

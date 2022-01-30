@@ -71,7 +71,7 @@ public class TestStorageMetadata
     @Test
     public void testListSchemaNames()
     {
-        assertThat(metadata.listSchemaNames(SESSION)).containsOnly("csv", "tsv", "txt", "raw", "excel");
+        assertThat(metadata.listSchemaNames(SESSION)).containsOnly("csv", "tsv", "txt", "raw", "excel", "orc");
     }
 
     @Test

@@ -18,13 +18,10 @@ import org.ebyhr.trino.storage.StorageColumn;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import static io.trino.spi.type.VarcharType.VARCHAR;
 
@@ -38,7 +35,7 @@ public class RawPlugin
     }
 
     @Override
-    public Stream<List<?>> getIterator(InputStream inputStream)
+    public Stream<List<?>> getRecordsIterator(InputStream inputStream)
     {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String blob = reader.lines().map(Objects::toString).collect(Collectors.joining("\n"));

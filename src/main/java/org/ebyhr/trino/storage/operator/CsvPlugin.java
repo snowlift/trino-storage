@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -50,10 +49,12 @@ public class CsvPlugin
     }
 
     @Override
-    public Stream<List<?>> getIterator(InputStream inputStream)
+    public Stream<List<?>> getRecordsIterator(InputStream inputStream)
     {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         Splitter splitter = Splitter.on(DELIMITER).trimResults();
-        return reader.lines().map(splitter::splitToList);
+        return reader.lines()
+                .skip(1)
+                .map(splitter::splitToList);
     }
 }
