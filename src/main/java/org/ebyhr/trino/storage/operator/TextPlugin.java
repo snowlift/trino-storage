@@ -35,22 +35,9 @@ public class TextPlugin
     }
 
     @Override
-    public List<String> splitToList(Iterator lines)
-    {
-        String line = (String) lines.next();
-        return Arrays.asList(line);
-    }
-
-    @Override
-    public Stream<String> getIterator(InputStream inputStream)
+    public Stream<List<?>> getIterator(InputStream inputStream)
     {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        return reader.lines();
-    }
-
-    @Override
-    public boolean skipFirstLine()
-    {
-        return false;
+        return reader.lines().map(List::of);
     }
 }
