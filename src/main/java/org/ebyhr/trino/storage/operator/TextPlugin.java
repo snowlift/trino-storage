@@ -18,8 +18,6 @@ import org.ebyhr.trino.storage.StorageColumn;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -35,7 +33,7 @@ public class TextPlugin
     }
 
     @Override
-    public Stream<List<?>> getIterator(InputStream inputStream)
+    public Stream<List<?>> getRecordsIterator(InputStream inputStream)
     {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         return reader.lines().map(List::of);

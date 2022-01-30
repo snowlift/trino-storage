@@ -65,6 +65,7 @@ public class StorageRecordSetProvider
 
         String schemaName = storageSplit.getSchemaName();
         String tableName = storageSplit.getTableName();
+        StorageTable storageTable = storageClient.getTable(session, schemaName, tableName);
 
         FilePlugin plugin = PluginFactory.create(schemaName);
         InputStream inputStream;
@@ -74,9 +75,8 @@ public class StorageRecordSetProvider
         catch (IOException e) {
             throw new RuntimeException(e);
         }
-        StorageTable storageTable = new StorageTable(tableName, plugin.getFields(inputStream));
 
-        Stream<List<?>> stream = plugin.getIterator(inputStream);
+        Stream<List<?>> stream = plugin.getRecordsIterator(inputStream);
         Iterable<List<?>> rows = stream::iterator;
 
         List<StorageColumnHandle> handles = columns

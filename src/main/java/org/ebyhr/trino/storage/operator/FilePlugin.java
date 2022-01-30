@@ -13,10 +13,10 @@
  */
 package org.ebyhr.trino.storage.operator;
 
+import io.trino.spi.Page;
 import org.ebyhr.trino.storage.StorageColumn;
 
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -24,5 +24,15 @@ public interface FilePlugin
 {
     List<StorageColumn> getFields(InputStream inputStream);
 
-    Stream<List<?>> getIterator(InputStream inputStream);
+    Stream<List<?>> getRecordsIterator(InputStream inputStream);
+
+    default boolean usesPages()
+    {
+        return false;
+    }
+
+    default Iterable<Page> getPagesIterator(InputStream inputStream)
+    {
+        throw new UnsupportedOperationException();
+    }
 }

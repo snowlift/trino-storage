@@ -61,13 +61,15 @@ public class ExcelPlugin
     }
 
     @Override
-    public Stream<List<?>> getIterator(InputStream inputStream)
+    public Stream<List<?>> getRecordsIterator(InputStream inputStream)
     {
         try {
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
             Spliterator<Row> spliterator = Spliterators.spliteratorUnknownSize(sheet.iterator(), 0);
-            return StreamSupport.stream(spliterator, false).map(this::splitToList);
+            return StreamSupport.stream(spliterator, false)
+                    .skip(1)
+                    .map(this::splitToList);
         }
         catch (IOException e) {
             throw new RuntimeException(e);

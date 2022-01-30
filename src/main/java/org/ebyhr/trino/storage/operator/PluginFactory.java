@@ -34,6 +34,8 @@ public final class PluginFactory
                 return new RawPlugin();
             case "excel":
                 return new ExcelPlugin();
+            case "orc":
+                return new OrcPlugin();
             default:
                 throw new SchemaNotFoundException(typeName);
         }
