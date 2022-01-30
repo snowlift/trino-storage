@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -37,23 +38,10 @@ public class RawPlugin
     }
 
     @Override
-    public List<String> splitToList(Iterator lines)
-    {
-        Iterable<String> iterable = () -> lines;
-        String line = StreamSupport.stream(iterable.spliterator(), false).map(Object::toString).collect(Collectors.joining("\n"));
-        return Arrays.asList(line);
-    }
-
-    @Override
-    public Stream<String> getIterator(InputStream inputStream)
+    public Stream<List<?>> getIterator(InputStream inputStream)
     {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        return reader.lines();
-    }
-
-    @Override
-    public boolean skipFirstLine()
-    {
-        return false;
+        String blob = reader.lines().map(Objects::toString).collect(Collectors.joining("\n"));
+        return Stream.of(List.of(blob));
     }
 }

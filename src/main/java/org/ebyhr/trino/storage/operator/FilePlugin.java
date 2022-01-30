@@ -24,9 +24,5 @@ public interface FilePlugin
 {
     List<StorageColumn> getFields(InputStream inputStream);
 
-    List<String> splitToList(Iterator lines);
-
-    Stream getIterator(InputStream inputStream);
-
-    boolean skipFirstLine();
+    Stream<List<?>> getIterator(InputStream inputStream);
 }

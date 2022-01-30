@@ -61,35 +61,26 @@ public class ExcelPlugin
     }
 
     @Override
-    public Stream<?> getIterator(InputStream inputStream)
+    public Stream<List<?>> getIterator(InputStream inputStream)
     {
         try {
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
             Spliterator<Row> spliterator = Spliterators.spliteratorUnknownSize(sheet.iterator(), 0);
-            return StreamSupport.stream(spliterator, false);
+            return StreamSupport.stream(spliterator, false).map(this::splitToList);
         }
         catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to operate s file");
+            throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public List<String> splitToList(Iterator lines)
+    private List<?> splitToList(Row row)
     {
         List<String> values = new ArrayList<>();
-        Row row = (Row) lines.next();
         for (Cell cell : row) {
             String cellValue = DATA_FORMATTER.formatCellValue(cell);
             values.add(cellValue);
         }
         return values;
-    }
-
-    @Override
-    public boolean skipFirstLine()
-    {
-        return true;
     }
 }

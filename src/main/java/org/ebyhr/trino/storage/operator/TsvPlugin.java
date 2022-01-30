@@ -40,7 +40,9 @@ public class TsvPlugin
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             List<String> fields = splitter.splitToList(reader.readLine());
-            return fields.stream().map(field -> new StorageColumn(field, VARCHAR)).collect(toImmutableList());
+            return fields.stream()
+                    .map(field -> new StorageColumn(field, VARCHAR))
+                    .collect(toImmutableList());
         }
         catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -48,23 +50,10 @@ public class TsvPlugin
     }
 
     @Override
-    public Stream<String> getIterator(InputStream inputStream)
+    public Stream<List<?>> getIterator(InputStream inputStream)
     {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        return reader.lines();
-    }
-
-    @Override
-    public List<String> splitToList(Iterator lines)
-    {
-        String line = (String) lines.next();
         Splitter splitter = Splitter.on(DELIMITER).trimResults();
-        return splitter.splitToList(line);
-    }
-
-    @Override
-    public boolean skipFirstLine()
-    {
-        return true;
+        return reader.lines().map(splitter::splitToList);
     }
 }
