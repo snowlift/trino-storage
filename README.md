@@ -25,6 +25,7 @@ Supported schemas are below.
 - `raw`
 - `excel`
 - `orc`
+- `json`
 
 `tsv` plugin extract each line with `\t` delimiter. Currently first line is used as column names.
 ```sql

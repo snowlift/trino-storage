@@ -36,6 +36,8 @@ public final class PluginFactory
                 return new ExcelPlugin();
             case "orc":
                 return new OrcPlugin();
+            case "json":
+                return new JsonPlugin();
             default:
                 throw new SchemaNotFoundException(typeName);
         }

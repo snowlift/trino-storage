@@ -1,0 +1,2 @@
+{"bool": true, "null": null, "string":  "aaa", "int":  5, "double":  123.456, "array of strings":  ["aaa", "bbb"]}
+{"bool": false, "null": null, "string":  "bbb", "int":  10, "double":  123.456, "array of strings":  ["ccc"]}
