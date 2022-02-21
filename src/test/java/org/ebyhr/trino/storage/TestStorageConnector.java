@@ -70,6 +70,22 @@ public final class TestStorageConnector
                 "VALUES (1658882660, 639, -5557347160648450358)");
     }
 
+    @Test
+    public void testSelectJson()
+    {
+        // note that empty arrays are not supported at all, because array types are inferred from the first array element
+        assertQuery(
+                format("SELECT * FROM storage.json.\"%s\"", toAbsolutePath("example-data/newlines.json")),
+                "VALUES " +
+                        "(true, CAST(null AS VARCHAR), 'aaa', 5, CAST(123.456 AS double), ARRAY['aaa', 'bbb']), " +
+                        "(false, CAST(null AS VARCHAR), 'bbb', 10, CAST(123.456 AS double), ARRAY['ccc'])");
+        assertQuery(
+                format("SELECT * FROM storage.json.\"%s\"", toAbsolutePath("example-data/array-of-objects.json")),
+                "VALUES " +
+                        "(true, CAST(null AS VARCHAR), 'aaa', 5, CAST(123.456 AS double), ARRAY['aaa', 'bbb']), " +
+                        "(false, CAST(null AS VARCHAR), 'bbb', 10, CAST(123.456 AS double), ARRAY['ccc'])");
+    }
+
     private static String toAbsolutePath(String resourceName)
     {
         return Resources.getResource(resourceName).toString();
