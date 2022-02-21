@@ -29,8 +29,6 @@ import org.ebyhr.trino.storage.operator.PluginFactory;
 
 import javax.inject.Inject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -68,15 +66,7 @@ public class StorageRecordSetProvider
         StorageTable storageTable = storageClient.getTable(session, schemaName, tableName);
 
         FilePlugin plugin = PluginFactory.create(schemaName);
-        InputStream inputStream;
-        try {
-            inputStream = storageClient.getInputStream(session, tableName);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        Stream<List<?>> stream = plugin.getRecordsIterator(inputStream);
+        Stream<List<?>> stream = plugin.getRecordsIterator(tableName, path -> storageClient.getInputStream(session, path));
         Iterable<List<?>> rows = stream::iterator;
 
         List<StorageColumnHandle> handles = columns

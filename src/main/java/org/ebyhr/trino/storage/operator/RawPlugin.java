@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -35,8 +36,9 @@ public class RawPlugin
     }
 
     @Override
-    public Stream<List<?>> getRecordsIterator(InputStream inputStream)
+    public Stream<List<?>> getRecordsIterator(String path, Function<String, InputStream> streamProvider)
     {
+        InputStream inputStream = streamProvider.apply(path);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String blob = reader.lines().map(Objects::toString).collect(Collectors.joining("\n"));
         return Stream.of(List.of(blob));

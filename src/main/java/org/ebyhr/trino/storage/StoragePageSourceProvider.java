@@ -28,8 +28,6 @@ import io.trino.spi.connector.RecordSet;
 import org.ebyhr.trino.storage.operator.FilePlugin;
 import org.ebyhr.trino.storage.operator.PluginFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
@@ -62,15 +60,12 @@ public class StoragePageSourceProvider
         String tableName = storageSplit.getTableName();
         FilePlugin plugin = PluginFactory.create(schemaName);
 
-        if (plugin.usesPages()) {
-            InputStream inputStream;
-            try {
-                inputStream = storageClient.getInputStream(session, tableName);
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            return new FixedPageSource(plugin.getPagesIterator(inputStream));
+        try {
+            return new FixedPageSource(plugin.getPagesIterator(tableName, path -> storageClient.getInputStream(session, path)));
+        }
+        catch (UnsupportedOperationException ignored) {
+            // Ignore it when a plugin doesn't implement getPagesIterator
+            // and assume it implements getRecordsIterator for the record set below
         }
 
         RecordSet recordSet = recordSetProvider.getRecordSet(transaction, session, split, table, columns);

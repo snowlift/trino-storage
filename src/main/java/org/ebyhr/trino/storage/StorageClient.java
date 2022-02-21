@@ -78,18 +78,25 @@ public class StorageClient
     }
 
     public InputStream getInputStream(ConnectorSession session, String path)
-            throws IOException
     {
-        if (path.startsWith("http://") || path.startsWith("https://")) {
-            URL url = new URL(path);
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            return connection.getInputStream();
-        }
-        if (path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
-            Path hdfsPath = new Path(path);
-            return hdfsEnvironment.getFileSystem(new HdfsContext(session), hdfsPath).open(hdfsPath);
-        }
+        try {
+            if (path.startsWith("http://") || path.startsWith("https://")) {
+                URL url = new URL(path);
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                return connection.getInputStream();
+            }
+            if (path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
+                Path hdfsPath = new Path(path);
+                return hdfsEnvironment.getFileSystem(new HdfsContext(session), hdfsPath).open(hdfsPath);
+            }
+            if (!path.startsWith("file:")) {
+                path = "file:" + path;
+            }
 
-        return URI.create(path).toURL().openStream();
+            return URI.create(path).toURL().openStream();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
