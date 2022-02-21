@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
@@ -49,8 +50,9 @@ public class TsvPlugin
     }
 
     @Override
-    public Stream<List<?>> getRecordsIterator(InputStream inputStream)
+    public Stream<List<?>> getRecordsIterator(String path, Function<String, InputStream> streamProvider)
     {
+        InputStream inputStream = streamProvider.apply(path);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         Splitter splitter = Splitter.on(DELIMITER).trimResults();
         return reader.lines()

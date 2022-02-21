@@ -34,8 +34,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static io.trino.memory.context.AggregatedMemoryContext.newSimpleAggregatedMemoryContext;
 import static io.trino.orc.OrcReader.INITIAL_BATCH_SIZE;
@@ -67,28 +67,27 @@ public class OrcPlugin
     }
 
     @Override
-    public Stream<List<?>> getRecordsIterator(InputStream inputStream)
+    public Iterable<Page> getPagesIterator(String path, Function<String, InputStream> streamProvider)
     {
-        throw new UnsupportedOperationException();
-    }
+        if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
+            try (AutoDeletingTempFile tempFile = new AutoDeletingTempFile()) {
+                Files.copy(streamProvider.apply(path), tempFile.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
+                path = tempFile.getFile().getPath();
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        else if (path.startsWith("file:")) {
+            path = path.substring(5);
+        }
+        OrcReader reader = getReader(new File(path));
+        ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
+        List<Type> readTypes = reader.getRootColumn().getNestedColumns().stream()
+                .map(orcColumn -> fromOrcType(types.get(orcColumn.getColumnId()), types))
+                .collect(Collectors.toList());
 
-    @Override
-    public boolean usesPages()
-    {
-        return true;
-    }
-
-    @Override
-    public Iterable<Page> getPagesIterator(InputStream inputStream)
-    {
-        try (AutoDeletingTempFile tempFile = new AutoDeletingTempFile()) {
-            Files.copy(inputStream, tempFile.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
-            OrcReader reader = getReader(tempFile.getFile());
-            ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
-            List<Type> readTypes = reader.getRootColumn().getNestedColumns().stream()
-                    .map(orcColumn -> fromOrcType(types.get(orcColumn.getColumnId()), types))
-                    .collect(Collectors.toList());
-
+        try {
             OrcRecordReader recordReader = reader.createRecordReader(
                     reader.getRootColumn().getNestedColumns(),
                     readTypes,
@@ -139,7 +138,6 @@ public class OrcPlugin
     public static class AutoDeletingTempFile
             implements AutoCloseable
     {
-
         private final File file;
 
         public AutoDeletingTempFile()

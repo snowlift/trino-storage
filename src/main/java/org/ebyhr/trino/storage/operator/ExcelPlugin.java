@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
+import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -61,9 +62,10 @@ public class ExcelPlugin
     }
 
     @Override
-    public Stream<List<?>> getRecordsIterator(InputStream inputStream)
+    public Stream<List<?>> getRecordsIterator(String path, Function<String, InputStream> streamProvider)
     {
         try {
+            InputStream inputStream = streamProvider.apply(path);
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
             Spliterator<Row> spliterator = Spliterators.spliteratorUnknownSize(sheet.iterator(), 0);

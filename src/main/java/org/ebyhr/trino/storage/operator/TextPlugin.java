@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static io.trino.spi.type.VarcharType.VARCHAR;
@@ -33,8 +34,9 @@ public class TextPlugin
     }
 
     @Override
-    public Stream<List<?>> getRecordsIterator(InputStream inputStream)
+    public Stream<List<?>> getRecordsIterator(String path, Function<String, InputStream> streamProvider)
     {
+        InputStream inputStream = streamProvider.apply(path);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         return reader.lines().map(List::of);
     }
