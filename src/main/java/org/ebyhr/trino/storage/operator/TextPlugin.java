@@ -28,7 +28,7 @@ public class TextPlugin
         implements FilePlugin
 {
     @Override
-    public List<StorageColumn> getFields(InputStream inputStream)
+    public List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider)
     {
         return List.of(new StorageColumn("value", VARCHAR));
     }

@@ -49,38 +49,22 @@ public class OrcPlugin
         implements FilePlugin
 {
     @Override
-    public List<StorageColumn> getFields(InputStream inputStream)
+    public List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider)
     {
-        try (AutoDeletingTempFile tempFile = new AutoDeletingTempFile()) {
-            Files.copy(inputStream, tempFile.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
-            OrcReader reader = getReader(tempFile.getFile());
-            ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
-            return reader.getRootColumn().getNestedColumns().stream()
-                    .map(orcColumn -> new StorageColumn(
-                            orcColumn.getColumnName(),
-                            fromOrcType(types.get(orcColumn.getColumnId()), types)))
-                    .collect(Collectors.toList());
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        path = getLocalPath(path, streamProvider);
+        OrcReader reader = getReader(new File(path));
+        ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
+        return reader.getRootColumn().getNestedColumns().stream()
+                .map(orcColumn -> new StorageColumn(
+                        orcColumn.getColumnName(),
+                        fromOrcType(types.get(orcColumn.getColumnId()), types)))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Iterable<Page> getPagesIterator(String path, Function<String, InputStream> streamProvider)
     {
-        if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
-            try (AutoDeletingTempFile tempFile = new AutoDeletingTempFile()) {
-                Files.copy(streamProvider.apply(path), tempFile.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
-                path = tempFile.getFile().getPath();
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        else if (path.startsWith("file:")) {
-            path = path.substring(5);
-        }
+        path = getLocalPath(path, streamProvider);
         OrcReader reader = getReader(new File(path));
         ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
         List<Type> readTypes = reader.getRootColumn().getNestedColumns().stream()
@@ -106,6 +90,23 @@ public class OrcPlugin
         catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private String getLocalPath(String path, Function<String, InputStream> streamProvider)
+    {
+        if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
+            try (AutoDeletingTempFile tempFile = new AutoDeletingTempFile()) {
+                Files.copy(streamProvider.apply(path), tempFile.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
+                return tempFile.getFile().getPath();
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if (path.startsWith("file:")) {
+            return path.substring(5);
+        }
+        return path;
     }
 
     private OrcReader getReader(File file)

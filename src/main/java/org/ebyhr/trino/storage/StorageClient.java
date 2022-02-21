@@ -26,6 +26,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashSet;
@@ -34,6 +35,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 
 public class StorageClient
@@ -67,8 +69,8 @@ public class StorageClient
         requireNonNull(tableName, "tableName is null");
 
         FilePlugin plugin = PluginFactory.create(schema);
-        try (InputStream inputStream = getInputStream(session, tableName)) {
-            List<StorageColumn> columns = plugin.getFields(inputStream);
+        try {
+            List<StorageColumn> columns = plugin.getFields(tableName, path -> getInputStream(session, path));
             return new StorageTable(tableName, columns);
         }
         catch (Exception e) {
@@ -96,7 +98,7 @@ public class StorageClient
             return URI.create(path).toURL().openStream();
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(format("Failed to open stream for %s", path), e);
         }
     }
 }
