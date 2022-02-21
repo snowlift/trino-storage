@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 public interface FilePlugin
 {
-    List<StorageColumn> getFields(InputStream inputStream);
+    List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider);
 
     default Stream<List<?>> getRecordsIterator(String path, Function<String, InputStream> streamProvider)
     {

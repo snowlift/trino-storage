@@ -42,8 +42,9 @@ public class ExcelPlugin
     private static final DataFormatter DATA_FORMATTER = new DataFormatter();
 
     @Override
-    public List<StorageColumn> getFields(InputStream inputStream)
+    public List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider)
     {
+        InputStream inputStream = streamProvider.apply(path);
         try {
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
