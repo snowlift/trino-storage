@@ -2,12 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>io.trino</groupId>
-        <artifactId>trino-root</artifactId>
-        <version>371</version>
-    </parent>
-
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
     <version>371-SNAPSHOT</version>
@@ -19,11 +13,11 @@
         <tag>HEAD</tag>
     </scm>
 
-    <properties>
-        <air.main.basedir>${project.basedir}</air.main.basedir>
-        <dep.aws-sdk.version>1.12.133</dep.aws-sdk.version>
-        <project.scm.id>github</project.scm.id>
-    </properties>
+    <parent>
+        <groupId>io.airlift</groupId>
+        <artifactId>airbase</artifactId>
+        <version>120</version>
+    </parent>
 
     <licenses>
         <license>
@@ -33,6 +27,29 @@
         </license>
     </licenses>
 
+    <properties>
+        <project.build.targetJdk>11</project.build.targetJdk>
+
+        <air.check.skip-extended>true</air.check.skip-extended>
+        <air.check.skip-license>false</air.check.skip-license>
+
+        <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
+        <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
+
+        <dep.trino.version>371</dep.trino.version>
+        <dep.airlift.version>214</dep.airlift.version>
+        <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
+        <dep.aws-sdk.version>1.12.133</dep.aws-sdk.version>
+        <dep.jackson.version>2.13.1</dep.jackson.version>
+        <dep.errorprone.version>2.11.0</dep.errorprone.version>
+        <dep.testcontainers.version>1.16.3</dep.testcontainers.version>
+        <dep.docker-java.version>3.2.12</dep.docker-java.version>
+        <dep.testng.version>7.5</dep.testng.version>
+
+        <project.scm.id>github</project.scm.id>
+        <argLine />
+    </properties>
+
     <distributionManagement>
         <repository>
             <id>github</id>
@@ -41,45 +58,73 @@
         </repository>
     </distributionManagement>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.checkerframework</groupId>
+                <artifactId>checker-qual</artifactId>
+                <version>3.21.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-annotations</artifactId>
+                <version>4.5.3</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-hive</artifactId>
+            <version>${dep.trino.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-memory-context</artifactId>
+            <version>${dep.trino.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-orc</artifactId>
+            <version>${dep.trino.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.trino.hadoop</groupId>
             <artifactId>hadoop-apache</artifactId>
+            <version>3.2.0-16</version>
         </dependency>
 
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>bootstrap</artifactId>
+            <version>${dep.airlift.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>json</artifactId>
+            <version>${dep.airlift.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>log</artifactId>
+            <version>${dep.airlift.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>log-manager</artifactId>
+            <version>${dep.airlift.version}</version>
         </dependency>
 
         <dependency>
@@ -97,21 +142,25 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
+            <version>${dep.jackson.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+            <version>${dep.jackson.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <version>31.0.1-jre</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
+            <version>5.1.0</version>
         </dependency>
 
         <dependency>
@@ -149,6 +198,7 @@
             <groupId>com.google.errorprone</groupId>
             <artifactId>error_prone_annotations</artifactId>
             <scope>runtime</scope>
+            <version>${dep.errorprone.version}</version>
         </dependency>
 
         <dependency>
@@ -163,6 +213,7 @@
             <groupId>io.trino</groupId>
             <artifactId>trino-spi</artifactId>
             <scope>provided</scope>
+            <version>${dep.trino.version}</version>
         </dependency>
 
         <dependency>
@@ -176,12 +227,14 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <scope>provided</scope>
+            <version>${dep.jackson.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjdk.jol</groupId>
             <artifactId>jol-core</artifactId>
             <scope>provided</scope>
+            <version>0.2</version>
         </dependency>
 
         <!-- for testing -->
@@ -189,24 +242,28 @@
             <groupId>io.trino</groupId>
             <artifactId>trino-main</artifactId>
             <scope>test</scope>
+            <version>${dep.trino.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-testing</artifactId>
             <scope>test</scope>
+            <version>${dep.trino.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-tpch</artifactId>
             <scope>test</scope>
+            <version>${dep.trino.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>testing</artifactId>
             <scope>test</scope>
+            <version>${dep.airlift.version}</version>
         </dependency>
 
         <dependency>
@@ -248,37 +305,126 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
             <scope>test</scope>
+            <version>${dep.testcontainers.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <scope>test</scope>
+            <version>${dep.testng.version}</version>
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-scm-plugin</artifactId>
-                        <version>1.12.2</version>
-                        <configuration>
-                            <pushChanges>true</pushChanges>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>3.2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
+                    <artifactId>provisio-maven-plugin</artifactId>
+                    <version>1.0.19</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.0.0-M2</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <scmCommentPrefix>[ci skip]</scmCommentPrefix>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                    <pushChanges>true</pushChanges>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-plugin</artifactId>
+                <version>1.12.2</version>
+                <configuration>
+                    <pushChanges>true</pushChanges>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.trino</groupId>
+                <artifactId>trino-maven-plugin</artifactId>
+                <version>11</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <pluginClassName>io.trino.spi.Plugin</pluginClassName>
+                    <spiGroupId>io.trino</spiGroupId>
+                    <spiArtifactId>trino-spi</spiArtifactId>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
+                <artifactId>provisio-maven-plugin</artifactId>
+                <extensions>true</extensions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration combine.children="append">
+                    <compilerArgs>
+                        <arg>-XDcompilePolicy=simple</arg>
+                        <arg>-Xplugin:ErrorProne</arg>
+                    </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.google.errorprone</groupId>
+                            <artifactId>error_prone_core</artifactId>
+                            <version>${dep.errorprone.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <fork>false</fork>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <configuration>
+                    <rules>
+                        <requireUpperBoundDeps>
+                            <excludes combine.children="append">
+                                <!-- TODO: fix this in Airlift resolver -->
+                                <exclude>org.codehaus.plexus:plexus-utils</exclude>
+                            </excludes>
+                        </requireUpperBoundDeps>
+                    </rules>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.ferstl</groupId>
+                        <artifactId>pedantic-pom-enforcers</artifactId>
+                        <version>2.1.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/Test*.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
