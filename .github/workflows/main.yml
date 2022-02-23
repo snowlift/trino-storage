@@ -6,10 +6,24 @@ jobs:
   maven-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
         with:
           java-version: 11
+          distribution: 'zulu'
+          cache: 'maven'
+      - name: Configure Problem Matchers
+        run: |
+          echo "::add-matcher::.github/problem-matcher.json"
+          echo "::remove-matcher owner=java::"
       - name: Maven Checks
         run: |
-          ./mvnw clean install
+          ./mvnw -B clean install
+      - name: Upload test report
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: test report ${{ github.job }}
+          path: |
+            **/surefire-reports/TEST-*.xml
+          retention-days: 5
