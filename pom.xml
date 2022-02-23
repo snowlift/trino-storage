@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.trino</groupId>
         <artifactId>trino-root</artifactId>
-        <version>368</version>
+        <version>371</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -15,7 +15,7 @@
 
     <properties>
         <air.main.basedir>${project.basedir}</air.main.basedir>
-        <dep.aws-sdk.version>1.12.85</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.133</dep.aws-sdk.version>
     </properties>
 
     <distributionManagement>
@@ -108,13 +108,13 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.10.10</version>
+            <version>2.10.13</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>4.0.1</version>
+            <version>5.2.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-codec</groupId>
@@ -211,21 +211,21 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>4.0.1</version>
+            <version>5.1.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.18.1</version>
+            <version>3.21.0</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <version>3.0</version>
+            <version>3.4.0</version>
             <scope>test</scope>
         </dependency>
 
