@@ -8,6 +8,7 @@
         <version>368</version>
     </parent>
 
+    <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>

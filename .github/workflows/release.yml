@@ -1,0 +1,49 @@
+name: CD
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'zulu'
+          server-id: github
+          cache: 'maven'
+      - name: Configure Problem Matchers
+        run: |
+          echo "::add-matcher::.github/problem-matcher.json"
+          echo "::remove-matcher owner=java::"
+      - name: Configure Git user
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+      - name: Prepare release
+        run: ./mvnw -B release:prepare
+      - name: Save version number in env
+        run: |
+          echo "VERSION=$(grep 'project.rel.org.ebyhr\\:trino-storage=' release.properties | cut -d'=' -f2)" >> $GITHUB_ENV
+      - uses: marvinpinto/action-automatic-releases@v1.2.1
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          automatic_release_tag: v${{ env.VERSION }}
+          title: v${{ env.VERSION }}
+          files: |
+            target/*.zip
+      - name: Publish JAR
+        run: ./mvnw -B release:perform -Darguments=-Dgpg.skip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload test report
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: test report ${{ github.job }}
+          path: |
+            **/surefire-reports/TEST-*.xml
+          retention-days: 5
