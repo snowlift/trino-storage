@@ -10,19 +10,34 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
+    <version>371-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
+
+    <scm>
+        <developerConnection>scm:git:https://github.com/snowlift/trino-storage.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <air.main.basedir>${project.basedir}</air.main.basedir>
         <dep.aws-sdk.version>1.12.133</dep.aws-sdk.version>
+        <project.scm.id>github</project.scm.id>
     </properties>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <distributionManagement>
         <repository>
             <id>github</id>
             <name>Trino Storage connector</name>
-            <url>https://maven.pkg.github.com/ebyhr/trino-storage</url>
+            <url>https://maven.pkg.github.com/snowlift/trino-storage</url>
         </repository>
     </distributionManagement>
 
@@ -253,6 +268,14 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-scm-plugin</artifactId>
+                        <version>1.12.2</version>
+                        <configuration>
+                            <pushChanges>true</pushChanges>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
