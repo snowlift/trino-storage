@@ -24,7 +24,6 @@ import io.trino.plugin.hive.s3.HiveS3Module;
 import io.trino.spi.connector.Connector;
 import io.trino.spi.connector.ConnectorContext;
 import io.trino.spi.connector.ConnectorFactory;
-import io.trino.spi.connector.ConnectorHandleResolver;
 
 import java.util.Map;
 
@@ -38,12 +37,6 @@ public class StorageConnectorFactory
     public String getName()
     {
         return "storage";
-    }
-
-    @Override
-    public ConnectorHandleResolver getHandleResolver()
-    {
-        return new StorageHandleResolver();
     }
 
     @Override
