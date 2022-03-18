@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>372-SNAPSHOT</version>
+    <version>374-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -16,7 +16,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>120</version>
+        <version>122</version>
     </parent>
 
     <licenses>
@@ -36,18 +36,17 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>371</dep.trino.version>
+        <dep.trino.version>374</dep.trino.version>
         <dep.airlift.version>214</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.133</dep.aws-sdk.version>
-        <dep.jackson.version>2.13.1</dep.jackson.version>
+        <dep.aws-sdk.version>1.12.180</dep.aws-sdk.version>
+        <dep.jackson.version>2.13.2</dep.jackson.version>
         <dep.errorprone.version>2.11.0</dep.errorprone.version>
         <dep.testcontainers.version>1.16.3</dep.testcontainers.version>
-        <dep.docker-java.version>3.2.12</dep.docker-java.version>
+        <dep.docker-java.version>3.2.13</dep.docker-java.version>
         <dep.testng.version>7.5</dep.testng.version>
 
         <project.scm.id>github</project.scm.id>
-        <argLine />
     </properties>
 
     <distributionManagement>
@@ -63,17 +62,12 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.21.2</version>
+                <version>3.21.3</version>
             </dependency>
             <dependency>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-annotations</artifactId>
-                <version>4.5.3</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-                <version>1.2</version>
+                <version>4.6.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -100,7 +94,7 @@
         <dependency>
             <groupId>io.trino.hadoop</groupId>
             <artifactId>hadoop-apache</artifactId>
-            <version>3.2.0-16</version>
+            <version>3.2.0-17</version>
         </dependency>
 
         <dependency>
@@ -131,6 +125,12 @@
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-core</artifactId>
             <version>${dep.aws-sdk.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -154,7 +154,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.0.1-jre</version>
+            <version>31.1-jre</version>
         </dependency>
 
         <dependency>
@@ -178,7 +178,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>5.2.0</version>
+            <version>5.2.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-codec</groupId>
@@ -283,7 +283,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>5.1.0</version>
+            <version>5.2.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -297,7 +297,7 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <version>3.4.0</version>
+            <version>3.4.1</version>
             <scope>test</scope>
         </dependency>
 
