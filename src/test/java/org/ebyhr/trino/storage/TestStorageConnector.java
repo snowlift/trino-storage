@@ -86,6 +86,21 @@ public final class TestStorageConnector
                         "(false, CAST(null AS VARCHAR), 'bbb', 10, CAST(123.456 AS double), ARRAY['ccc'])");
     }
 
+    @Test
+    public void testSelectAvro()
+    {
+        //verifying against avro test file data here https://github.com/apache/avro/blob/master/share/test/data/weather.avro
+        // in json https://github.com/apache/avro/blob/master/share/test/data/weather.json
+
+        assertQuery(format("SELECT * FROM storage.avro.\"%s\"", toAbsolutePath("example-data/weather.avro")),
+                "VALUES " +
+                        "('011990-99999', CAST(-619524000000 AS BIGINT), 0), " +
+                        "('011990-99999', CAST(-619506000000 AS BIGINT), 22), " +
+                        "('011990-99999', CAST(-619484400000 AS BIGINT), -11), " +
+                        "('012650-99999', CAST(-655531200000 AS BIGINT), 111), " +
+                        "('012650-99999', CAST(-655509600000 AS BIGINT), 78) ");
+    }
+
     private static String toAbsolutePath(String resourceName)
     {
         return Resources.getResource(resourceName).toString();

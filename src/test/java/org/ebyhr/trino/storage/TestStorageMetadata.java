@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static io.trino.spi.type.VarcharType.createUnboundedVarcharType;
 import static io.trino.testing.TestingConnectorSession.SESSION;
@@ -49,6 +50,7 @@ public class TestStorageMetadata
 {
     private static final String CONNECTOR_ID = "TEST";
     private StorageTableHandle numbersTableHandle;
+    private StorageTableHandle avroTableHandle;
     private StorageMetadata metadata;
 
     @BeforeMethod
@@ -59,6 +61,10 @@ public class TestStorageMetadata
 
         URL metadataUrl = Resources.getResource(TestStorageClient.class, "/example-data/example-metadata.json");
         assertNotNull(metadataUrl, "metadataUrl is null");
+
+        URL avroUrl = Resources.getResource(TestStorageClient.class,"/example-data/weather.avro");
+        assertNotNull(avroUrl, "avro is null");
+        avroTableHandle = new StorageTableHandle(CONNECTOR_ID, "avro",avroUrl.toString());
 
         HdfsConfig config = new HdfsConfig();
         HdfsConfiguration configuration = new HiveHdfsConfiguration(new HdfsConfigurationInitializer(config), ImmutableSet.of());
@@ -146,6 +152,13 @@ public class TestStorageMetadata
         // StorageTableHandle and StorageColumnHandle passed in.  This is on because
         // it is not possible for the Trino Metadata system to create the handles
         // directly.
+    }
+
+    @Test
+    public void getAvroColumnMetadata()
+    {
+        ConnectorTableMetadata tableMetadata = metadata.getTableMetadata(SESSION, avroTableHandle);
+        assertEquals(List.of("station","time","temp"), tableMetadata.getColumns().stream().map(ColumnMetadata::getName).collect(Collectors.toList()));
     }
 
     @Test(expectedExceptions = TrinoException.class)
