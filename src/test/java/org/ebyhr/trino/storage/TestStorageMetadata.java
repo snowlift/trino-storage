@@ -27,6 +27,7 @@ import io.trino.spi.connector.ConnectorTableMetadata;
 import io.trino.spi.connector.SchemaNotFoundException;
 import io.trino.spi.connector.SchemaTableName;
 import io.trino.spi.connector.TableNotFoundException;
+import io.trino.spi.type.Type;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -159,6 +160,7 @@ public class TestStorageMetadata
     {
         ConnectorTableMetadata tableMetadata = metadata.getTableMetadata(SESSION, avroTableHandle);
         assertEquals(List.of("station","time","temp"), tableMetadata.getColumns().stream().map(ColumnMetadata::getName).collect(Collectors.toList()));
+        assertEquals(List.of("varchar","bigint","integer"), tableMetadata.getColumns().stream().map(ColumnMetadata::getType).map(Type::getBaseName).collect(Collectors.toList()));
     }
 
     @Test(expectedExceptions = TrinoException.class)
