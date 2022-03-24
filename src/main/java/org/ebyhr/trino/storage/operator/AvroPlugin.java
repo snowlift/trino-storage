@@ -2,7 +2,14 @@ package org.ebyhr.trino.storage.operator;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.VerifyException;
+import io.airlift.slice.Slice;
+import io.airlift.slice.SliceInput;
 import io.trino.spi.Page;
+import io.trino.spi.block.ArrayBlockBuilder;
+import io.trino.spi.block.Block;
+import io.trino.spi.block.BlockBuilder;
+import io.trino.spi.block.RowBlock;
+import io.trino.spi.block.RowBlockBuilder;
 import io.trino.spi.type.ArrayType;
 import io.trino.spi.type.BigintType;
 import io.trino.spi.type.BooleanType;
@@ -23,9 +30,14 @@ import org.ebyhr.trino.storage.StorageColumn;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -56,9 +68,7 @@ public class AvroPlugin implements FilePlugin
             final DataFileStream<GenericRecord> fileStream = new DataFileStream<>(streamProvider.apply(path), new GenericDatumReader<>());
             return StreamSupport
                     .stream(fileStream.spliterator(), false)
-                    .map(genericRecord -> {
-                        return this.columnsForRecord(genericRecord);
-                    });
+                    .map(this::columnsForRecord);
         }
         catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -75,6 +85,7 @@ public class AvroPlugin implements FilePlugin
 
     private Object toNativeEncoding(final Schema schema, final Object avroEncoding) {
         if(isNull(avroEncoding)) return null;
+        Function<GenericRecord, Object> f = null;
         try {
             switch (schema.getType()) {
                 case BOOLEAN:
@@ -83,27 +94,29 @@ public class AvroPlugin implements FilePlugin
                 case DOUBLE:
                         return (typeFromAvro(schema).getJavaType()).cast(avroEncoding);
                     break;
+                case FLOAT:
+                    return (long) Float.floatToIntBits((Float) avroEncoding);
                 case RECORD:
-                    return new Block
+                    throw new IllegalStateException("Not supported value: " + schema.getType());
                     break;
                 case ENUM:
                 case STRING:
-
-                    break;
+                    return ((String) avroEncoding);
                 case ARRAY:
-                    break;
+                    Type innerType = typeFromAvro(schema.getElementType());
+                    BlockBuilder builder = typeFromAvro(schema).createBlockBuilder(null, ((List) avroEncoding).size());
+                    ((List<Object>) avroEncoding).forEach(innerObj -> {
+                        innerType.writeObject(builder, this.toNativeEncoding(schema.getElementType(), innerObj));
+                    });
+                    return builder.build();
                 case MAP:
                     break;
                 case UNION:
                     break;
                 case FIXED:
                     break;
-                case STRING:
-                    break;
                 case BYTES:
                     break;
-                case FLOAT:
-                    return (long) Float.floatToIntBits((Float) avroEncoding);
                 case NULL:
                 default:
                     throw new IllegalStateException("Unexpected value: " + schema.getType());
@@ -121,7 +134,7 @@ public class AvroPlugin implements FilePlugin
                 .collect(toImmutableList());
     }
 
-    private Type typeFromAvro(final Schema schema) {
+    private static Type typeFromAvro(final Schema schema) {
         switch (schema.getType()) {
             case RECORD:
                 return RowType.from(schema.getFields()
@@ -133,9 +146,9 @@ public class AvroPlugin implements FilePlugin
             case ENUM:
                 return VarcharType.VARCHAR;
             case ARRAY:
-                return new ArrayType(this.typeFromAvro(schema.getElementType()));
+                return new ArrayType(typeFromAvro(schema.getElementType()));
             case MAP:
-                return new MapType(VarcharType.VARCHAR, this.typeFromAvro(schema.getValueType()), new TypeOperators());
+                return new MapType(VarcharType.VARCHAR, typeFromAvro(schema.getValueType()), new TypeOperators());
             case UNION:
                 throw new UnsupportedOperationException("No union type support for now");
             case FIXED:
@@ -158,6 +171,171 @@ public class AvroPlugin implements FilePlugin
                 throw new UnsupportedOperationException("No null column type support");
             default:
                 throw new VerifyException("Schema type unknown: " + schema.getType().toString());
+        }
+    }
+
+    private interface AvroBlockBuilder {
+        void append(GenericRecord record);
+        Block build();
+    }
+
+     private  static class SimpleAvroBlockBuilder implements AvroBlockBuilder {
+
+        private Schema schema;
+        private Type simpleType;
+        private Function<GenericRecord, Object> objectAccessor;
+        BlockBuilder builder = null;
+        SimpleAvroBlockBuilder(Function<GenericRecord, Object> objectAccessor, Schema schema){
+            this.objectAccessor = objectAccessor;
+            switch (schema.getType()) {
+                case ENUM:
+                case FIXED:
+                case STRING:
+                case BYTES:
+                case INT:
+                case LONG:
+                case FLOAT:
+                case DOUBLE:
+                case BOOLEAN:
+                    this.simpleType = typeFromAvro(schema);
+                    this.builder = typeFromAvro(schema).createBlockBuilder(null, 10);
+                default:
+                    throw new IllegalStateException("Unable to make SimpleAvroBlockBuilder for schema type " + schema.getType());
+            }
+        }
+
+        @Override
+        public void append(GenericRecord record) {
+            try{
+                Object object = this.objectAccessor.apply(record);
+                if (Objects.isNull(object)) {
+                    this.builder.appendNull();
+                }
+                switch (schema.getType()) {
+                    case FIXED:
+                    case BYTES:
+                        throw new IllegalStateException("I have no idea the class here "+ object.getClass().toString());
+                    case ENUM:
+                    case STRING:
+                        ((VarcharType) this.simpleType).writeString(this.builder, (String) object);
+                    case INT:
+                    case LONG:
+                        this.simpleType.writeLong(this.builder, (long) object);
+                    case FLOAT:
+                        this.simpleType.writeLong(this.builder, Float.floatToIntBits((float) object));
+                    case DOUBLE:
+                        this.simpleType.writeDouble(this.builder, (double) object);
+                    case BOOLEAN:
+                        this.simpleType.writeBoolean(this.builder, (boolean) object);
+                    default:
+                        throw new IllegalStateException("Schema skew added in constructor not supported in append" + schema.getType());
+                }
+            } catch (ClassCastException e) {
+                throw new ClassCastException(String.format("Unable to cast object %s using the expected type by the schema %s", this.objectAccessor.apply(record), this.schema));
+            }
+        }
+
+        @Override
+        public Block build() {
+            return this.builder.build();
+        }
+    }
+
+    private static class ArrayAvroBlockBuilder implements AvroBlockBuilder {
+
+        private Schema schema;
+        private Type type;
+        private Function<GenericRecord, Object> objectAccessor;
+        ArrayBlockBuilder builder = null;
+        ArrayAvroBlockBuilder(Function<GenericRecord, Object> objectAccessor, Schema schema){
+            this.schema = schema;
+            this.objectAccessor = objectAccessor;
+            switch (schema.getType()) {
+                case ARRAY:
+                    this.type = typeFromAvro(schema);
+                    this.builder = (ArrayBlockBuilder) this.type.createBlockBuilder(null, 10);
+                default:
+                    throw new IllegalStateException("Unable to make SimpleAvroBlockBuilder for schema type " + schema.getType());
+            }
+        }
+
+        @Override
+        public void append(GenericRecord record) {
+            try{
+                Object object = this.objectAccessor.apply(record);
+                if (Objects.isNull(object)) {
+                    this.builder.appendNull();
+                }
+
+                switch (schema.getType()) {
+                    case ARRAY:
+                    default:
+                        throw new IllegalStateException("Schema skew added in constructor not supported in append" + schema.getType());
+                }
+            } catch (ClassCastException e) {
+                throw new ClassCastException(String.format("Unable to cast object %s using the expected type by the schema %s", this.objectAccessor.apply(record), this.schema));
+            }
+        }
+
+        @Override
+        public Block build() {
+            return this.builder.build();
+        }
+    }
+
+    private static class RowAvroBlockBuilder implements AvroBlockBuilder {
+        private Function<GenericRecord, Object> objectAccessor;
+        private ArrayList<AvroBlockBuilder> fieldBuilders = new ArrayList<>();
+        RowAvroBlockBuilder(Function<GenericRecord, Object> objectAccessor, Schema schema){
+            this.objectAccessor = objectAccessor;
+            switch (schema.getType()) {
+                case RECORD:
+                    this.type = typeFromAvro(schema);
+                    for (Schema.Field field : schema.getFields()) {
+                        final String fieldName = field.name();
+                        Function<GenericRecord, Object> fieldAccessor = this.objectAccessor.andThen(obj -> {
+                            GenericRecord record = (GenericRecord) obj;
+                            return record.get(fieldName);
+                        });
+                        fieldBuilders.add(getAvroBlockBuilderForSchema(fieldAccessor, field.schema()));
+                    }
+                default:
+                    throw new IllegalStateException("Unable to make SimpleAvroBlockBuilder for schema type " + schema.getType());
+            }
+        }
+
+        @Override
+        public void append(GenericRecord record) {
+            for(AvroBlockBuilder builder: this.fieldBuilders) {
+                builder.append(record);
+            }
+        }
+
+        @Override
+        public Block build() {
+            Block[] blocks = this.fieldBuilders.stream().map(AvroBlockBuilder::build).toArray(Block[]::new);
+            return RowBlock.fromFieldBlocks(blocks.length, Optional.empty(), blocks);
+        }
+    }
+
+    private static AvroBlockBuilder getAvroBlockBuilderForSchema(Function<GenericRecord,Object>  objectAccessor, Schema schema) {
+        switch (schema.getType()) {
+            case ENUM:
+            case FIXED:
+            case STRING:
+            case BYTES:
+            case INT:
+            case LONG:
+            case FLOAT:
+            case DOUBLE:
+            case BOOLEAN:
+                return new SimpleAvroBlockBuilder(objectAccessor, schema);
+            case ARRAY:
+                return new ArrayAvroBlockBuilder(objectAccessor, schema);
+            case RECORD:
+                return new RowAvroBlockBuilder(objectAccessor, schema);
+            case NULL:
+                break;
         }
     }
 }
