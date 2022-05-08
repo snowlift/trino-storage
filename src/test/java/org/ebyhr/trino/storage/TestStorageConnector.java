@@ -87,6 +87,15 @@ public final class TestStorageConnector
     }
 
     @Test
+    public void testSelectParquet()
+    {
+        assertQuery(
+                format("SELECT id, bool_col, tinyint_col, smallint_col, int_col, bigint_col, float_col, double_col " +
+                        "FROM storage.parquet.\"%s\" WHERE id = 6", toAbsolutePath("example-data/alltypes_plain.parquet")),
+                "VALUES (6, true, 0, 0, 0, 0, 0.0, 0.0)");
+    }
+
+    @Test
     public void testSelectJson()
     {
         // note that empty arrays are not supported at all, because array types are inferred from the first array element

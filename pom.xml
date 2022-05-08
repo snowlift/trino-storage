@@ -174,6 +174,12 @@
         </dependency>
 
         <dependency>
+            <groupId>io.trino.hive</groupId>
+            <artifactId>hive-apache</artifactId>
+            <version>3.1.2-21</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-orc</artifactId>
             <version>${dep.trino.version}</version>
@@ -204,10 +210,22 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${dep.jackson.version}</version>
-            <scope>provided</scope>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-parquet</artifactId>
+            <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino.hadoop</groupId>
+            <artifactId>hadoop-apache</artifactId>
+            <version>3.2.0-18</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>${dep.airlift.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
@@ -288,7 +306,6 @@
             <groupId>io.airlift</groupId>
             <artifactId>units</artifactId>
             <version>1.10</version>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>
