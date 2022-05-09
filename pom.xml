@@ -36,7 +36,7 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>379</dep.trino.version>
+        <dep.trino.version>380</dep.trino.version>
         <dep.airlift.version>215</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.210</dep.aws-sdk.version>
