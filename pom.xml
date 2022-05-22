@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>381-SNAPSHOT</version>
+    <version>382-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -67,7 +67,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.21.4</version>
+                <version>3.22.0</version>
             </dependency>
             <dependency>
                 <groupId>com.github.spotbugs</groupId>
