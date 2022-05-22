@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>380-SNAPSHOT</version>
+    <version>381-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -36,15 +36,15 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>379</dep.trino.version>
+        <dep.trino.version>381</dep.trino.version>
         <dep.airlift.version>215</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.210</dep.aws-sdk.version>
-        <dep.jackson.version>2.13.2</dep.jackson.version>
+        <dep.aws-sdk.version>1.12.225</dep.aws-sdk.version>
+        <dep.jackson.version>2.13.3</dep.jackson.version>
         <dep.errorprone.version>2.13.1</dep.errorprone.version>
-        <dep.testcontainers.version>1.17.1</dep.testcontainers.version>
+        <dep.testcontainers.version>1.17.2</dep.testcontainers.version>
         <dep.docker-java.version>3.2.13</dep.docker-java.version>
-        <dep.testng.version>7.5</dep.testng.version>
+        <dep.testng.version>7.6.0</dep.testng.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -62,7 +62,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.35</version>
+                <version>1.7.36</version>
             </dependency>
             <dependency>
                 <groupId>org.checkerframework</groupId>
@@ -306,7 +306,7 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <version>3.4.1</version>
+            <version>3.4.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -331,7 +331,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.2.4</version>
+                    <version>3.3.0</version>
                 </plugin>
                 <plugin>
                     <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
