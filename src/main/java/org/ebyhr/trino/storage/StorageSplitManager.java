@@ -19,6 +19,7 @@ import io.trino.spi.connector.ConnectorSplitManager;
 import io.trino.spi.connector.ConnectorSplitSource;
 import io.trino.spi.connector.ConnectorTableHandle;
 import io.trino.spi.connector.ConnectorTransactionHandle;
+import io.trino.spi.connector.Constraint;
 import io.trino.spi.connector.DynamicFilter;
 import io.trino.spi.connector.FixedSplitSource;
 
@@ -45,7 +46,11 @@ public class StorageSplitManager
     }
 
     @Override
-    public ConnectorSplitSource getSplits(ConnectorTransactionHandle transaction, ConnectorSession session, ConnectorTableHandle handle, ConnectorSplitManager.SplitSchedulingStrategy splitSchedulingStrategy, DynamicFilter dynamicFilter)
+    public ConnectorSplitSource getSplits(ConnectorTransactionHandle transaction,
+            ConnectorSession session,
+            ConnectorTableHandle handle,
+            DynamicFilter dynamicFilter,
+            Constraint constraint)
     {
         StorageTableHandle tableHandle = (StorageTableHandle) handle;
         StorageTable table = storageClient.getTable(session, tableHandle.getSchemaName(), tableHandle.getTableName());
