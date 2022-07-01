@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>382-SNAPSHOT</version>
+    <version>388-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -16,7 +16,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>124</version>
+        <version>128</version>
     </parent>
 
     <licenses>
@@ -36,15 +36,15 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>381</dep.trino.version>
-        <dep.airlift.version>215</dep.airlift.version>
+        <dep.trino.version>388</dep.trino.version>
+        <dep.airlift.version>217</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.225</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.252</dep.aws-sdk.version>
         <dep.jackson.version>2.13.3</dep.jackson.version>
-        <dep.errorprone.version>2.13.1</dep.errorprone.version>
-        <dep.testcontainers.version>1.17.2</dep.testcontainers.version>
+        <dep.errorprone.version>2.14.0</dep.errorprone.version>
+        <dep.testcontainers.version>1.17.3</dep.testcontainers.version>
         <dep.docker-java.version>3.2.13</dep.docker-java.version>
-        <dep.testng.version>7.6.0</dep.testng.version>
+        <dep.testng.version>7.6.1</dep.testng.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -67,12 +67,12 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.21.4</version>
+                <version>3.22.2</version>
             </dependency>
             <dependency>
                 <groupId>com.github.spotbugs</groupId>
                 <artifactId>spotbugs-annotations</artifactId>
-                <version>4.6.0</version>
+                <version>4.7.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -285,7 +285,7 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>5.11.0</version>
+            <version>5.12.1</version>
             <scope>test</scope>
         </dependency>
 

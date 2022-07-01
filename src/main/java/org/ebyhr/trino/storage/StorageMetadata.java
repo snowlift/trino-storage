@@ -23,10 +23,12 @@ import io.trino.spi.connector.ConnectorTableHandle;
 import io.trino.spi.connector.ConnectorTableMetadata;
 import io.trino.spi.connector.SchemaTableName;
 import io.trino.spi.connector.SchemaTablePrefix;
+import io.trino.spi.connector.TableColumnsMetadata;
 import io.trino.spi.connector.TableNotFoundException;
 
 import javax.inject.Inject;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -137,6 +139,18 @@ public class StorageMetadata
             }
         }
         return columns.build();
+    }
+
+    @Override
+    public Iterator<TableColumnsMetadata> streamTableColumns(ConnectorSession session, SchemaTablePrefix prefix)
+    {
+        requireNonNull(prefix, "prefix is null");
+        return listTables(session, prefix).stream()
+                .map(table -> TableColumnsMetadata.forTable(
+                        table,
+                        requireNonNull(getStorageTableMetadata(session, table), "tableMetadata is null")
+                                .getColumns()))
+                .iterator();
     }
 
     private ConnectorTableMetadata getStorageTableMetadata(ConnectorSession session, SchemaTableName tableName)
