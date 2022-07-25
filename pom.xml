@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>389-SNAPSHOT</version>
+    <version>391-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -36,10 +36,10 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>388</dep.trino.version>
+        <dep.trino.version>391</dep.trino.version>
         <dep.airlift.version>217</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.252</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.267</dep.aws-sdk.version>
         <dep.jackson.version>2.13.3</dep.jackson.version>
         <dep.errorprone.version>2.14.0</dep.errorprone.version>
         <dep.testcontainers.version>1.17.3</dep.testcontainers.version>
@@ -344,14 +344,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.0.0-M2</version>
+                <version>3.0.0</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>3.0.0-M6</version>
                 <configuration>
                     <scmCommentPrefix>[ci skip]</scmCommentPrefix>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
@@ -361,7 +361,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-plugin</artifactId>
-                <version>1.12.2</version>
+                <version>1.13.0</version>
                 <configuration>
                     <pushChanges>true</pushChanges>
                 </configuration>
