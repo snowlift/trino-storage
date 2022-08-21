@@ -34,7 +34,7 @@ public class TestingMinioServer
     public static final String ACCESS_KEY = "accesskey";
     public static final String SECRET_KEY = "secretkey";
 
-    private static final String DEFAULT_IMAGE = "minio/minio:RELEASE.2021-07-15T22-27-34Z";
+    private static final String DEFAULT_IMAGE = "minio/minio:RELEASE.2022-08-13T21-54-44Z";
     private static final String HOSTNAME = "minio";
 
     private static final int API_PORT = 4566;

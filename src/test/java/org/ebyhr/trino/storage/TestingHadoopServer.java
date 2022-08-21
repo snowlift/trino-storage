@@ -40,7 +40,7 @@ public class TestingHadoopServer
 
     public TestingHadoopServer(Network network)
     {
-        dockerContainer = new GenericContainer<>(DockerImageName.parse("ghcr.io/trinodb/testing/hdp2.6-hive:50"))
+        dockerContainer = new GenericContainer<>(DockerImageName.parse("ghcr.io/trinodb/testing/hdp2.6-hive:65"))
                 .withCreateContainerCmdModifier(cmd -> cmd.withHostName(HOSTNAME))
                 .withCopyFileToContainer(MountableFile.forClasspathResource("minio/hive-core-site.xml"), "/etc/hadoop/conf/core-site.xml")
                 .withStartupCheckStrategy(new IsRunningStartupCheckStrategy())

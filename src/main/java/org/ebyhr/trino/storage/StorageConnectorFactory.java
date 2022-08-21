@@ -16,8 +16,8 @@ package org.ebyhr.trino.storage;
 import com.google.inject.Injector;
 import io.airlift.bootstrap.Bootstrap;
 import io.airlift.json.JsonModule;
-import io.trino.plugin.hive.HiveHdfsModule;
-import io.trino.plugin.hive.authentication.HdfsAuthenticationModule;
+import io.trino.hdfs.HdfsModule;
+import io.trino.hdfs.authentication.HdfsAuthenticationModule;
 import io.trino.plugin.hive.azure.HiveAzureModule;
 import io.trino.plugin.hive.gcs.HiveGcsModule;
 import io.trino.plugin.hive.s3.HiveS3Module;
@@ -48,7 +48,7 @@ public class StorageConnectorFactory
             Bootstrap app = new Bootstrap(
                     new JsonModule(),
                     new StorageModule(catalogName, context.getTypeManager()),
-                    new HiveHdfsModule(),
+                    new HdfsModule(),
                     new HiveS3Module(),
                     new HiveGcsModule(),
                     new HiveAzureModule(),

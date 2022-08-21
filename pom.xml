@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>392-SNAPSHOT</version>
+    <version>393-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -28,7 +28,8 @@
     </licenses>
 
     <properties>
-        <project.build.targetJdk>11</project.build.targetJdk>
+        <project.build.targetJdk>17</project.build.targetJdk>
+        <air.java.version>17.0.4</air.java.version>
 
         <air.check.skip-extended>true</air.check.skip-extended>
         <air.check.skip-license>false</air.check.skip-license>
@@ -36,12 +37,12 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>391</dep.trino.version>
-        <dep.airlift.version>217</dep.airlift.version>
+        <dep.trino.version>393</dep.trino.version>
+        <dep.airlift.version>218</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.267</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.286</dep.aws-sdk.version>
+        <dep.errorprone.version>2.15.0</dep.errorprone.version>
         <dep.jackson.version>2.13.3</dep.jackson.version>
-        <dep.errorprone.version>2.14.0</dep.errorprone.version>
         <dep.testcontainers.version>1.17.3</dep.testcontainers.version>
         <dep.docker-java.version>3.2.13</dep.docker-java.version>
         <dep.testng.version>7.6.1</dep.testng.version>
@@ -67,7 +68,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.22.2</version>
+                <version>3.24.0</version>
             </dependency>
             <dependency>
                 <groupId>com.github.spotbugs</groupId>
@@ -78,6 +79,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-hdfs</artifactId>
+            <version>${dep.trino.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-hive</artifactId>
@@ -181,7 +188,7 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.10.14</version>
+            <version>2.11.0</version>
         </dependency>
 
         <dependency>
