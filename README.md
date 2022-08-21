@@ -108,5 +108,9 @@ Build without running tests
 ./mvnw clean install -DskipTests
 ```
 
+> Note: tests include intergration tests, that will run Minio and HDFS as Docker containers. They need to pull their images,
+> which can take a while. If you see the tests getting stuck, try pulling these images before starting tests, to see the progress.
+> Look for image names and versions in `TestingMinioServer` and `TestingHadoopServer` test classes.
+
 # Deploy
 Unarchive trino-storage-{version}.zip and copy jar files in target directory to use storage connector in your Trino cluster.

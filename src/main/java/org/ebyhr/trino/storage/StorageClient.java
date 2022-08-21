@@ -14,8 +14,8 @@
 package org.ebyhr.trino.storage;
 
 import io.airlift.log.Logger;
-import io.trino.plugin.hive.HdfsEnvironment;
-import io.trino.plugin.hive.HdfsEnvironment.HdfsContext;
+import io.trino.hdfs.HdfsContext;
+import io.trino.hdfs.HdfsEnvironment;
 import io.trino.spi.connector.ConnectorSession;
 import org.apache.hadoop.fs.Path;
 import org.ebyhr.trino.storage.operator.FilePlugin;
