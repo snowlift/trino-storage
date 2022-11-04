@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>397-SNAPSHOT</version>
+    <version>402-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -16,7 +16,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>129</version>
+        <version>130</version>
     </parent>
 
     <licenses>
@@ -37,15 +37,16 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>396</dep.trino.version>
-        <dep.airlift.version>218</dep.airlift.version>
+        <dep.trino.version>402</dep.trino.version>
+        <dep.airlift.version>219</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.305</dep.aws-sdk.version>
-        <dep.errorprone.version>2.15.0</dep.errorprone.version>
+        <dep.aws-sdk.version>1.12.335</dep.aws-sdk.version>
+        <dep.errorprone.version>2.16</dep.errorprone.version>
         <dep.jackson.version>2.13.4</dep.jackson.version>
-        <dep.testcontainers.version>1.17.3</dep.testcontainers.version>
+        <dep.testcontainers.version>1.17.5</dep.testcontainers.version>
         <dep.docker-java.version>3.2.13</dep.docker-java.version>
         <dep.testng.version>7.6.1</dep.testng.version>
+        <dep.joda.version>2.12.1</dep.joda.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -168,7 +169,7 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.11.1</version>
+            <version>${dep.joda.version}</version>
         </dependency>
 
         <dependency>
@@ -186,7 +187,7 @@
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>units</artifactId>
-            <version>1.6</version>
+            <version>1.8</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -200,7 +201,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.21</version>
+            <version>1.22</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -215,7 +216,7 @@
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>slice</artifactId>
-            <version>0.42</version>
+            <version>0.44</version>
             <scope>provided</scope>
         </dependency>
 
@@ -230,7 +231,7 @@
             <groupId>org.openjdk.jol</groupId>
             <artifactId>jol-core</artifactId>
             <scope>provided</scope>
-            <version>0.2</version>
+            <version>0.16</version>
         </dependency>
 
         <!-- for testing -->
@@ -293,7 +294,7 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <version>3.4.2</version>
+            <version>3.5.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -324,6 +325,29 @@
                     <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
                     <artifactId>provisio-maven-plugin</artifactId>
                     <version>1.0.19</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.basepom.maven</groupId>
+                    <artifactId>duplicate-finder-maven-plugin</artifactId>
+                    <configuration>
+                        <exceptions combine.children="append">
+                            <exception>
+                                <conflictingDependencies>
+                                    <dependency>
+                                        <groupId>com.google.cloud.bigdataoss</groupId>
+                                        <artifactId>gcs-connector</artifactId>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>org.apache.httpcomponents</groupId>
+                                        <artifactId>httpclient</artifactId>
+                                    </dependency>
+                                </conflictingDependencies>
+                                <resources>
+                                    <resource>mozilla/public-suffix-list.txt</resource>
+                                </resources>
+                            </exception>
+                        </exceptions>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
