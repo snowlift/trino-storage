@@ -46,7 +46,7 @@
         <dep.testcontainers.version>1.17.5</dep.testcontainers.version>
         <dep.docker-java.version>3.2.13</dep.docker-java.version>
         <dep.testng.version>7.6.1</dep.testng.version>
-        <dep.joda.version>2.12.1</dep.joda.version>
+        <dep.joda.version>2.12.2</dep.joda.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
