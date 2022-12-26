@@ -43,7 +43,7 @@
         <dep.aws-sdk.version>1.12.335</dep.aws-sdk.version>
         <dep.errorprone.version>2.16</dep.errorprone.version>
         <dep.jackson.version>2.13.4</dep.jackson.version>
-        <dep.testcontainers.version>1.17.5</dep.testcontainers.version>
+        <dep.testcontainers.version>1.17.6</dep.testcontainers.version>
         <dep.docker-java.version>3.2.13</dep.docker-java.version>
         <dep.testng.version>7.6.1</dep.testng.version>
         <dep.joda.version>2.12.1</dep.joda.version>
