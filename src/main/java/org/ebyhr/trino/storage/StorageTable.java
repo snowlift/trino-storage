@@ -26,15 +26,18 @@ import static java.util.Objects.requireNonNull;
 
 public class StorageTable
 {
+    private final StorageSplit.Mode mode;
     private final String name;
     private final List<StorageColumn> columns;
     private final List<ColumnMetadata> columnsMetadata;
 
     @JsonCreator
     public StorageTable(
+            @JsonProperty("mode") StorageSplit.Mode mode,
             @JsonProperty("name") String name,
             @JsonProperty("columns") List<StorageColumn> columns)
     {
+        this.mode = requireNonNull(mode, "mode is null");
         checkArgument(!isNullOrEmpty(name), "name is null or is empty");
         this.name = requireNonNull(name, "name is null");
         this.columns = List.copyOf(requireNonNull(columns, "columns is null"));
@@ -44,6 +47,12 @@ public class StorageTable
             columnsMetadata.add(new ColumnMetadata(column.getName(), column.getType()));
         }
         this.columnsMetadata = columnsMetadata.build();
+    }
+
+    @JsonProperty
+    public StorageSplit.Mode getMode()
+    {
+        return mode;
     }
 
     @JsonProperty

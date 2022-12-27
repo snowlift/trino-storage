@@ -46,7 +46,8 @@ public class StorageSplitManager
     }
 
     @Override
-    public ConnectorSplitSource getSplits(ConnectorTransactionHandle transaction,
+    public ConnectorSplitSource getSplits(
+            ConnectorTransactionHandle transaction,
             ConnectorSession session,
             ConnectorTableHandle handle,
             DynamicFilter dynamicFilter,
@@ -58,7 +59,7 @@ public class StorageSplitManager
         checkState(table != null, "Table %s.%s no longer exists", tableHandle.getSchemaName(), tableHandle.getTableName());
 
         List<ConnectorSplit> splits = new ArrayList<>();
-        splits.add(new StorageSplit(connectorId, tableHandle.getSchemaName(), tableHandle.getTableName()));
+        splits.add(new StorageSplit(tableHandle.getMode(), connectorId, tableHandle.getSchemaName(), tableHandle.getTableName()));
         Collections.shuffle(splits);
 
         return new FixedSplitSource(splits);

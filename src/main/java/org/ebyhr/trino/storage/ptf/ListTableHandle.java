@@ -11,35 +11,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.ebyhr.trino.storage;
+package org.ebyhr.trino.storage.ptf;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.trino.spi.connector.ColumnHandle;
-import io.trino.spi.connector.ColumnMetadata;
-import io.trino.spi.type.Type;
+import com.google.common.base.Joiner;
+import io.trino.spi.connector.ConnectorTableHandle;
+import io.trino.spi.connector.SchemaTableName;
 
 import java.util.Objects;
 
-import static com.google.common.base.MoreObjects.toStringHelper;
 import static java.util.Objects.requireNonNull;
 
-public final class StorageColumnHandle
-        implements ColumnHandle
+public final class ListTableHandle
+        implements ConnectorTableHandle
 {
     private final String connectorId;
-    private final String columnName;
-    private final Type columnType;
+    private final String schemaName;
+    private final String tableName;
 
     @JsonCreator
-    public StorageColumnHandle(
+    public ListTableHandle(
             @JsonProperty("connectorId") String connectorId,
-            @JsonProperty("columnName") String columnName,
-            @JsonProperty("columnType") Type columnType)
+            @JsonProperty("schemaName") String schemaName,
+            @JsonProperty("tableName") String tableName)
     {
         this.connectorId = requireNonNull(connectorId, "connectorId is null");
-        this.columnName = requireNonNull(columnName, "columnName is null");
-        this.columnType = requireNonNull(columnType, "columnType is null");
+        this.schemaName = requireNonNull(schemaName, "schemaName is null");
+        this.tableName = requireNonNull(tableName, "tableName is null");
     }
 
     @JsonProperty
@@ -49,26 +48,26 @@ public final class StorageColumnHandle
     }
 
     @JsonProperty
-    public String getColumnName()
+    public String getSchemaName()
     {
-        return columnName;
+        return schemaName;
     }
 
     @JsonProperty
-    public Type getColumnType()
+    public String getTableName()
     {
-        return columnType;
+        return tableName;
     }
 
-    public ColumnMetadata getColumnMetadata()
+    public SchemaTableName toSchemaTableName()
     {
-        return new ColumnMetadata(columnName, columnType);
+        return new SchemaTableName(schemaName, tableName);
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorId, columnName);
+        return Objects.hash(connectorId, schemaName, tableName);
     }
 
     @Override
@@ -81,18 +80,15 @@ public final class StorageColumnHandle
             return false;
         }
 
-        StorageColumnHandle other = (StorageColumnHandle) obj;
+        ListTableHandle other = (ListTableHandle) obj;
         return Objects.equals(this.connectorId, other.connectorId) &&
-                Objects.equals(this.columnName, other.columnName);
+                Objects.equals(this.schemaName, other.schemaName) &&
+                Objects.equals(this.tableName, other.tableName);
     }
 
     @Override
     public String toString()
     {
-        return toStringHelper(this)
-                .add("connectorId", connectorId)
-                .add("columnName", columnName)
-                .add("columnType", columnType)
-                .toString();
+        return Joiner.on(":").join(connectorId, schemaName, tableName);
     }
 }

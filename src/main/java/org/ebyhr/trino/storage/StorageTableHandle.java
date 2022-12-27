@@ -27,18 +27,27 @@ public final class StorageTableHandle
         implements ConnectorTableHandle
 {
     private final String connectorId;
+    private final StorageSplit.Mode mode;
     private final String schemaName;
     private final String tableName;
 
     @JsonCreator
     public StorageTableHandle(
+            @JsonProperty("mode") StorageSplit.Mode mode,
             @JsonProperty("connectorId") String connectorId,
             @JsonProperty("schemaName") String schemaName,
             @JsonProperty("tableName") String tableName)
     {
         this.connectorId = requireNonNull(connectorId, "connectorId is null");
+        this.mode = requireNonNull(mode, "mode is null");
         this.schemaName = requireNonNull(schemaName, "schemaName is null");
         this.tableName = requireNonNull(tableName, "tableName is null");
+    }
+
+    @JsonProperty
+    public StorageSplit.Mode getMode()
+    {
+        return mode;
     }
 
     @JsonProperty
@@ -67,7 +76,7 @@ public final class StorageTableHandle
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorId, schemaName, tableName);
+        return Objects.hash(mode, connectorId, schemaName, tableName);
     }
 
     @Override
@@ -81,7 +90,8 @@ public final class StorageTableHandle
         }
 
         StorageTableHandle other = (StorageTableHandle) obj;
-        return Objects.equals(this.connectorId, other.connectorId) &&
+        return Objects.equals(this.mode, other.mode) &&
+                Objects.equals(this.connectorId, other.connectorId) &&
                 Objects.equals(this.schemaName, other.schemaName) &&
                 Objects.equals(this.tableName, other.tableName);
     }

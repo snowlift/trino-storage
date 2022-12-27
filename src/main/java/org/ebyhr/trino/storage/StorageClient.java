@@ -17,6 +17,8 @@ import io.airlift.log.Logger;
 import io.trino.hdfs.HdfsContext;
 import io.trino.hdfs.HdfsEnvironment;
 import io.trino.spi.connector.ConnectorSession;
+import io.trino.spi.type.VarcharType;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.Path;
 import org.ebyhr.trino.storage.operator.FilePlugin;
 import org.ebyhr.trino.storage.operator.PluginFactory;
@@ -37,6 +39,7 @@ import java.util.stream.Stream;
 
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.ebyhr.trino.storage.ptf.ListTableFunction.LIST_SCHEMA_NAME;
 
 public class StorageClient
 {
@@ -68,10 +71,14 @@ public class StorageClient
         requireNonNull(schema, "schema is null");
         requireNonNull(tableName, "tableName is null");
 
+        if (schema.equals(LIST_SCHEMA_NAME)) {
+            return new StorageTable(StorageSplit.Mode.LIST, tableName, List.of(new StorageColumn("path", VarcharType.VARCHAR)));
+        }
+
         FilePlugin plugin = PluginFactory.create(schema);
         try {
             List<StorageColumn> columns = plugin.getFields(tableName, path -> getInputStream(session, path));
-            return new StorageTable(tableName, columns);
+            return new StorageTable(StorageSplit.Mode.TABLE, tableName, columns);
         }
         catch (Exception e) {
             log.error(e, "Failed to get table: %s.%s", schema, tableName);
@@ -99,6 +106,17 @@ public class StorageClient
         }
         catch (IOException e) {
             throw new UncheckedIOException(format("Failed to open stream for %s", path), e);
+        }
+    }
+
+    public FileStatus[] list(ConnectorSession session, String path)
+    {
+        Path hadoopPath = new Path(path);
+        try {
+            return hdfsEnvironment.getFileSystem(new HdfsContext(session), hadoopPath).listStatus(hadoopPath);
+        }
+        catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 }

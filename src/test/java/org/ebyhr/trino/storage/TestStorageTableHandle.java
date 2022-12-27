@@ -18,11 +18,12 @@ import io.airlift.testing.EquivalenceTester;
 import org.testng.annotations.Test;
 
 import static io.airlift.json.JsonCodec.jsonCodec;
+import static org.ebyhr.trino.storage.StorageSplit.Mode.TABLE;
 import static org.testng.Assert.assertEquals;
 
 public class TestStorageTableHandle
 {
-    private final StorageTableHandle tableHandle = new StorageTableHandle("connectorId", "schemaName", "tableName");
+    private final StorageTableHandle tableHandle = new StorageTableHandle(TABLE, "connectorId", "schemaName", "tableName");
 
     @Test
     public void testJsonRoundTrip()
@@ -37,10 +38,10 @@ public class TestStorageTableHandle
     public void testEquivalence()
     {
         EquivalenceTester.equivalenceTester()
-                .addEquivalentGroup(new StorageTableHandle("connector", "schema", "table"), new StorageTableHandle("connector", "schema", "table"))
-                .addEquivalentGroup(new StorageTableHandle("connectorX", "schema", "table"), new StorageTableHandle("connectorX", "schema", "table"))
-                .addEquivalentGroup(new StorageTableHandle("connector", "schemaX", "table"), new StorageTableHandle("connector", "schemaX", "table"))
-                .addEquivalentGroup(new StorageTableHandle("connector", "schema", "tableX"), new StorageTableHandle("connector", "schema", "tableX"))
+                .addEquivalentGroup(new StorageTableHandle(TABLE, "connector", "schema", "table"), new StorageTableHandle(TABLE, "connector", "schema", "table"))
+                .addEquivalentGroup(new StorageTableHandle(TABLE, "connectorX", "schema", "table"), new StorageTableHandle(TABLE, "connectorX", "schema", "table"))
+                .addEquivalentGroup(new StorageTableHandle(TABLE, "connector", "schemaX", "table"), new StorageTableHandle(TABLE, "connector", "schemaX", "table"))
+                .addEquivalentGroup(new StorageTableHandle(TABLE, "connector", "schema", "tableX"), new StorageTableHandle(TABLE, "connector", "schema", "tableX"))
                 .check();
     }
 }
