@@ -1,0 +1,5 @@
+version: 1.0
+failThreshold: 0
+projectJDK: 17
+exclude:
+  - name: UnstableApiUsage

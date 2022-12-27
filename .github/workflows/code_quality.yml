@@ -5,14 +5,23 @@ on:
   push:
     branches:
       - main
-      - 'releases/*'
+      - ebi/qodana-upstream
 
 jobs:
   qodana:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+#        with:
+#          fetch-depth: 0
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2022.3.0
+        with:
+          args: --profile-path,.github/qodana.yml
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ runner.temp }}/qodana/results/report
+          destination_dir: ./
+#        if: ${{ secrets.GITHUB_TOKEN }} != ''
