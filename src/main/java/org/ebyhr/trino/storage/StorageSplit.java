@@ -25,7 +25,6 @@ import static java.util.Objects.requireNonNull;
 public class StorageSplit
         implements ConnectorSplit
 {
-    private final String connectorId;
     private final Mode mode;
     private final String schemaName;
     private final String tableName;
@@ -34,13 +33,11 @@ public class StorageSplit
     @JsonCreator
     public StorageSplit(
             @JsonProperty("mode") Mode mode,
-            @JsonProperty("connectorId") String connectorId,
             @JsonProperty("schemaName") String schemaName,
             @JsonProperty("tableName") String tableName)
     {
         this.schemaName = requireNonNull(schemaName, "schema name is null");
         this.mode = requireNonNull(mode, "mode is null");
-        this.connectorId = requireNonNull(connectorId, "connector id is null");
         this.tableName = requireNonNull(tableName, "table name is null");
 
         remotelyAccessible = true;
@@ -50,12 +47,6 @@ public class StorageSplit
     public Mode getMode()
     {
         return mode;
-    }
-
-    @JsonProperty
-    public String getConnectorId()
-    {
-        return connectorId;
     }
 
     @JsonProperty

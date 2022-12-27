@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 import static org.ebyhr.trino.storage.ptf.ListTableFunction.COLUMNS_METADATA;
 import static org.ebyhr.trino.storage.ptf.ListTableFunction.COLUMN_HANDLES;
@@ -45,14 +44,11 @@ import static org.ebyhr.trino.storage.ptf.ListTableFunction.LIST_SCHEMA_NAME;
 public class StorageMetadata
         implements ConnectorMetadata
 {
-    private final String connectorId;
-
     private final StorageClient storageClient;
 
     @Inject
-    public StorageMetadata(StorageConnectorId connectorId, StorageClient storageClient)
+    public StorageMetadata(StorageClient storageClient)
     {
-        this.connectorId = requireNonNull(connectorId, "connectorId is null").toString();
         this.storageClient = requireNonNull(storageClient, "client is null");
     }
 
@@ -79,14 +75,13 @@ public class StorageMetadata
             return null;
         }
 
-        return new StorageTableHandle(table.getMode(), connectorId, tableName.getSchemaName(), tableName.getTableName());
+        return new StorageTableHandle(table.getMode(), tableName.getSchemaName(), tableName.getTableName());
     }
 
     @Override
     public ConnectorTableMetadata getTableMetadata(ConnectorSession session, ConnectorTableHandle table)
     {
         StorageTableHandle storageTableHandle = (StorageTableHandle) table;
-        checkArgument(storageTableHandle.getConnectorId().equals(connectorId), "tableHandle is not for this connector");
         SchemaTableName tableName = new SchemaTableName(storageTableHandle.getSchemaName(), storageTableHandle.getTableName());
 
         return getStorageTableMetadata(session, tableName);
@@ -116,7 +111,6 @@ public class StorageMetadata
     public Map<String, ColumnHandle> getColumnHandles(ConnectorSession session, ConnectorTableHandle tableHandle)
     {
         StorageTableHandle storageTableHandle = (StorageTableHandle) tableHandle;
-        checkArgument(storageTableHandle.getConnectorId().equals(connectorId), "tableHandle is not for this connector");
 
         StorageTable table = storageClient.getTable(session, storageTableHandle.getSchemaName(), storageTableHandle.getTableName());
         if (table == null) {
@@ -125,7 +119,7 @@ public class StorageMetadata
 
         ImmutableMap.Builder<String, ColumnHandle> columnHandles = ImmutableMap.builder();
         for (ColumnMetadata column : table.getColumnsMetadata()) {
-            columnHandles.put(column.getName(), new StorageColumnHandle(connectorId, column.getName(), column.getType()));
+            columnHandles.put(column.getName(), new StorageColumnHandle(column.getName(), column.getType()));
         }
         return columnHandles.build();
     }

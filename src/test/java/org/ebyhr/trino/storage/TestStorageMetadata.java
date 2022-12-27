@@ -48,7 +48,6 @@ import static org.testng.Assert.fail;
 @Test(singleThreaded = true)
 public class TestStorageMetadata
 {
-    private static final String CONNECTOR_ID = "TEST";
     private StorageTableHandle numbersTableHandle;
     private StorageMetadata metadata;
 
@@ -56,7 +55,7 @@ public class TestStorageMetadata
     public void setUp()
     {
         URL numbersUrl = Resources.getResource(TestStorageClient.class, "/example-data/numbers-1.csv");
-        numbersTableHandle = new StorageTableHandle(TABLE, CONNECTOR_ID, "csv", numbersUrl.toString());
+        numbersTableHandle = new StorageTableHandle(TABLE, "csv", numbersUrl.toString());
 
         URL metadataUrl = Resources.getResource(TestStorageClient.class, "/example-data/example-metadata.json");
         assertNotNull(metadataUrl, "metadataUrl is null");
@@ -66,7 +65,7 @@ public class TestStorageMetadata
         HdfsEnvironment hdfsEnvironment = new HdfsEnvironment(configuration, config, new NoHdfsAuthentication());
 
         StorageClient client = new StorageClient(hdfsEnvironment);
-        metadata = new StorageMetadata(new StorageConnectorId(CONNECTOR_ID), client);
+        metadata = new StorageMetadata(client);
     }
 
     @Test
@@ -88,18 +87,18 @@ public class TestStorageMetadata
     {
         // known table
         assertEquals(metadata.getColumnHandles(SESSION, numbersTableHandle), Map.of(
-                "one", new StorageColumnHandle(CONNECTOR_ID, "one", createUnboundedVarcharType()),
-                "1", new StorageColumnHandle(CONNECTOR_ID, "1", createUnboundedVarcharType())));
+                "one", new StorageColumnHandle("one", createUnboundedVarcharType()),
+                "1", new StorageColumnHandle("1", createUnboundedVarcharType())));
 
         // unknown table
         try {
-            metadata.getColumnHandles(SESSION, new StorageTableHandle(TABLE, CONNECTOR_ID, "unknown", "unknown"));
+            metadata.getColumnHandles(SESSION, new StorageTableHandle(TABLE, "unknown", "unknown"));
             fail("Expected getColumnHandle of unknown table to throw a TableNotFoundException");
         }
         catch (SchemaNotFoundException expected) {
         }
         try {
-            metadata.getColumnHandles(SESSION, new StorageTableHandle(TABLE, CONNECTOR_ID, "csv", "unknown"));
+            metadata.getColumnHandles(SESSION, new StorageTableHandle(TABLE, "csv", "unknown"));
             fail("Expected getColumnHandle of unknown table to throw a TableNotFoundException");
         }
         catch (TableNotFoundException expected) {
@@ -117,9 +116,9 @@ public class TestStorageMetadata
                 new ColumnMetadata("1", createUnboundedVarcharType())));
 
         // unknown tables should produce null
-        assertNull(metadata.getTableMetadata(SESSION, new StorageTableHandle(TABLE, CONNECTOR_ID, "unknown", "unknown")));
-        assertNull(metadata.getTableMetadata(SESSION, new StorageTableHandle(TABLE, CONNECTOR_ID, "example", "unknown")));
-        assertNull(metadata.getTableMetadata(SESSION, new StorageTableHandle(TABLE, CONNECTOR_ID, "unknown", "numbers")));
+        assertNull(metadata.getTableMetadata(SESSION, new StorageTableHandle(TABLE, "unknown", "unknown")));
+        assertNull(metadata.getTableMetadata(SESSION, new StorageTableHandle(TABLE, "example", "unknown")));
+        assertNull(metadata.getTableMetadata(SESSION, new StorageTableHandle(TABLE, "unknown", "numbers")));
     }
 
     @Test
@@ -139,7 +138,7 @@ public class TestStorageMetadata
     @Test
     public void getColumnMetadata()
     {
-        assertEquals(metadata.getColumnMetadata(SESSION, numbersTableHandle, new StorageColumnHandle(CONNECTOR_ID, "text", createUnboundedVarcharType())),
+        assertEquals(metadata.getColumnMetadata(SESSION, numbersTableHandle, new StorageColumnHandle("text", createUnboundedVarcharType())),
                 new ColumnMetadata("text", createUnboundedVarcharType()));
 
         // example connector assumes that the table handle and column handle are

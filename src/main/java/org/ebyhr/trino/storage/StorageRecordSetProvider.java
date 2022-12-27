@@ -32,7 +32,6 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
@@ -40,13 +39,11 @@ public class StorageRecordSetProvider
         implements ConnectorRecordSetProvider
 {
     private final StorageClient storageClient;
-    private final String connectorId;
 
     @Inject
-    public StorageRecordSetProvider(StorageClient storageClient, StorageConnectorId connectorId)
+    public StorageRecordSetProvider(StorageClient storageClient)
     {
         this.storageClient = requireNonNull(storageClient, "storageClient is null");
-        this.connectorId = requireNonNull(connectorId, "connectorId is null").toString();
     }
 
     @Override
@@ -59,7 +56,6 @@ public class StorageRecordSetProvider
     {
         requireNonNull(split, "split is null");
         StorageSplit storageSplit = (StorageSplit) split;
-        checkArgument(storageSplit.getConnectorId().equals(connectorId), "split is not for this connector");
 
         String schemaName = storageSplit.getSchemaName();
         String tableName = storageSplit.getTableName();

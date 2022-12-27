@@ -35,13 +35,11 @@ import static java.util.Objects.requireNonNull;
 public class StorageSplitManager
         implements ConnectorSplitManager
 {
-    private final String connectorId;
     private final StorageClient storageClient;
 
     @Inject
-    public StorageSplitManager(StorageConnectorId connectorId, StorageClient storageClient)
+    public StorageSplitManager(StorageClient storageClient)
     {
-        this.connectorId = requireNonNull(connectorId, "connectorId is null").toString();
         this.storageClient = requireNonNull(storageClient, "client is null");
     }
 
@@ -59,7 +57,7 @@ public class StorageSplitManager
         checkState(table != null, "Table %s.%s no longer exists", tableHandle.getSchemaName(), tableHandle.getTableName());
 
         List<ConnectorSplit> splits = new ArrayList<>();
-        splits.add(new StorageSplit(tableHandle.getMode(), connectorId, tableHandle.getSchemaName(), tableHandle.getTableName()));
+        splits.add(new StorageSplit(tableHandle.getMode(), tableHandle.getSchemaName(), tableHandle.getTableName()));
         Collections.shuffle(splits);
 
         return new FixedSplitSource(splits);
