@@ -22,25 +22,25 @@ import static org.testng.Assert.assertEquals;
 
 public class TestStorageSplit
 {
-    private final StorageSplit split = new StorageSplit(TABLE, "connectorId", "schemaName", "tableName");
+    private final StorageSplit split = new StorageSplit(TABLE, "schemaName", "tableName");
 
     @Test
     public void testAddresses()
     {
         // http split with default port
-        StorageSplit httpSplit = new StorageSplit(TABLE, "connectorId", "schemaName", "tableName");
+        StorageSplit httpSplit = new StorageSplit(TABLE, "schemaName", "tableName");
         assertEquals(httpSplit.isRemotelyAccessible(), true);
 
         // http split with custom port
-        httpSplit = new StorageSplit(TABLE, "connectorId", "schemaName", "tableName");
+        httpSplit = new StorageSplit(TABLE, "schemaName", "tableName");
         assertEquals(httpSplit.isRemotelyAccessible(), true);
 
         // http split with default port
-        StorageSplit httpsSplit = new StorageSplit(TABLE, "connectorId", "schemaName", "tableName");
+        StorageSplit httpsSplit = new StorageSplit(TABLE, "schemaName", "tableName");
         assertEquals(httpsSplit.isRemotelyAccessible(), true);
 
         // http split with custom port
-        httpsSplit = new StorageSplit(TABLE, "connectorId", "schemaName", "tableName");
+        httpsSplit = new StorageSplit(TABLE, "schemaName", "tableName");
         assertEquals(httpsSplit.isRemotelyAccessible(), true);
     }
 
@@ -50,7 +50,6 @@ public class TestStorageSplit
         JsonCodec<StorageSplit> codec = jsonCodec(StorageSplit.class);
         String json = codec.toJson(split);
         StorageSplit copy = codec.fromJson(json);
-        assertEquals(copy.getConnectorId(), split.getConnectorId());
         assertEquals(copy.getSchemaName(), split.getSchemaName());
         assertEquals(copy.getTableName(), split.getTableName());
 

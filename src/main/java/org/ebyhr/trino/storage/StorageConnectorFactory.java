@@ -47,7 +47,7 @@ public class StorageConnectorFactory
             // A plugin is not required to use Guice; it is just very convenient
             Bootstrap app = new Bootstrap(
                     new JsonModule(),
-                    new StorageModule(catalogName, context.getTypeManager()),
+                    new StorageModule(context.getTypeManager()),
                     new HdfsModule(),
                     new HiveS3Module(),
                     new HiveGcsModule(),

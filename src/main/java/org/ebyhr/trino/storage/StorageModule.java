@@ -35,12 +35,10 @@ import static java.util.Objects.requireNonNull;
 public class StorageModule
         implements Module
 {
-    private final String connectorId;
     private final TypeManager typeManager;
 
-    public StorageModule(String connectorId, TypeManager typeManager)
+    public StorageModule(TypeManager typeManager)
     {
-        this.connectorId = requireNonNull(connectorId, "connector id is null");
         this.typeManager = requireNonNull(typeManager, "typeManager is null");
     }
 
@@ -50,7 +48,6 @@ public class StorageModule
         binder.bind(TypeManager.class).toInstance(typeManager);
 
         binder.bind(StorageConnector.class).in(Scopes.SINGLETON);
-        binder.bind(StorageConnectorId.class).toInstance(new StorageConnectorId(connectorId));
         binder.bind(StorageMetadata.class).in(Scopes.SINGLETON);
         binder.bind(StorageClient.class).in(Scopes.SINGLETON);
         binder.bind(StorageSplitManager.class).in(Scopes.SINGLETON);

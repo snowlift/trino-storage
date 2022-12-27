@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.Inject;
 import com.google.inject.Provider;
 import io.airlift.slice.Slice;
 import io.trino.spi.connector.ColumnHandle;
@@ -35,7 +34,6 @@ import io.trino.spi.ptf.ScalarArgumentSpecification;
 import io.trino.spi.ptf.TableFunctionAnalysis;
 import io.trino.spi.type.Type;
 import org.ebyhr.trino.storage.StorageColumnHandle;
-import org.ebyhr.trino.storage.StorageConnectorId;
 import org.ebyhr.trino.storage.StorageTableHandle;
 
 import java.util.List;
@@ -63,29 +61,19 @@ public class ListTableFunction
             .map(column -> new ColumnMetadata(column.getKey(), column.getValue()))
             .collect(toImmutableList());
     public static final List<ColumnHandle> COLUMN_HANDLES = COLUMN_TYPES.entrySet().stream()
-            .map(column -> new StorageColumnHandle("", column.getKey(), column.getValue()))
+            .map(column -> new StorageColumnHandle(column.getKey(), column.getValue()))
             .collect(toImmutableList());
-
-    private final StorageConnectorId connectorId;
-
-    @Inject
-    public ListTableFunction(StorageConnectorId connectorId)
-    {
-        this.connectorId = requireNonNull(connectorId, "connectorId is null");
-    }
 
     @Override
     public ConnectorTableFunction get()
     {
-        return new QueryFunction(connectorId);
+        return new QueryFunction();
     }
 
     public static class QueryFunction
             extends AbstractConnectorTableFunction
     {
-        private final StorageConnectorId connectorId;
-
-        public QueryFunction(StorageConnectorId connectorId)
+        public QueryFunction()
         {
             super(
                     "system",
@@ -96,7 +84,6 @@ public class ListTableFunction
                                     .type(VARCHAR)
                                     .build()),
                     GENERIC_TABLE);
-            this.connectorId = requireNonNull(connectorId, "connectorId is null");
         }
 
         @Override
@@ -108,7 +95,7 @@ public class ListTableFunction
                     .map(column -> new Descriptor.Field(column.getKey(), Optional.of(column.getValue())))
                     .collect(toImmutableList()));
 
-            QueryFunctionHandle handle = new QueryFunctionHandle(new StorageTableHandle(LIST, connectorId.toString(), LIST_SCHEMA_NAME, path));
+            QueryFunctionHandle handle = new QueryFunctionHandle(new StorageTableHandle(LIST, LIST_SCHEMA_NAME, path));
 
             return TableFunctionAnalysis.builder()
                     .returnedType(returnedType)
