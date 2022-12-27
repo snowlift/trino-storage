@@ -17,29 +17,30 @@ import io.airlift.json.JsonCodec;
 import org.testng.annotations.Test;
 
 import static io.airlift.json.JsonCodec.jsonCodec;
+import static org.ebyhr.trino.storage.StorageSplit.Mode.TABLE;
 import static org.testng.Assert.assertEquals;
 
 public class TestStorageSplit
 {
-    private final StorageSplit split = new StorageSplit("connectorId", "schemaName", "tableName");
+    private final StorageSplit split = new StorageSplit(TABLE, "connectorId", "schemaName", "tableName");
 
     @Test
     public void testAddresses()
     {
         // http split with default port
-        StorageSplit httpSplit = new StorageSplit("connectorId", "schemaName", "tableName");
+        StorageSplit httpSplit = new StorageSplit(TABLE, "connectorId", "schemaName", "tableName");
         assertEquals(httpSplit.isRemotelyAccessible(), true);
 
         // http split with custom port
-        httpSplit = new StorageSplit("connectorId", "schemaName", "tableName");
+        httpSplit = new StorageSplit(TABLE, "connectorId", "schemaName", "tableName");
         assertEquals(httpSplit.isRemotelyAccessible(), true);
 
         // http split with default port
-        StorageSplit httpsSplit = new StorageSplit("connectorId", "schemaName", "tableName");
+        StorageSplit httpsSplit = new StorageSplit(TABLE, "connectorId", "schemaName", "tableName");
         assertEquals(httpsSplit.isRemotelyAccessible(), true);
 
         // http split with custom port
-        httpsSplit = new StorageSplit("connectorId", "schemaName", "tableName");
+        httpsSplit = new StorageSplit(TABLE, "connectorId", "schemaName", "tableName");
         assertEquals(httpsSplit.isRemotelyAccessible(), true);
     }
 

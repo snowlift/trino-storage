@@ -58,10 +58,14 @@ public class TestingHadoopServer
     }
 
     public void copyFromLocal(String resourceName, String containerPath, String hdfsPath)
-            throws InterruptedException, IOException
     {
-        dockerContainer.copyFileToContainer(MountableFile.forClasspathResource(resourceName), containerPath);
-        dockerContainer.execInContainer("hdfs", "dfs", "-copyFromLocal", containerPath, hdfsPath);
+        try {
+            dockerContainer.copyFileToContainer(MountableFile.forClasspathResource(resourceName), containerPath);
+            dockerContainer.execInContainer("hdfs", "dfs", "-copyFromLocal", containerPath, hdfsPath);
+        }
+        catch (InterruptedException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getSocksProxy()

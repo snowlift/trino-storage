@@ -19,6 +19,8 @@ import io.trino.testing.AbstractTestQueryFramework;
 import io.trino.testing.QueryRunner;
 import org.testng.annotations.Test;
 
+import java.util.Optional;
+
 import static java.lang.String.format;
 import static org.ebyhr.trino.storage.StorageQueryRunner.createStorageQueryRunner;
 
@@ -32,7 +34,7 @@ public final class TestStorageConnector
             throws Exception
     {
         server = closeAfterClass(new TestingStorageServer());
-        return createStorageQueryRunner(server, ImmutableMap.of(), ImmutableMap.of());
+        return createStorageQueryRunner(Optional.of(server), ImmutableMap.of(), ImmutableMap.of("hive.hdfs.socks-proxy", server.getHadoopServer().getSocksProxy()));
     }
 
     @Test

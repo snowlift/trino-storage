@@ -31,6 +31,7 @@ import org.ebyhr.trino.storage.operator.PluginFactory;
 import java.util.List;
 
 import static java.util.Objects.requireNonNull;
+import static org.ebyhr.trino.storage.StorageSplit.Mode.LIST;
 
 public class StoragePageSourceProvider
         implements ConnectorPageSourceProvider
@@ -55,6 +56,9 @@ public class StoragePageSourceProvider
             DynamicFilter dynamicFilter)
     {
         StorageSplit storageSplit = (StorageSplit) requireNonNull(split, "split is null");
+        if (storageSplit.getMode() == LIST) {
+            return new ListPageSource(storageClient, session, storageSplit.getTableName());
+        }
 
         String schemaName = storageSplit.getSchemaName();
         String tableName = storageSplit.getTableName();

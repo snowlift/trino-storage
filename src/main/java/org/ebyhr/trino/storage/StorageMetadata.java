@@ -24,7 +24,10 @@ import io.trino.spi.connector.ConnectorTableMetadata;
 import io.trino.spi.connector.SchemaTableName;
 import io.trino.spi.connector.SchemaTablePrefix;
 import io.trino.spi.connector.TableColumnsMetadata;
+import io.trino.spi.connector.TableFunctionApplicationResult;
 import io.trino.spi.connector.TableNotFoundException;
+import io.trino.spi.ptf.ConnectorTableFunctionHandle;
+import org.ebyhr.trino.storage.ptf.ListTableFunction.QueryFunctionHandle;
 
 import javax.inject.Inject;
 
@@ -35,6 +38,9 @@ import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
+import static org.ebyhr.trino.storage.ptf.ListTableFunction.COLUMNS_METADATA;
+import static org.ebyhr.trino.storage.ptf.ListTableFunction.COLUMN_HANDLES;
+import static org.ebyhr.trino.storage.ptf.ListTableFunction.LIST_SCHEMA_NAME;
 
 public class StorageMetadata
         implements ConnectorMetadata
@@ -73,7 +79,7 @@ public class StorageMetadata
             return null;
         }
 
-        return new StorageTableHandle(connectorId, tableName.getSchemaName(), tableName.getTableName());
+        return new StorageTableHandle(table.getMode(), connectorId, tableName.getSchemaName(), tableName.getTableName());
     }
 
     @Override
@@ -118,10 +124,8 @@ public class StorageMetadata
         }
 
         ImmutableMap.Builder<String, ColumnHandle> columnHandles = ImmutableMap.builder();
-        int index = 0;
         for (ColumnMetadata column : table.getColumnsMetadata()) {
-            columnHandles.put(column.getName(), new StorageColumnHandle(connectorId, column.getName(), column.getType(), index));
-            index++;
+            columnHandles.put(column.getName(), new StorageColumnHandle(connectorId, column.getName(), column.getType()));
         }
         return columnHandles.build();
     }
@@ -155,6 +159,10 @@ public class StorageMetadata
 
     private ConnectorTableMetadata getStorageTableMetadata(ConnectorSession session, SchemaTableName tableName)
     {
+        if (tableName.getSchemaName().equals(LIST_SCHEMA_NAME)) {
+            return new ConnectorTableMetadata(tableName, COLUMNS_METADATA);
+        }
+
         if (!listSchemaNames().contains(tableName.getSchemaName())) {
             return null;
         }
@@ -179,5 +187,16 @@ public class StorageMetadata
     public ColumnMetadata getColumnMetadata(ConnectorSession session, ConnectorTableHandle tableHandle, ColumnHandle columnHandle)
     {
         return ((StorageColumnHandle) columnHandle).getColumnMetadata();
+    }
+
+    @Override
+    public Optional<TableFunctionApplicationResult<ConnectorTableHandle>> applyTableFunction(ConnectorSession session, ConnectorTableFunctionHandle handle)
+    {
+        if (!(handle instanceof QueryFunctionHandle)) {
+            return Optional.empty();
+        }
+
+        ConnectorTableHandle tableHandle = ((QueryFunctionHandle) handle).getTableHandle();
+        return Optional.of(new TableFunctionApplicationResult<>(tableHandle, COLUMN_HANDLES));
     }
 }
