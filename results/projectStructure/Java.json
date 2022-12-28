@@ -1,0 +1,8 @@
+{
+  "modules": [
+    {
+      "name": "trino-storage",
+      "languageLevel": 17
+    }
+  ]
+}

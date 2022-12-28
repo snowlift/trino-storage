@@ -1,0 +1,125 @@
+{"version":"3","listProblem":[{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Illegal character: j (U+006A)",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "file",
+      "path": ".mvn/jvm.config",
+      "language": "",
+      "line": 1,
+      "offset": 15,
+      "length": 1,
+      "code": {
+        "startLine": 1,
+        "length": 1,
+        "offset": 14,
+        "surroundingCode": "--add-exports jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED\n--add-exports jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED\n--add-exports jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "trino-storage",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "3a064094cfb6ec35f254cab1f02c975b5d7f9cd26ed0c86c668371820d6e005f"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Illegal character: d (U+0064)",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "file",
+      "path": ".mvn/jvm.config",
+      "language": "",
+      "line": 1,
+      "offset": 16,
+      "length": 1,
+      "code": {
+        "startLine": 1,
+        "length": 1,
+        "offset": 15,
+        "surroundingCode": "--add-exports jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED\n--add-exports jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED\n--add-exports jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "trino-storage",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "14e3cd20d0e80256e3cf4954151ab668b9287b2be6db1e7d3a46c31e90b1a6a7"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Illegal character: k (U+006B)",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "file",
+      "path": ".mvn/jvm.config",
+      "language": "",
+      "line": 1,
+      "offset": 17,
+      "length": 1,
+      "code": {
+        "startLine": 1,
+        "length": 1,
+        "offset": 16,
+        "surroundingCode": "--add-exports jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED\n--add-exports jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED\n--add-exports jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "trino-storage",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "13744bb34f4e546f95011bdc25ac74ff93a297a67eaad23b33ea4b7042d3db77"
+},{
+  "tool": "Code Inspection",
+  "category": "General",
+  "type": "Java annotator",
+  "tags": [
+    "Sanity"
+  ],
+  "severity": "Critical",
+  "comment": "Illegal character: . (U+002E)",
+  "detailsInfo": "Allows viewing the problems reported by the Java annotator: compilation problems, unresolved by IDEA references, and so on.",
+  "sources": [
+    {
+      "type": "file",
+      "path": ".mvn/jvm.config",
+      "language": "",
+      "line": 1,
+      "offset": 18,
+      "length": 1,
+      "code": {
+        "startLine": 1,
+        "length": 1,
+        "offset": 17,
+        "surroundingCode": "--add-exports jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED\n--add-exports jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED\n--add-exports jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "trino-storage",
+    "inspectionName": "JavaAnnotator"
+  },
+  "hash": "7279373b7cd3b25d7ffd0f9a3cef7ece49106efb6b0bfc2e03293af5bb41ced3"
+}]}
