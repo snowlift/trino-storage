@@ -5,14 +5,9 @@
   },
   "attributes": {
     "vcs": {
-      "sarifIdea": {
-        "repositoryUri": "https://github.com/snowlift/trino-storage",
-        "revisionId": "798f7f49de33f0ed23f2583c833202db1446bffd",
-        "branch": "ebi/qodana-upstream"
-      }
+      "sarifIdea": {}
     },
     "deviceId": "200820300000000-90f7-ce87-56cd-7293bcbb792d",
-    "jobUrl": "https://github.com/snowlift/trino-storage/actions/runs/3790751905",
-    "repoUrl": "https://github.com/snowlift/trino-storage"
+    "jobUrl": "https://github.com/snowlift/trino-storage/actions/runs/3790752101"
   }
 }

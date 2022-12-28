@@ -14921,37 +14921,6 @@
       "type": "file",
       "path": "src/main/java/org/ebyhr/trino/storage/operator/JsonPlugin.java",
       "language": "JAVA",
-      "line": 154,
-      "offset": 9,
-      "length": 6,
-      "code": {
-        "startLine": 152,
-        "length": 6,
-        "offset": 43,
-        "surroundingCode": "    {\n        BlockBuilder values;\n        switch (node.getNodeType()) {\n            case ARRAY:\n                Iterator<JsonNode> elements = node.elements();"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "trino-storage",
-    "inspectionName": "EnhancedSwitchMigration"
-  },
-  "hash": "43f431c7b83b519cb3befdd6849e3c513ed9d6f20e713697273d23ce278dfc7a"
-},{
-  "tool": "Code Inspection",
-  "category": "Java 14",
-  "type": "Statement can be replaced with enhanced 'switch'",
-  "tags": [
-    "JAVA"
-  ],
-  "severity": "High",
-  "comment": "Switch statement can be replaced with enhanced 'switch'",
-  "detailsInfo": "Reports `switch` statements that can be automatically replaced with enhanced `switch` statements or expressions.\n\n**Example:**\n\n\n      double getPrice(String fruit) {\n        // Switch statement can be replaced with enhanced 'switch'\n        switch (fruit) {\n          case \"Apple\":\n            return 1.0;\n          case \"Orange\":\n            return 1.5;\n          case \"Mango\":\n            return 2.0;\n          default:\n            throw new IllegalArgumentException();\n        }\n      }\n\nAfter the quick-fix is applied:\n\n\n      double getPrice(String fruit) {\n        return switch (fruit) {\n          case \"Apple\" -> 1.0;\n          case \"Orange\" -> 1.5;\n          case \"Mango\" -> 2.0;\n          default -> throw new IllegalArgumentException();\n        };\n      }\n      \nThis inspection only reports if the language level of the project or module is 14 or higher\n\nNew in 2019.1",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/org/ebyhr/trino/storage/operator/JsonPlugin.java",
-      "language": "JAVA",
       "line": 84,
       "offset": 9,
       "length": 6,
@@ -14968,6 +14937,37 @@
     "inspectionName": "EnhancedSwitchMigration"
   },
   "hash": "8b9f0f16976f2832d6a2c5acf1ee91fbe3959775b4f850e6f2de334e49f2ce3a"
+},{
+  "tool": "Code Inspection",
+  "category": "Java 14",
+  "type": "Statement can be replaced with enhanced 'switch'",
+  "tags": [
+    "JAVA"
+  ],
+  "severity": "High",
+  "comment": "Switch statement can be replaced with enhanced 'switch'",
+  "detailsInfo": "Reports `switch` statements that can be automatically replaced with enhanced `switch` statements or expressions.\n\n**Example:**\n\n\n      double getPrice(String fruit) {\n        // Switch statement can be replaced with enhanced 'switch'\n        switch (fruit) {\n          case \"Apple\":\n            return 1.0;\n          case \"Orange\":\n            return 1.5;\n          case \"Mango\":\n            return 2.0;\n          default:\n            throw new IllegalArgumentException();\n        }\n      }\n\nAfter the quick-fix is applied:\n\n\n      double getPrice(String fruit) {\n        return switch (fruit) {\n          case \"Apple\" -> 1.0;\n          case \"Orange\" -> 1.5;\n          case \"Mango\" -> 2.0;\n          default -> throw new IllegalArgumentException();\n        };\n      }\n      \nThis inspection only reports if the language level of the project or module is 14 or higher\n\nNew in 2019.1",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/org/ebyhr/trino/storage/operator/JsonPlugin.java",
+      "language": "JAVA",
+      "line": 154,
+      "offset": 9,
+      "length": 6,
+      "code": {
+        "startLine": 152,
+        "length": 6,
+        "offset": 43,
+        "surroundingCode": "    {\n        BlockBuilder values;\n        switch (node.getNodeType()) {\n            case ARRAY:\n                Iterator<JsonNode> elements = node.elements();"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "trino-storage",
+    "inspectionName": "EnhancedSwitchMigration"
+  },
+  "hash": "43f431c7b83b519cb3befdd6849e3c513ed9d6f20e713697273d23ce278dfc7a"
 },{
   "tool": "Code Inspection",
   "category": "Java 14",
@@ -15231,37 +15231,6 @@
       "type": "file",
       "path": "src/main/java/org/ebyhr/trino/storage/operator/JsonPlugin.java",
       "language": "JAVA",
-      "line": 96,
-      "offset": 54,
-      "length": 6,
-      "code": {
-        "startLine": 94,
-        "length": 6,
-        "offset": 144,
-        "surroundingCode": "                return node.canConvertToLong() ? BIGINT : DOUBLE;\n            case OBJECT:\n                List<RowType.Field> fields = Streams.stream(node.fields())\n                        .map(entry -> new RowType.Field(Optional.of(entry.getKey()), mapType(entry.getValue())))\n                        .collect(toImmutableList());"
-      }
-    }
-  ],
-  "attributes": {
-    "module": "trino-storage",
-    "inspectionName": "UnstableApiUsage"
-  },
-  "hash": "17c11887228393655fe13288daee51ad48d6e8250a11852c8d18633b88f34bd0"
-},{
-  "tool": "Code Inspection",
-  "category": "JVM languages",
-  "type": "Unstable API Usage",
-  "tags": [
-    "JAVA"
-  ],
-  "severity": "High",
-  "comment": "'stream(java.util.Iterator)' is marked unstable with @Beta",
-  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
-  "sources": [
-    {
-      "type": "file",
-      "path": "src/main/java/org/ebyhr/trino/storage/operator/JsonPlugin.java",
-      "language": "JAVA",
       "line": 146,
       "offset": 24,
       "length": 6,
@@ -15309,6 +15278,37 @@
     "inspectionName": "UnstableApiUsage"
   },
   "hash": "b8d9f8fad62c630e118f286bd73dcfaaeb78f3abbc2334b962503c80640868df"
+},{
+  "tool": "Code Inspection",
+  "category": "JVM languages",
+  "type": "Unstable API Usage",
+  "tags": [
+    "JAVA"
+  ],
+  "severity": "High",
+  "comment": "'stream(java.util.Iterator)' is marked unstable with @Beta",
+  "detailsInfo": "Reports usages of an API marked with one of the annotations as unstable. Such an API may be changed or removed in future versions, breaking the code that uses it.\n\nThe annotations which are used to mark unstable APIs are shown in the list below.\n\nBy default, the inspection ignores usages of unstable APIs\nif their declarations are located in sources of the same project. In such cases it'll be possible to update the usages when you change APIs.\nHowever, it may be inconvenient if the project is big, so one can switch off the **Ignore API declared in this project** option to report\nthe usages of unstable APIs declared in both the project sources and libraries.",
+  "sources": [
+    {
+      "type": "file",
+      "path": "src/main/java/org/ebyhr/trino/storage/operator/JsonPlugin.java",
+      "language": "JAVA",
+      "line": 96,
+      "offset": 54,
+      "length": 6,
+      "code": {
+        "startLine": 94,
+        "length": 6,
+        "offset": 144,
+        "surroundingCode": "                return node.canConvertToLong() ? BIGINT : DOUBLE;\n            case OBJECT:\n                List<RowType.Field> fields = Streams.stream(node.fields())\n                        .map(entry -> new RowType.Field(Optional.of(entry.getKey()), mapType(entry.getValue())))\n                        .collect(toImmutableList());"
+      }
+    }
+  ],
+  "attributes": {
+    "module": "trino-storage",
+    "inspectionName": "UnstableApiUsage"
+  },
+  "hash": "17c11887228393655fe13288daee51ad48d6e8250a11852c8d18633b88f34bd0"
 },{
   "tool": "Code Inspection",
   "category": "JVM languages",
