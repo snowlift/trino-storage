@@ -13,6 +13,7 @@
  */
 package org.ebyhr.trino.storage;
 
+import io.trino.testing.ResourcePresence;
 import io.trino.util.AutoCloseableCloser;
 import org.testcontainers.containers.Network;
 
@@ -25,11 +26,14 @@ public class TestingStorageServer
     private final TestingMinioServer minioServer;
     private final AutoCloseableCloser closer = AutoCloseableCloser.create();
 
+    private boolean isRunning;
+
     public TestingStorageServer()
     {
         Network network = closer.register(newNetwork());
         hadoopServer = closer.register(new TestingHadoopServer(network));
         minioServer = closer.register(new TestingMinioServer(network));
+        isRunning = true;
     }
 
     public TestingHadoopServer getHadoopServer()
@@ -47,5 +51,12 @@ public class TestingStorageServer
             throws Exception
     {
         closer.close();
+        isRunning = false;
+    }
+
+    @ResourcePresence
+    public boolean isRunning()
+    {
+        return this.isRunning;
     }
 }
