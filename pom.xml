@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>403-SNAPSHOT</version>
+    <version>405-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -37,16 +37,16 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>402</dep.trino.version>
+        <dep.trino.version>405</dep.trino.version>
         <dep.airlift.version>219</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.335</dep.aws-sdk.version>
-        <dep.errorprone.version>2.16</dep.errorprone.version>
-        <dep.jackson.version>2.13.4</dep.jackson.version>
-        <dep.testcontainers.version>1.17.5</dep.testcontainers.version>
-        <dep.docker-java.version>3.2.13</dep.docker-java.version>
-        <dep.testng.version>7.6.1</dep.testng.version>
-        <dep.joda.version>2.12.1</dep.joda.version>
+        <dep.aws-sdk.version>1.12.376</dep.aws-sdk.version>
+        <dep.errorprone.version>2.17.0</dep.errorprone.version>
+        <dep.jackson.version>2.14.1</dep.jackson.version>
+        <dep.testcontainers.version>1.17.6</dep.testcontainers.version>
+        <dep.docker-java.version>3.2.14</dep.docker-java.version>
+        <dep.testng.version>7.7.1</dep.testng.version>
+        <dep.joda.version>2.12.2</dep.joda.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -87,7 +87,7 @@
         <dependency>
             <groupId>io.trino.hadoop</groupId>
             <artifactId>hadoop-apache</artifactId>
-            <version>3.2.0-17</version>
+            <version>3.2.0-18</version>
         </dependency>
 
         <dependency>
@@ -245,6 +245,13 @@
         <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-testing</artifactId>
+            <scope>test</scope>
+            <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-testing-services</artifactId>
             <scope>test</scope>
             <version>${dep.trino.version}</version>
         </dependency>
