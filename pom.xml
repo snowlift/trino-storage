@@ -331,7 +331,7 @@
                 <plugin>
                     <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
                     <artifactId>provisio-maven-plugin</artifactId>
-                    <version>1.0.19</version>
+                    <version>1.0.20</version>
                 </plugin>
                 <plugin>
                     <groupId>org.basepom.maven</groupId>
