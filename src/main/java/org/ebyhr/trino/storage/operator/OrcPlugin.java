@@ -51,41 +51,56 @@ public class OrcPlugin
     @Override
     public List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider)
     {
-        AutoDeletingTempFile file;
-        if (path.startsWith("file:")) {
-            path = path.substring(5);
+        AutoDeletingTempFile file = null;
+        try {
+            if (path.startsWith("file:")) {
+                path = path.substring(5);
+            }
+            else {
+                file = getLocalPath(path, streamProvider);
+                path = file.getFile().getPath();
+            }
+            OrcReader reader = getReader(new File(path));
+            ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
+            return reader.getRootColumn().getNestedColumns().stream()
+                    .map(orcColumn -> new StorageColumn(
+                            orcColumn.getColumnName(),
+                            fromOrcType(types.get(orcColumn.getColumnId()), types)))
+                    .collect(Collectors.toList());
         }
-        else {
-            file = getLocalPath(path, streamProvider);
-            path = file.getFile().getPath();
+        catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        OrcReader reader = getReader(new File(path));
-        ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
-        return reader.getRootColumn().getNestedColumns().stream()
-                .map(orcColumn -> new StorageColumn(
-                        orcColumn.getColumnName(),
-                        fromOrcType(types.get(orcColumn.getColumnId()), types)))
-                .collect(Collectors.toList());
+        finally {
+            try {
+                if (file != null) {
+                    file.close();
+                }
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
     public Iterable<Page> getPagesIterator(String path, Function<String, InputStream> streamProvider)
     {
-        AutoDeletingTempFile file;
-        if (path.startsWith("file:")) {
-            path = path.substring(5);
-        }
-        else {
-            file = getLocalPath(path, streamProvider);
-            path = file.getFile().getPath();
-        }
-        OrcReader reader = getReader(new File(path));
-        ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
-        List<Type> readTypes = reader.getRootColumn().getNestedColumns().stream()
-                .map(orcColumn -> fromOrcType(types.get(orcColumn.getColumnId()), types))
-                .collect(Collectors.toList());
-
+        AutoDeletingTempFile file = null;
         try {
+            if (path.startsWith("file:")) {
+                path = path.substring(5);
+            }
+            else {
+                file = getLocalPath(path, streamProvider);
+                path = file.getFile().getPath();
+            }
+            OrcReader reader = getReader(new File(path));
+            ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
+            List<Type> readTypes = reader.getRootColumn().getNestedColumns().stream()
+                    .map(orcColumn -> fromOrcType(types.get(orcColumn.getColumnId()), types))
+                    .collect(Collectors.toList());
+
             OrcRecordReader recordReader = reader.createRecordReader(
                     reader.getRootColumn().getNestedColumns(),
                     readTypes,
@@ -104,17 +119,24 @@ public class OrcPlugin
         catch (IOException e) {
             throw new RuntimeException(e);
         }
+        finally {
+            try {
+                if (file != null) {
+                    file.close();
+                }
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     private AutoDeletingTempFile getLocalPath(String path, Function<String, InputStream> streamProvider)
+            throws IOException
     {
-        try (AutoDeletingTempFile tempFile = new AutoDeletingTempFile()) {
-            Files.copy(streamProvider.apply(path), tempFile.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
-            return tempFile;
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        AutoDeletingTempFile tempFile = new AutoDeletingTempFile();
+        Files.copy(streamProvider.apply(path), tempFile.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
+        return tempFile;
     }
 
     private OrcReader getReader(File file)
