@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -51,62 +51,66 @@ public class OrcPlugin
     @Override
     public List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider)
     {
-        path = getLocalPath(path, streamProvider);
-        OrcReader reader = getReader(new File(path));
-        ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
-        return reader.getRootColumn().getNestedColumns().stream()
-                .map(orcColumn -> new StorageColumn(
-                        orcColumn.getColumnName(),
-                        fromOrcType(types.get(orcColumn.getColumnId()), types)))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public Iterable<Page> getPagesIterator(String path, Function<String, InputStream> streamProvider)
-    {
-        path = getLocalPath(path, streamProvider);
-        OrcReader reader = getReader(new File(path));
-        ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
-        List<Type> readTypes = reader.getRootColumn().getNestedColumns().stream()
-                .map(orcColumn -> fromOrcType(types.get(orcColumn.getColumnId()), types))
-                .collect(Collectors.toList());
-
-        try {
-            OrcRecordReader recordReader = reader.createRecordReader(
-                    reader.getRootColumn().getNestedColumns(),
-                    readTypes,
-                    OrcPredicate.TRUE,
-                    UTC,
-                    newSimpleAggregatedMemoryContext(),
-                    INITIAL_BATCH_SIZE,
-                    OrcPlugin::handleException);
-            List<Page> result = new LinkedList<>();
-            Page page;
-            while ((page = recordReader.nextPage()) != null) {
-                result.add(page.getLoadedPage());
-            }
-            return result;
+        try (ClosableFile file = getLocalFile(path, streamProvider)) {
+            OrcReader reader = getReader(file.getFile());
+            ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
+            return reader.getRootColumn().getNestedColumns().stream()
+                    .map(orcColumn -> new StorageColumn(
+                            orcColumn.getColumnName(),
+                            fromOrcType(types.get(orcColumn.getColumnId()), types)))
+                    .collect(Collectors.toList());
         }
         catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private String getLocalPath(String path, Function<String, InputStream> streamProvider)
+    @Override
+    public Iterable<Page> getPagesIterator(String path, Function<String, InputStream> streamProvider)
     {
-        if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
-            try (AutoDeletingTempFile tempFile = new AutoDeletingTempFile()) {
-                Files.copy(streamProvider.apply(path), tempFile.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
-                return tempFile.getFile().getPath();
+        try (ClosableFile file = getLocalFile(path, streamProvider)) {
+            OrcReader reader = getReader(file.getFile());
+            ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
+            List<Type> readTypes = reader.getRootColumn().getNestedColumns().stream()
+                    .map(orcColumn -> fromOrcType(types.get(orcColumn.getColumnId()), types))
+                    .collect(Collectors.toList());
+            try {
+                OrcRecordReader recordReader = reader.createRecordReader(
+                        reader.getRootColumn().getNestedColumns(),
+                        readTypes,
+                        OrcPredicate.TRUE,
+                        UTC,
+                        newSimpleAggregatedMemoryContext(),
+                        INITIAL_BATCH_SIZE,
+                        OrcPlugin::handleException);
+                List<Page> result = new ArrayList<>();
+                Page page;
+                while ((page = recordReader.nextPage()) != null) {
+                    result.add(page.getLoadedPage());
+                }
+                return result;
             }
             catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        if (path.startsWith("file:")) {
-            return path.substring(5);
+        catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return path;
+    }
+
+    private ClosableFile getLocalFile(String path, Function<String, InputStream> streamProvider)
+            throws IOException
+    {
+        if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
+            AutoDeletingTempFile tempFile = new AutoDeletingTempFile();
+            Files.copy(streamProvider.apply(path), tempFile.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING);
+            return tempFile;
+        }
+        if (path.startsWith("file:")) {
+            return () -> new File(path.substring(5));
+        }
+        throw new IllegalArgumentException(format("Unsupported schema %s", path.split(":", 2)[0]));
     }
 
     private OrcReader getReader(File file)
@@ -136,8 +140,20 @@ public class OrcPlugin
         return new TrinoException(GENERIC_INTERNAL_ERROR, "Failed to read temporary data", e);
     }
 
+    public interface ClosableFile
+            extends AutoCloseable
+    {
+        File getFile();
+
+        @Override
+        default void close()
+                throws IOException
+        {
+        }
+    }
+
     public static class AutoDeletingTempFile
-            implements AutoCloseable
+            implements ClosableFile
     {
         private final File file;
 
@@ -147,6 +163,7 @@ public class OrcPlugin
             file = File.createTempFile("trino-storage-", ".orc");
         }
 
+        @Override
         public File getFile()
         {
             return file;
