@@ -70,6 +70,9 @@ public final class TestStorageConnector
         assertQuery(
                 format("SELECT * FROM storage.orc.\"%s\" WHERE x = 1658882660", toAbsolutePath("example-data/apache-lz4.orc")),
                 "VALUES (1658882660, 639, -5557347160648450358)");
+        assertQuery(
+                format("SELECT * FROM storage.orc.\"%s\" WHERE x = 1658882660", toRemotePath("example-data/apache-lz4.orc")),
+                "VALUES (1658882660, 639, -5557347160648450358)");
     }
 
     @Test
@@ -91,5 +94,10 @@ public final class TestStorageConnector
     private static String toAbsolutePath(String resourceName)
     {
         return Resources.getResource(resourceName).toString();
+    }
+
+    private static String toRemotePath(String resourceName)
+    {
+        return format("https://github.com/snowlift/trino-storage/raw/4c381eca1fa44b22372300659a937a57550c90b9/src/test/resources/%s", resourceName);
     }
 }
