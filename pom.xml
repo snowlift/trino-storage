@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>407-SNAPSHOT</version>
+    <version>411-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -16,7 +16,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>133</version>
+        <version>134</version>
     </parent>
 
     <licenses>
@@ -29,7 +29,7 @@
 
     <properties>
         <project.build.targetJdk>17</project.build.targetJdk>
-        <air.java.version>17.0.4</air.java.version>
+        <air.java.version>17.0.6</air.java.version>
 
         <air.check.skip-extended>true</air.check.skip-extended>
         <air.check.skip-license>false</air.check.skip-license>
@@ -37,16 +37,16 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>406</dep.trino.version>
-        <dep.airlift.version>222</dep.airlift.version>
+        <dep.trino.version>411</dep.trino.version>
+        <dep.airlift.version>228</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.395</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.440</dep.aws-sdk.version>
         <dep.errorprone.version>2.18.0</dep.errorprone.version>
         <dep.jackson.version>2.14.2</dep.jackson.version>
         <dep.testcontainers.version>1.17.6</dep.testcontainers.version>
-        <dep.docker-java.version>3.2.14</dep.docker-java.version>
+        <dep.docker-java.version>3.3.0</dep.docker-java.version>
         <dep.testng.version>7.7.1</dep.testng.version>
-        <dep.joda.version>2.12.2</dep.joda.version>
+        <dep.joda.version>2.12.5</dep.joda.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -58,6 +58,26 @@
             <url>https://maven.pkg.github.com/snowlift/trino-storage</url>
         </repository>
     </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>net.java.dev.jna</groupId>
+                <artifactId>jna</artifactId>
+                <version>5.13.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.java.dev.jna</groupId>
+                <artifactId>jna-platform</artifactId>
+                <version>5.13.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>1.14.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -201,7 +221,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.22</version>
+            <version>1.23.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -216,7 +236,7 @@
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>slice</artifactId>
-            <version>0.44</version>
+            <version>0.45</version>
             <scope>provided</scope>
         </dependency>
 
@@ -231,7 +251,7 @@
             <groupId>org.openjdk.jol</groupId>
             <artifactId>jol-core</artifactId>
             <scope>provided</scope>
-            <version>0.16</version>
+            <version>0.17</version>
         </dependency>
 
         <!-- for testing -->
@@ -294,14 +314,14 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.21.0</version>
+            <version>3.24.2</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <version>3.5.0</version>
+            <version>3.5.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -326,12 +346,12 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.4.0</version>
+                    <version>3.4.1</version>
                 </plugin>
                 <plugin>
                     <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
                     <artifactId>provisio-maven-plugin</artifactId>
-                    <version>1.0.19</version>
+                    <version>1.0.20</version>
                 </plugin>
                 <plugin>
                     <groupId>org.basepom.maven</groupId>
@@ -362,14 +382,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.1</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0-M6</version>
+                <version>3.0.0</version>
                 <configuration>
                     <scmCommentPrefix>[ci skip]</scmCommentPrefix>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
@@ -379,7 +399,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-plugin</artifactId>
-                <version>1.13.0</version>
+                <version>2.0.0</version>
                 <configuration>
                     <pushChanges>true</pushChanges>
                 </configuration>
@@ -387,7 +407,7 @@
             <plugin>
                 <groupId>io.trino</groupId>
                 <artifactId>trino-maven-plugin</artifactId>
-                <version>11</version>
+                <version>12</version>
                 <extensions>true</extensions>
                 <configuration>
                     <pluginClassName>io.trino.spi.Plugin</pluginClassName>
