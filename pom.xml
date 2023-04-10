@@ -37,7 +37,7 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>411</dep.trino.version>
+        <dep.trino.version>412</dep.trino.version>
         <dep.airlift.version>228</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.440</dep.aws-sdk.version>
@@ -323,6 +323,13 @@
             <artifactId>plexus-utils</artifactId>
             <version>3.5.1</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-common</artifactId>
+            <scope>test</scope>
+            <version>1.6.20</version>
         </dependency>
 
         <dependency>
