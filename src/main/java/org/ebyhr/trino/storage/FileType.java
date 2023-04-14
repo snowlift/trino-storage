@@ -17,7 +17,7 @@ import static java.util.Locale.ENGLISH;
 
 public enum FileType
 {
-    CSV, TSV, TXT, RAW, EXCEL, ORC, JSON;
+    CSV, TSV, TXT, RAW, EXCEL, ORC, JSON, AVRO;
 
     @Override
     public String toString()

@@ -38,6 +38,8 @@ public final class PluginFactory
                 return new OrcPlugin();
             case "json":
                 return new JsonPlugin();
+            case "avro":
+                return new AvroPlugin();
             default:
                 throw new SchemaNotFoundException(typeName);
         }
