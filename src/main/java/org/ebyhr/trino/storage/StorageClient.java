@@ -14,12 +14,10 @@
 package org.ebyhr.trino.storage;
 
 import io.airlift.log.Logger;
-import io.trino.hdfs.HdfsContext;
-import io.trino.hdfs.HdfsEnvironment;
+import io.trino.filesystem.FileIterator;
+import io.trino.filesystem.TrinoFileSystemFactory;
 import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.type.VarcharType;
-import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.fs.Path;
 import org.ebyhr.trino.storage.operator.FilePlugin;
 import org.ebyhr.trino.storage.operator.PluginFactory;
 
@@ -45,12 +43,12 @@ public class StorageClient
 {
     private static final Logger log = Logger.get(StorageClient.class);
 
-    private final HdfsEnvironment hdfsEnvironment;
+    private final TrinoFileSystemFactory fileSystemFactory;
 
     @Inject
-    public StorageClient(HdfsEnvironment hdfsEnvironment)
+    public StorageClient(TrinoFileSystemFactory fileSystemFactory)
     {
-        this.hdfsEnvironment = requireNonNull(hdfsEnvironment, "hdfsEnvironment is null");
+        this.fileSystemFactory = requireNonNull(fileSystemFactory, "fileSystemFactory is null");
     }
 
     public List<String> getSchemaNames()
@@ -95,8 +93,7 @@ public class StorageClient
                 return connection.getInputStream();
             }
             if (path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
-                Path hdfsPath = new Path(path);
-                return hdfsEnvironment.getFileSystem(new HdfsContext(session), hdfsPath).open(hdfsPath);
+                return fileSystemFactory.create(session).newInputFile(path).newStream();
             }
             if (!path.startsWith("file:")) {
                 path = "file:" + path;
@@ -109,11 +106,10 @@ public class StorageClient
         }
     }
 
-    public FileStatus[] list(ConnectorSession session, String path)
+    public FileIterator list(ConnectorSession session, String path)
     {
-        Path hadoopPath = new Path(path);
         try {
-            return hdfsEnvironment.getFileSystem(new HdfsContext(session), hadoopPath).listStatus(hadoopPath);
+            return fileSystemFactory.create(session).listFiles(path);
         }
         catch (IOException e) {
             throw new UncheckedIOException(e);

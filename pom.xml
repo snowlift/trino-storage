@@ -82,6 +82,12 @@
     <dependencies>
         <dependency>
             <groupId>io.trino</groupId>
+            <artifactId>trino-filesystem</artifactId>
+            <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
             <artifactId>trino-hdfs</artifactId>
             <version>${dep.trino.version}</version>
         </dependency>
@@ -102,12 +108,6 @@
             <groupId>io.trino</groupId>
             <artifactId>trino-orc</artifactId>
             <version>${dep.trino.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.trino.hadoop</groupId>
-            <artifactId>hadoop-apache</artifactId>
-            <version>3.2.0-18</version>
         </dependency>
 
         <dependency>
@@ -184,6 +184,13 @@
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino.hadoop</groupId>
+            <artifactId>hadoop-apache</artifactId>
+            <scope>runtime</scope>
+            <version>3.2.0-18</version>
         </dependency>
 
         <dependency>
