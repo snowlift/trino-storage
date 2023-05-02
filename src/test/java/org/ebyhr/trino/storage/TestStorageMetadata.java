@@ -15,6 +15,8 @@ package org.ebyhr.trino.storage;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
+import io.trino.filesystem.TrinoFileSystemFactory;
+import io.trino.filesystem.hdfs.HdfsFileSystemFactory;
 import io.trino.hdfs.DynamicHdfsConfiguration;
 import io.trino.hdfs.HdfsConfig;
 import io.trino.hdfs.HdfsConfiguration;
@@ -63,8 +65,9 @@ public class TestStorageMetadata
         HdfsConfig config = new HdfsConfig();
         HdfsConfiguration configuration = new DynamicHdfsConfiguration(new HdfsConfigurationInitializer(config), ImmutableSet.of());
         HdfsEnvironment hdfsEnvironment = new HdfsEnvironment(configuration, config, new NoHdfsAuthentication());
+        TrinoFileSystemFactory fileSystemFactory = new HdfsFileSystemFactory(hdfsEnvironment);
 
-        StorageClient client = new StorageClient(hdfsEnvironment);
+        StorageClient client = new StorageClient(fileSystemFactory);
         metadata = new StorageMetadata(client);
     }
 

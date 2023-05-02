@@ -15,11 +15,15 @@ package org.ebyhr.trino.storage;
 
 import com.google.common.collect.ImmutableList;
 import io.airlift.slice.Slices;
+import io.trino.filesystem.FileEntry;
+import io.trino.filesystem.FileIterator;
 import io.trino.spi.Page;
 import io.trino.spi.PageBuilder;
 import io.trino.spi.connector.ConnectorPageSource;
 import io.trino.spi.connector.ConnectorSession;
-import org.apache.hadoop.fs.FileStatus;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
 import static io.trino.spi.type.BigintType.BIGINT;
 import static io.trino.spi.type.DateTimeEncoding.packDateTimeWithZone;
@@ -30,7 +34,7 @@ public class ListPageSource
         implements ConnectorPageSource
 {
     private final long readTimeNanos;
-    private final FileStatus[] fileStatuses;
+    private final FileIterator fileStatuses;
     private boolean done;
 
     public ListPageSource(StorageClient storageClient, ConnectorSession session, String path)
@@ -67,12 +71,18 @@ public class ListPageSource
 
         done = true;
 
-        PageBuilder page = new PageBuilder(fileStatuses.length, ImmutableList.of(BIGINT, BIGINT, VARCHAR));
-        for (FileStatus status : fileStatuses) {
-            page.declarePosition();
-            BIGINT.writeLong(page.getBlockBuilder(0), packDateTimeWithZone(status.getModificationTime(), UTC_KEY));
-            BIGINT.writeLong(page.getBlockBuilder(1), status.getLen());
-            VARCHAR.writeSlice(page.getBlockBuilder(2), Slices.utf8Slice(status.getPath().getName()));
+        PageBuilder page = new PageBuilder(ImmutableList.of(BIGINT, BIGINT, VARCHAR));
+        try {
+            while (fileStatuses.hasNext()) {
+                FileEntry status = fileStatuses.next();
+                page.declarePosition();
+                BIGINT.writeLong(page.getBlockBuilder(0), packDateTimeWithZone(status.lastModified().toEpochMilli(), UTC_KEY));
+                BIGINT.writeLong(page.getBlockBuilder(1), status.length());
+                VARCHAR.writeSlice(page.getBlockBuilder(2), Slices.utf8Slice(status.location()));
+            }
+        }
+        catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
         return page.build();
     }
