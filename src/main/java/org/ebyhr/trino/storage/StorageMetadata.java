@@ -28,6 +28,7 @@ import io.trino.spi.connector.TableFunctionApplicationResult;
 import io.trino.spi.connector.TableNotFoundException;
 import io.trino.spi.ptf.ConnectorTableFunctionHandle;
 import org.ebyhr.trino.storage.ptf.ListTableFunction.QueryFunctionHandle;
+import org.ebyhr.trino.storage.ptf.ReadFileTableFunction.ReadFunctionHandle;
 
 import javax.inject.Inject;
 
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static java.util.Objects.requireNonNull;
 import static org.ebyhr.trino.storage.ptf.ListTableFunction.COLUMNS_METADATA;
 import static org.ebyhr.trino.storage.ptf.ListTableFunction.COLUMN_HANDLES;
@@ -186,11 +188,16 @@ public class StorageMetadata
     @Override
     public Optional<TableFunctionApplicationResult<ConnectorTableHandle>> applyTableFunction(ConnectorSession session, ConnectorTableFunctionHandle handle)
     {
-        if (!(handle instanceof QueryFunctionHandle)) {
-            return Optional.empty();
+        if (handle instanceof ReadFunctionHandle catFunctionHandle) {
+            return Optional.of(new TableFunctionApplicationResult<>(
+                    catFunctionHandle.getTableHandle(),
+                    catFunctionHandle.getColumns().stream()
+                            .map(column -> new StorageColumnHandle(column.getName(), column.getType()))
+                            .collect(toImmutableList())));
         }
-
-        ConnectorTableHandle tableHandle = ((QueryFunctionHandle) handle).getTableHandle();
-        return Optional.of(new TableFunctionApplicationResult<>(tableHandle, COLUMN_HANDLES));
+        if (handle instanceof QueryFunctionHandle queryFunctionHandle) {
+            return Optional.of(new TableFunctionApplicationResult<>(queryFunctionHandle.getTableHandle(), COLUMN_HANDLES));
+        }
+        return Optional.empty();
     }
 }
