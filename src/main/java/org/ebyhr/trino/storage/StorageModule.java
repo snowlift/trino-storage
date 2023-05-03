@@ -26,6 +26,7 @@ import io.trino.spi.type.Type;
 import io.trino.spi.type.TypeManager;
 import io.trino.spi.type.TypeSignature;
 import org.ebyhr.trino.storage.ptf.ListTableFunction;
+import org.ebyhr.trino.storage.ptf.ReadFileTableFunction;
 
 import javax.inject.Inject;
 
@@ -56,6 +57,7 @@ public class StorageModule
         binder.bind(StorageSplitManager.class).in(Scopes.SINGLETON);
         binder.bind(StorageRecordSetProvider.class).in(Scopes.SINGLETON);
         binder.bind(StoragePageSourceProvider.class).in(Scopes.SINGLETON);
+        newSetBinder(binder, ConnectorTableFunction.class).addBinding().toProvider(ReadFileTableFunction.class).in(Scopes.SINGLETON);
         newSetBinder(binder, ConnectorTableFunction.class).addBinding().toProvider(ListTableFunction.class).in(Scopes.SINGLETON);
         binder.bind(TrinoFileSystemFactory.class).to(HdfsFileSystemFactory.class).in(Scopes.SINGLETON);
         binder.bind(OpenTelemetry.class).toInstance(OpenTelemetry.noop());

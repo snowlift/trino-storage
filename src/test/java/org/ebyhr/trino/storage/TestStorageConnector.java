@@ -41,7 +41,7 @@ public final class TestStorageConnector
     public void testSelectCsv()
     {
         assertQuery(
-                format("SELECT * FROM storage.csv.\"%s\"", toAbsolutePath("example-data/numbers-2.csv")),
+                "SELECT * FROM TABLE(storage.system.read_file('csv', '" + toAbsolutePath("example-data/numbers-2.csv") + "'))",
                 "VALUES ('eleven', '11'), ('twelve', '12')");
     }
 
@@ -49,10 +49,10 @@ public final class TestStorageConnector
     public void testSelectTsv()
     {
         assertQuery(
-                format("SELECT * FROM storage.tsv.\"%s\"", toAbsolutePath("example-data/numbers.tsv")),
+                "SELECT * FROM TABLE(storage.system.read_file('tsv', '" + toAbsolutePath("example-data/numbers.tsv") + "'))",
                 "VALUES ('two', '2'), ('three', '3')");
         assertQuery(
-                format("SELECT * FROM storage.tsv.\"%s\"", server.getHadoopServer().toHdfsPath("/tmp/numbers.tsv")),
+                "SELECT * FROM TABLE(storage.system.read_file('tsv', '" + server.getHadoopServer().toHdfsPath("/tmp/numbers.tsv") + "'))",
                 "VALUES ('two', '2'), ('three', '3')");
     }
 
@@ -60,7 +60,7 @@ public final class TestStorageConnector
     public void testSelectExcel()
     {
         assertQuery(
-                format("SELECT * FROM storage.excel.\"%s\"", toAbsolutePath("example-data/sample.xlsx")),
+                "SELECT * FROM TABLE(storage.system.read_file('excel', '" + toAbsolutePath("example-data/sample.xlsx") + "'))",
                 "VALUES ('a', '1'), ('b', '2')");
     }
 
@@ -68,10 +68,10 @@ public final class TestStorageConnector
     public void testSelectOrc()
     {
         assertQuery(
-                format("SELECT * FROM storage.orc.\"%s\" WHERE x = 1658882660", toAbsolutePath("example-data/apache-lz4.orc")),
+                "SELECT * FROM TABLE(storage.system.read_file('orc', '" + toAbsolutePath("example-data/apache-lz4.orc") + "')) WHERE x = 1658882660",
                 "VALUES (1658882660, 639, -5557347160648450358)");
         assertQuery(
-                format("SELECT * FROM storage.orc.\"%s\" WHERE x = 1658882660", toRemotePath("example-data/apache-lz4.orc")),
+                "SELECT * FROM TABLE(storage.system.read_file('orc', '" + toRemotePath("example-data/apache-lz4.orc") + "')) WHERE x = 1658882660",
                 "VALUES (1658882660, 639, -5557347160648450358)");
     }
 
@@ -80,12 +80,12 @@ public final class TestStorageConnector
     {
         // note that empty arrays are not supported at all, because array types are inferred from the first array element
         assertQuery(
-                format("SELECT * FROM storage.json.\"%s\"", toAbsolutePath("example-data/newlines.json")),
+                "SELECT * FROM TABLE(storage.system.read_file('json', '" + toAbsolutePath("example-data/newlines.json") + "'))",
                 "VALUES " +
                         "(true, CAST(null AS VARCHAR), 'aaa', 5, CAST(123.456 AS double), ARRAY['aaa', 'bbb']), " +
                         "(false, CAST(null AS VARCHAR), 'bbb', 10, CAST(123.456 AS double), ARRAY['ccc'])");
         assertQuery(
-                format("SELECT * FROM storage.json.\"%s\"", toAbsolutePath("example-data/array-of-objects.json")),
+                "SELECT * FROM TABLE(storage.system.read_file('json', '" + toAbsolutePath("example-data/array-of-objects.json") + "'))",
                 "VALUES " +
                         "(true, CAST(null AS VARCHAR), 'aaa', 5, CAST(123.456 AS double), ARRAY['aaa', 'bbb']), " +
                         "(false, CAST(null AS VARCHAR), 'bbb', 10, CAST(123.456 AS double), ARRAY['ccc'])");

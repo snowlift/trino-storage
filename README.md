@@ -99,7 +99,7 @@ storage.excel."https://raw.githubusercontent.com/snowlift/trino-storage/master/s
 
 # Table functions
 
-The connector provides specific table functions to list directory status.
+The connector provides specific table functions to list directory status and read files.
 ```sql
 SELECT * FROM TABLE(storage.system.list('/tmp/trino-storage'));
 ```
@@ -107,6 +107,15 @@ SELECT * FROM TABLE(storage.system.list('/tmp/trino-storage'));
      file_modified_time      | size |            name
 -----------------------------+------+-----------------------------
  2023-05-03 12:14:22.107 UTC |   12 | /tmp/trino-storage/test.txt
+```
+
+```sql
+SELECT * FROM TABLE(storage.system.read_file('csv', '/tmp/trino-storage/test.txt'));
+```
+```
+     col
+-------------
+ hello world
 ```
 
 # Build
