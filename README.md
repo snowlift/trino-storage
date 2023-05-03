@@ -97,6 +97,18 @@ storage.excel."https://raw.githubusercontent.com/snowlift/trino-storage/master/s
 (1 row)
 ```
 
+# Table functions
+
+The connector provides specific table functions to list directory status.
+```sql
+SELECT * FROM TABLE(storage.system.list('/tmp/trino-storage'));
+```
+```
+     file_modified_time      | size |            name
+-----------------------------+------+-----------------------------
+ 2023-05-03 12:14:22.107 UTC |   12 | /tmp/trino-storage/test.txt
+```
+
 # Build
 Run all the unit test classes.
 ```
