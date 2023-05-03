@@ -4,13 +4,13 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>413-SNAPSHOT</version>
+    <version>413</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
     <scm>
         <developerConnection>scm:git:https://github.com/snowlift/trino-storage.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v413</tag>
     </scm>
 
     <parent>
