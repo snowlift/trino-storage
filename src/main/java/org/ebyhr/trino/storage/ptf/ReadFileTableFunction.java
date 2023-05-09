@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provider;
 import io.airlift.slice.Slice;
+import io.trino.spi.connector.ConnectorAccessControl;
 import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.connector.ConnectorTableHandle;
 import io.trino.spi.connector.ConnectorTransactionHandle;
@@ -87,7 +88,7 @@ public class ReadFileTableFunction
         }
 
         @Override
-        public TableFunctionAnalysis analyze(ConnectorSession session, ConnectorTransactionHandle transaction, Map<String, Argument> arguments)
+        public TableFunctionAnalysis analyze(ConnectorSession session, ConnectorTransactionHandle transaction, Map<String, Argument> arguments, ConnectorAccessControl accessControl)
         {
             String type = ((Slice) ((ScalarArgument) arguments.get("TYPE")).getValue()).toStringUtf8();
             String path = ((Slice) ((ScalarArgument) arguments.get("PATH")).getValue()).toStringUtf8();

@@ -78,7 +78,7 @@ public class ListPageSource
                 page.declarePosition();
                 BIGINT.writeLong(page.getBlockBuilder(0), packDateTimeWithZone(status.lastModified().toEpochMilli(), UTC_KEY));
                 BIGINT.writeLong(page.getBlockBuilder(1), status.length());
-                VARCHAR.writeSlice(page.getBlockBuilder(2), Slices.utf8Slice(status.location()));
+                VARCHAR.writeSlice(page.getBlockBuilder(2), Slices.utf8Slice(status.location().toString()));
             }
         }
         catch (IOException e) {
