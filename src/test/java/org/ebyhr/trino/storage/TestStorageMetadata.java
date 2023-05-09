@@ -15,6 +15,7 @@ package org.ebyhr.trino.storage;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.Resources;
+import io.airlift.http.client.jetty.JettyHttpClient;
 import io.trino.filesystem.TrinoFileSystemFactory;
 import io.trino.filesystem.hdfs.HdfsFileSystemFactory;
 import io.trino.hdfs.DynamicHdfsConfiguration;
@@ -67,7 +68,7 @@ public class TestStorageMetadata
         HdfsEnvironment hdfsEnvironment = new HdfsEnvironment(configuration, config, new NoHdfsAuthentication());
         TrinoFileSystemFactory fileSystemFactory = new HdfsFileSystemFactory(hdfsEnvironment);
 
-        StorageClient client = new StorageClient(fileSystemFactory);
+        StorageClient client = new StorageClient(fileSystemFactory, new JettyHttpClient());
         metadata = new StorageMetadata(client);
     }
 
