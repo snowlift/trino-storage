@@ -18,6 +18,7 @@ import io.airlift.http.client.HttpStatus;
 import io.airlift.http.client.Request;
 import io.airlift.log.Logger;
 import io.trino.filesystem.FileIterator;
+import io.trino.filesystem.Location;
 import io.trino.filesystem.TrinoFileSystemFactory;
 import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.type.VarcharType;
@@ -103,7 +104,7 @@ public class StorageClient
                 return new ByteArrayInputStream(response.getBody());
             }
             if (path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
-                return fileSystemFactory.create(session).newInputFile(path).newStream();
+                return fileSystemFactory.create(session).newInputFile(Location.of(path)).newStream();
             }
             if (!path.startsWith("file:")) {
                 path = "file:" + path;
@@ -119,7 +120,7 @@ public class StorageClient
     public FileIterator list(ConnectorSession session, String path)
     {
         try {
-            return fileSystemFactory.create(session).listFiles(path);
+            return fileSystemFactory.create(session).listFiles(Location.of(path));
         }
         catch (IOException e) {
             throw new UncheckedIOException(e);
