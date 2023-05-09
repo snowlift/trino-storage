@@ -13,6 +13,9 @@
  */
 package org.ebyhr.trino.storage;
 
+import io.airlift.http.client.HttpClient;
+import io.airlift.http.client.HttpStatus;
+import io.airlift.http.client.Request;
 import io.airlift.log.Logger;
 import io.trino.filesystem.FileIterator;
 import io.trino.filesystem.TrinoFileSystemFactory;
@@ -22,21 +25,22 @@ import org.ebyhr.trino.storage.operator.FilePlugin;
 import org.ebyhr.trino.storage.operator.PluginFactory;
 
 import javax.inject.Inject;
-import javax.net.ssl.HttpsURLConnection;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URI;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static io.airlift.http.client.Request.Builder.prepareGet;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
+import static org.ebyhr.trino.storage.ByteResponseHandler.createByteResponseHandler;
 import static org.ebyhr.trino.storage.ptf.ListTableFunction.LIST_SCHEMA_NAME;
 
 public class StorageClient
@@ -44,11 +48,13 @@ public class StorageClient
     private static final Logger log = Logger.get(StorageClient.class);
 
     private final TrinoFileSystemFactory fileSystemFactory;
+    private final HttpClient httpClient;
 
     @Inject
-    public StorageClient(TrinoFileSystemFactory fileSystemFactory)
+    public StorageClient(TrinoFileSystemFactory fileSystemFactory, @ForStorage HttpClient httpClient)
     {
         this.fileSystemFactory = requireNonNull(fileSystemFactory, "fileSystemFactory is null");
+        this.httpClient = requireNonNull(httpClient, "httpClient is null");
     }
 
     public List<String> getSchemaNames()
@@ -88,9 +94,13 @@ public class StorageClient
     {
         try {
             if (path.startsWith("http://") || path.startsWith("https://")) {
-                URL url = new URL(path);
-                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-                return connection.getInputStream();
+                Request request = prepareGet().setUri(URI.create(path)).build();
+                ByteResponseHandler.ByteResponse response = httpClient.execute(request, createByteResponseHandler());
+                int status = response.getStatusCode();
+                if (status != HttpStatus.OK.code()) {
+                    throw new IllegalStateException(format("Request to '%s' returned unexpected status code: '%d'", path, status));
+                }
+                return new ByteArrayInputStream(response.getBody());
             }
             if (path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
                 return fileSystemFactory.create(session).newInputFile(path).newStream();
