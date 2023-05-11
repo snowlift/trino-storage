@@ -27,39 +27,39 @@ import static java.util.Objects.requireNonNull;
 public final class StorageColumnHandle
         implements ColumnHandle
 {
-    private final String columnName;
-    private final Type columnType;
+    private final String name;
+    private final Type type;
 
     @JsonCreator
     public StorageColumnHandle(
-            @JsonProperty("columnName") String columnName,
-            @JsonProperty("columnType") Type columnType)
+            @JsonProperty("name") String name,
+            @JsonProperty("type") Type type)
     {
-        this.columnName = requireNonNull(columnName, "columnName is null");
-        this.columnType = requireNonNull(columnType, "columnType is null");
+        this.name = requireNonNull(name, "name is null");
+        this.type = requireNonNull(type, "type is null");
     }
 
     @JsonProperty
-    public String getColumnName()
+    public String getName()
     {
-        return columnName;
+        return name;
     }
 
     @JsonProperty
-    public Type getColumnType()
+    public Type getType()
     {
-        return columnType;
+        return type;
     }
 
     public ColumnMetadata getColumnMetadata()
     {
-        return new ColumnMetadata(columnName, columnType);
+        return new ColumnMetadata(name, type);
     }
 
     @Override
     public int hashCode()
     {
-        return Objects.hash(columnName);
+        return Objects.hash(name);
     }
 
     @Override
@@ -73,15 +73,15 @@ public final class StorageColumnHandle
         }
 
         StorageColumnHandle other = (StorageColumnHandle) obj;
-        return Objects.equals(this.columnName, other.columnName);
+        return Objects.equals(this.name, other.name);
     }
 
     @Override
     public String toString()
     {
         return toStringHelper(this)
-                .add("columnName", columnName)
-                .add("columnType", columnType)
+                .add("name", name)
+                .add("type", type)
                 .toString();
     }
 }

@@ -31,7 +31,7 @@ import io.trino.spi.ptf.ScalarArgument;
 import io.trino.spi.ptf.ScalarArgumentSpecification;
 import io.trino.spi.ptf.TableFunctionAnalysis;
 import org.ebyhr.trino.storage.StorageClient;
-import org.ebyhr.trino.storage.StorageColumn;
+import org.ebyhr.trino.storage.StorageColumnHandle;
 import org.ebyhr.trino.storage.StorageTable;
 import org.ebyhr.trino.storage.StorageTableHandle;
 
@@ -112,12 +112,12 @@ public class ReadFileTableFunction
             implements ConnectorTableFunctionHandle
     {
         private final StorageTableHandle tableHandle;
-        private final List<StorageColumn> columns;
+        private final List<StorageColumnHandle> columns;
 
         @JsonCreator
         public ReadFunctionHandle(
                 @JsonProperty("tableHandle") StorageTableHandle tableHandle,
-                @JsonProperty("columns") List<StorageColumn> columns)
+                @JsonProperty("columns") List<StorageColumnHandle> columns)
         {
             this.tableHandle = requireNonNull(tableHandle, "tableHandle is null");
             this.columns = ImmutableList.copyOf(requireNonNull(columns, "columns is null"));
@@ -130,7 +130,7 @@ public class ReadFileTableFunction
         }
 
         @JsonProperty
-        public List<StorageColumn> getColumns()
+        public List<StorageColumnHandle> getColumns()
         {
             return columns;
         }

@@ -74,12 +74,12 @@ public class StorageRecordSetProvider
                 .map(column -> {
                     int index = 0;
                     for (ColumnMetadata columnMetadata : storageTable.getColumnsMetadata()) {
-                        if (columnMetadata.getName().equalsIgnoreCase(column.getColumnName())) {
+                        if (columnMetadata.getName().equalsIgnoreCase(column.getName())) {
                             return index;
                         }
                         index++;
                     }
-                    throw new IllegalStateException("Unknown column: " + column.getColumnName());
+                    throw new IllegalStateException("Unknown column: " + column.getName());
                 })
                 .collect(toList());
 
@@ -91,7 +91,7 @@ public class StorageRecordSetProvider
 
         List<Type> mappedTypes = handles
                 .stream()
-                .map(StorageColumnHandle::getColumnType)
+                .map(StorageColumnHandle::getType)
                 .collect(toList());
         return new InMemoryRecordSet(mappedTypes, mappedRows);
     }

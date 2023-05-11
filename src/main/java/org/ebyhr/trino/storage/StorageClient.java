@@ -77,12 +77,12 @@ public class StorageClient
         requireNonNull(tableName, "tableName is null");
 
         if (schema.equals(LIST_SCHEMA_NAME)) {
-            return new StorageTable(StorageSplit.Mode.LIST, tableName, List.of(new StorageColumn("path", VarcharType.VARCHAR)));
+            return new StorageTable(StorageSplit.Mode.LIST, tableName, List.of(new StorageColumnHandle("path", VarcharType.VARCHAR)));
         }
 
         FilePlugin plugin = PluginFactory.create(schema);
         try {
-            List<StorageColumn> columns = plugin.getFields(tableName, path -> getInputStream(session, path));
+            List<StorageColumnHandle> columns = plugin.getFields(tableName, path -> getInputStream(session, path));
             return new StorageTable(StorageSplit.Mode.TABLE, tableName, columns);
         }
         catch (Exception e) {

@@ -25,7 +25,7 @@ import io.trino.spi.type.ArrayType;
 import io.trino.spi.type.BooleanType;
 import io.trino.spi.type.RowType;
 import io.trino.spi.type.Type;
-import org.ebyhr.trino.storage.StorageColumn;
+import org.ebyhr.trino.storage.StorageColumnHandle;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class JsonPlugin
         implements FilePlugin
 {
     @Override
-    public List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider)
+    public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
         ObjectMapper objectMapper = new ObjectMapper();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(streamProvider.apply(path)))) {
@@ -71,7 +71,7 @@ public class JsonPlugin
                 node = elements.next();
             }
             return Streams.stream(node.fields())
-                    .map(entry -> new StorageColumn(entry.getKey(), mapType(entry.getValue())))
+                    .map(entry -> new StorageColumnHandle(entry.getKey(), mapType(entry.getValue())))
                     .collect(toImmutableList());
         }
         catch (IOException e) {
