@@ -14,7 +14,7 @@
 package org.ebyhr.trino.storage.operator;
 
 import io.trino.spi.Page;
-import org.ebyhr.trino.storage.StorageColumn;
+import org.ebyhr.trino.storage.StorageColumnHandle;
 
 import java.io.InputStream;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 public interface FilePlugin
 {
-    List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider);
+    List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider);
 
     default Stream<List<?>> getRecordsIterator(String path, Function<String, InputStream> streamProvider)
     {

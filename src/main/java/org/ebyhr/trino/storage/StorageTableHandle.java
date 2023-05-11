@@ -14,6 +14,7 @@
 package org.ebyhr.trino.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Joiner;
 import io.trino.spi.connector.ConnectorTableHandle;
@@ -59,6 +60,7 @@ public final class StorageTableHandle
         return tableName;
     }
 
+    @JsonIgnore
     public SchemaTableName toSchemaTableName()
     {
         return new SchemaTableName(schemaName, tableName);

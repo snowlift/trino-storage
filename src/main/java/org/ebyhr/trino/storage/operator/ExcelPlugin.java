@@ -19,7 +19,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.ebyhr.trino.storage.StorageColumn;
+import org.ebyhr.trino.storage.StorageColumnHandle;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,18 +42,18 @@ public class ExcelPlugin
     private static final DataFormatter DATA_FORMATTER = new DataFormatter();
 
     @Override
-    public List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider)
+    public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
         InputStream inputStream = streamProvider.apply(path);
         try {
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rows = sheet.iterator();
-            List<StorageColumn> columnTypes = new LinkedList<>();
+            List<StorageColumnHandle> columnTypes = new LinkedList<>();
             Row row = rows.next();
             for (Cell cell : row) {
                 String cellValue = DATA_FORMATTER.formatCellValue(cell);
-                columnTypes.add(new StorageColumn(cellValue, VARCHAR));
+                columnTypes.add(new StorageColumnHandle(cellValue, VARCHAR));
             }
             return columnTypes;
         }

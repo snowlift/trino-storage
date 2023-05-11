@@ -28,14 +28,14 @@ public class StorageTable
 {
     private final StorageSplit.Mode mode;
     private final String name;
-    private final List<StorageColumn> columns;
+    private final List<StorageColumnHandle> columns;
     private final List<ColumnMetadata> columnsMetadata;
 
     @JsonCreator
     public StorageTable(
             @JsonProperty("mode") StorageSplit.Mode mode,
             @JsonProperty("name") String name,
-            @JsonProperty("columns") List<StorageColumn> columns)
+            @JsonProperty("columns") List<StorageColumnHandle> columns)
     {
         this.mode = requireNonNull(mode, "mode is null");
         checkArgument(!isNullOrEmpty(name), "name is null or is empty");
@@ -43,7 +43,7 @@ public class StorageTable
         this.columns = List.copyOf(requireNonNull(columns, "columns is null"));
 
         ImmutableList.Builder<ColumnMetadata> columnsMetadata = ImmutableList.builder();
-        for (StorageColumn column : this.columns) {
+        for (StorageColumnHandle column : this.columns) {
             columnsMetadata.add(new ColumnMetadata(column.getName(), column.getType()));
         }
         this.columnsMetadata = columnsMetadata.build();
@@ -62,7 +62,7 @@ public class StorageTable
     }
 
     @JsonProperty
-    public List<StorageColumn> getColumns()
+    public List<StorageColumnHandle> getColumns()
     {
         return columns;
     }

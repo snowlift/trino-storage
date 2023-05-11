@@ -14,7 +14,7 @@
 package org.ebyhr.trino.storage.operator;
 
 import com.google.common.base.Splitter;
-import org.ebyhr.trino.storage.StorageColumn;
+import org.ebyhr.trino.storage.StorageColumnHandle;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,14 +34,14 @@ public class TsvPlugin
     private static final String DELIMITER = "\t";
 
     @Override
-    public List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider)
+    public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
         Splitter splitter = Splitter.on(DELIMITER).trimResults();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(streamProvider.apply(path)))) {
             List<String> fields = splitter.splitToList(reader.readLine());
             return fields.stream()
-                    .map(field -> new StorageColumn(field, VARCHAR))
+                    .map(field -> new StorageColumnHandle(field, VARCHAR))
                     .collect(toImmutableList());
         }
         catch (IOException e) {
