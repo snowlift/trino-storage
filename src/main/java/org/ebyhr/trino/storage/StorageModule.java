@@ -22,6 +22,7 @@ import io.airlift.http.client.HttpClientConfig;
 import io.opentelemetry.api.OpenTelemetry;
 import io.trino.filesystem.TrinoFileSystemFactory;
 import io.trino.filesystem.hdfs.HdfsFileSystemFactory;
+import io.trino.hdfs.TrinoHdfsFileSystemStats;
 import io.trino.spi.ptf.ConnectorTableFunction;
 import io.trino.spi.type.Type;
 import io.trino.spi.type.TypeManager;
@@ -63,6 +64,7 @@ public class StorageModule
         newSetBinder(binder, ConnectorTableFunction.class).addBinding().toProvider(ReadFileTableFunction.class).in(Scopes.SINGLETON);
         newSetBinder(binder, ConnectorTableFunction.class).addBinding().toProvider(ListTableFunction.class).in(Scopes.SINGLETON);
         binder.bind(TrinoFileSystemFactory.class).to(HdfsFileSystemFactory.class).in(Scopes.SINGLETON);
+        binder.bind(TrinoHdfsFileSystemStats.class).in(Scopes.SINGLETON);
         binder.bind(OpenTelemetry.class).toInstance(OpenTelemetry.noop());
 
         jsonBinder(binder).addDeserializerBinding(Type.class).to(TypeDeserializer.class);
