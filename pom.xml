@@ -37,12 +37,12 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>418</dep.trino.version>
-        <dep.airlift.version>230</dep.airlift.version>
+        <dep.trino.version>419</dep.trino.version>
+        <dep.airlift.version>231</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.477</dep.aws-sdk.version>
         <dep.errorprone.version>2.19.1</dep.errorprone.version>
-        <dep.jackson.version>2.15.0</dep.jackson.version>
+        <dep.jackson.version>2.15.1</dep.jackson.version>
         <dep.testcontainers.version>1.18.3</dep.testcontainers.version>
         <dep.docker-java.version>3.3.0</dep.docker-java.version>
         <dep.testng.version>7.7.1</dep.testng.version>
@@ -141,6 +141,13 @@
             <groupId>io.airlift</groupId>
             <artifactId>log-manager</artifactId>
             <version>${dep.airlift.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.4.7</version>
             <scope>runtime</scope>
         </dependency>
 
