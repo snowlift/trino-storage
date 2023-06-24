@@ -37,16 +37,18 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>417</dep.trino.version>
+        <dep.trino.version>418</dep.trino.version>
         <dep.airlift.version>230</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.477</dep.aws-sdk.version>
-        <dep.errorprone.version>2.18.0</dep.errorprone.version>
+        <dep.errorprone.version>2.19.1</dep.errorprone.version>
         <dep.jackson.version>2.15.0</dep.jackson.version>
         <dep.testcontainers.version>1.18.3</dep.testcontainers.version>
         <dep.docker-java.version>3.3.0</dep.docker-java.version>
         <dep.testng.version>7.7.1</dep.testng.version>
         <dep.joda.version>2.12.5</dep.joda.version>
+        <dep.opentelemetry.version>1.26.0</dep.opentelemetry.version>
+        <dep.opentelemetry-instrumentation.version>1.25.1</dep.opentelemetry-instrumentation.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -183,7 +185,7 @@
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>5.1.0</version>
+            <version>6.0.0</version>
         </dependency>
 
         <dependency>
@@ -256,12 +258,14 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
+            <version>${dep.opentelemetry.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-context</artifactId>
+            <version>${dep.opentelemetry.version}</version>
             <scope>provided</scope>
         </dependency>
 
