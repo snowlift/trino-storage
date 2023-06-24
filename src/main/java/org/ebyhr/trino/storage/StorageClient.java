@@ -13,6 +13,7 @@
  */
 package org.ebyhr.trino.storage;
 
+import com.google.inject.Inject;
 import io.airlift.http.client.HttpClient;
 import io.airlift.http.client.HttpStatus;
 import io.airlift.http.client.Request;
@@ -24,8 +25,6 @@ import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.type.VarcharType;
 import org.ebyhr.trino.storage.operator.FilePlugin;
 import org.ebyhr.trino.storage.operator.PluginFactory;
-
-import javax.inject.Inject;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
