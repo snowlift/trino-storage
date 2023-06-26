@@ -40,7 +40,7 @@
         <dep.trino.version>420</dep.trino.version>
         <dep.airlift.version>233</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.477</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.495</dep.aws-sdk.version>
         <dep.errorprone.version>2.20.0</dep.errorprone.version>
         <dep.jackson.version>2.15.1</dep.jackson.version>
         <dep.testcontainers.version>1.18.3</dep.testcontainers.version>
