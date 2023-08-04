@@ -21,6 +21,7 @@ import com.google.common.collect.Streams;
 import io.airlift.slice.Slice;
 import io.trino.spi.TrinoException;
 import io.trino.spi.block.BlockBuilder;
+import io.trino.spi.block.RowBlockBuilder;
 import io.trino.spi.type.ArrayType;
 import io.trino.spi.type.BooleanType;
 import io.trino.spi.type.RowType;
@@ -34,6 +35,7 @@ import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -150,35 +152,43 @@ public class JsonPlugin
 
     private Object mapValue(JsonNode node)
     {
-        BlockBuilder values;
         switch (node.getNodeType()) {
-            case ARRAY:
+            case ARRAY -> {
                 Iterator<JsonNode> elements = node.elements();
                 if (!elements.hasNext()) {
                     throw new VerifyException("Cannot infer the SQL type of an empty JSON array");
                 }
                 Type type = mapType(elements.next());
-                values = type.createBlockBuilder(null, 10);
+                BlockBuilder values = type.createBlockBuilder(null, 10);
                 node.elements().forEachRemaining(value -> writeObject(values, value));
                 return values.build();
-            case BOOLEAN:
+            }
+            case BOOLEAN -> {
                 return node.asBoolean();
-            case NUMBER:
+            }
+            case NUMBER -> {
                 return node.canConvertToLong() ? node.asLong() : node.asDouble();
-            case OBJECT:
+            }
+            case OBJECT -> {
                 Type rowType = mapType(node);
-                values = rowType.createBlockBuilder(null, 10);
-                BlockBuilder rowBuilder = values.beginBlockEntry();
-                node.fields().forEachRemaining(field -> writeObject(rowBuilder, field.getValue()));
-                values.closeEntry();
-                return rowType.getObject(values, values.getPositionCount() - 1);
-            case NULL:
+                RowBlockBuilder rowBlockBuilder = (RowBlockBuilder) rowType.createBlockBuilder(null, 10);
+                rowBlockBuilder.buildEntry(elementBuilder -> {
+                    Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
+                    for (int i = 0; fields.hasNext(); i++) {
+                        writeObject(elementBuilder.get(i), fields.next().getValue());
+                    }
+                });
+                return rowType.getObject(rowBlockBuilder, rowBlockBuilder.getPositionCount() - 1);
+            }
+            case NULL -> {
                 return null;
-            case STRING:
+            }
+            case STRING -> {
                 return node.asText();
-            default:
+            }
+            default ->
                 // BINARY, MISSING, POJO
-                throw new VerifyException("Unhandled JSON type: " + node.getNodeType());
+                    throw new VerifyException("Unhandled JSON type: " + node.getNodeType());
         }
     }
 

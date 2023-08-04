@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>421-SNAPSHOT</version>
+    <version>422-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -16,7 +16,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>138</version>
+        <version>143</version>
     </parent>
 
     <licenses>
@@ -37,15 +37,15 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>420</dep.trino.version>
-        <dep.airlift.version>233</dep.airlift.version>
+        <dep.trino.version>422</dep.trino.version>
+        <dep.airlift.version>234</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.477</dep.aws-sdk.version>
-        <dep.errorprone.version>2.20.0</dep.errorprone.version>
-        <dep.jackson.version>2.15.1</dep.jackson.version>
+        <dep.aws-sdk.version>1.12.522</dep.aws-sdk.version>
+        <dep.errorprone.version>2.21.0</dep.errorprone.version>
+        <dep.jackson.version>2.15.2</dep.jackson.version>
         <dep.testcontainers.version>1.18.3</dep.testcontainers.version>
-        <dep.docker-java.version>3.3.0</dep.docker-java.version>
-        <dep.testng.version>7.7.1</dep.testng.version>
+        <dep.docker-java.version>3.3.2</dep.docker-java.version>
+        <dep.testng.version>7.8.0</dep.testng.version>
         <dep.joda.version>2.12.5</dep.joda.version>
         <dep.opentelemetry.version>1.26.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>1.25.1</dep.opentelemetry-instrumentation.version>
@@ -76,7 +76,17 @@
             <dependency>
                 <groupId>net.bytebuddy</groupId>
                 <artifactId>byte-buddy</artifactId>
-                <version>1.14.4</version>
+                <version>1.14.5</version>
+            </dependency>
+            <dependency>
+                <groupId>io.airlift</groupId>
+                <artifactId>slice</artifactId>
+                <version>0.45</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjdk.jol</groupId>
+                <artifactId>jol-core</artifactId>
+                <version>0.17</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -205,7 +215,7 @@
             <groupId>io.trino.hadoop</groupId>
             <artifactId>hadoop-apache</artifactId>
             <scope>runtime</scope>
-            <version>3.2.0-18</version>
+            <version>3.3.5-1</version>
         </dependency>
 
         <dependency>
@@ -229,7 +239,7 @@
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>units</artifactId>
-            <version>1.8</version>
+            <version>1.10</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -258,7 +268,6 @@
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>slice</artifactId>
-            <version>0.45</version>
             <scope>provided</scope>
         </dependency>
 
@@ -287,7 +296,6 @@
             <groupId>org.openjdk.jol</groupId>
             <artifactId>jol-core</artifactId>
             <scope>provided</scope>
-            <version>0.17</version>
         </dependency>
 
         <!-- for testing -->
@@ -358,12 +366,6 @@
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
             <version>4.0.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-common</artifactId>
             <scope>test</scope>
         </dependency>
 
