@@ -60,7 +60,7 @@ public class StoragePageSourceProvider
     {
         StorageSplit storageSplit = (StorageSplit) requireNonNull(split, "split is null");
         if (storageSplit.getMode() == LIST) {
-            return new ListPageSource(storageClient, session, storageSplit.getTableName());
+            return new ListPageSource(storageClient, session, storageSplit.getTableName(), columns);
         }
 
         String schemaName = storageSplit.getSchemaName();

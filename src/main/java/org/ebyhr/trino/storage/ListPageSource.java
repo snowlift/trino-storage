@@ -13,17 +13,18 @@
  */
 package org.ebyhr.trino.storage;
 
-import com.google.common.collect.ImmutableList;
 import io.airlift.slice.Slices;
 import io.trino.filesystem.FileEntry;
 import io.trino.filesystem.FileIterator;
 import io.trino.spi.Page;
 import io.trino.spi.PageBuilder;
+import io.trino.spi.connector.ColumnHandle;
 import io.trino.spi.connector.ConnectorPageSource;
 import io.trino.spi.connector.ConnectorSession;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.List;
 
 import static io.trino.spi.type.BigintType.BIGINT;
 import static io.trino.spi.type.DateTimeEncoding.packDateTimeWithZone;
@@ -33,12 +34,14 @@ import static io.trino.spi.type.VarcharType.VARCHAR;
 public class ListPageSource
         implements ConnectorPageSource
 {
+    private final List<? extends ColumnHandle> columns;
     private final long readTimeNanos;
     private final FileIterator fileStatuses;
     private boolean done;
 
-    public ListPageSource(StorageClient storageClient, ConnectorSession session, String path)
+    public ListPageSource(StorageClient storageClient, ConnectorSession session, String path, List<? extends ColumnHandle> columns)
     {
+        this.columns = columns;
         long start = System.nanoTime();
         this.fileStatuses = storageClient.list(session, path);
         readTimeNanos = System.nanoTime() - start;
@@ -71,14 +74,20 @@ public class ListPageSource
 
         done = true;
 
-        PageBuilder page = new PageBuilder(ImmutableList.of(BIGINT, BIGINT, VARCHAR));
+        PageBuilder page = new PageBuilder(columns.stream().map(column -> ((StorageColumnHandle) column).getType()).toList());
         try {
             while (fileStatuses.hasNext()) {
                 FileEntry status = fileStatuses.next();
                 page.declarePosition();
-                BIGINT.writeLong(page.getBlockBuilder(0), packDateTimeWithZone(status.lastModified().toEpochMilli(), UTC_KEY));
-                BIGINT.writeLong(page.getBlockBuilder(1), status.length());
-                VARCHAR.writeSlice(page.getBlockBuilder(2), Slices.utf8Slice(status.location().toString()));
+                for (int i = 0; i < columns.size(); i++) {
+                    StorageColumnHandle column = (StorageColumnHandle) columns.get(i);
+                    switch (column.getName()) {
+                        case "file_modified_time" -> BIGINT.writeLong(page.getBlockBuilder(i), packDateTimeWithZone(status.lastModified().toEpochMilli(), UTC_KEY));
+                        case "size" -> BIGINT.writeLong(page.getBlockBuilder(i), status.length());
+                        case "name" -> VARCHAR.writeSlice(page.getBlockBuilder(i), Slices.utf8Slice(status.location().toString()));
+                        default -> throw new IllegalStateException("Unknown column name " + column.getName());
+                    }
+                }
             }
         }
         catch (IOException e) {

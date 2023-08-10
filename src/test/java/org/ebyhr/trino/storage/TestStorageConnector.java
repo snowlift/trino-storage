@@ -102,6 +102,17 @@ public final class TestStorageConnector
                         "(false, CAST(null AS VARCHAR), 'bbb', 10, CAST(123.456 AS double), ARRAY['ccc'])");
     }
 
+    @Test
+    public void testList()
+    {
+        assertQuery(
+                "SELECT substr(name, strpos(name, '/', -1) + 1) FROM TABLE(storage.system.list('" + server.getHadoopServer().toHdfsPath("/tmp/") + "')) WHERE name LIKE '%numbers%'",
+                "VALUES ('numbers.tsv')");
+        assertQuery(
+                "SELECT substr(name, strpos(name, '/', -1) + 1) FROM TABLE(storage.system.list('" + toAbsolutePath("example-data/") + "')) WHERE name LIKE '%numbers__.csv'",
+                "VALUES ('numbers-1.csv'), ('numbers-2.csv')");
+    }
+
     private static String toAbsolutePath(String resourceName)
     {
         return Resources.getResource(resourceName).toString();
