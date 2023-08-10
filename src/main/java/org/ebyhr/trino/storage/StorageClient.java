@@ -21,6 +21,7 @@ import io.airlift.log.Logger;
 import io.trino.filesystem.FileIterator;
 import io.trino.filesystem.Location;
 import io.trino.filesystem.TrinoFileSystemFactory;
+import io.trino.filesystem.local.LocalFileSystem;
 import io.trino.spi.TrinoException;
 import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.type.VarcharType;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URI;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -136,7 +138,22 @@ public class StorageClient
     public FileIterator list(ConnectorSession session, String path)
     {
         try {
-            return fileSystemFactory.create(session).listFiles(Location.of(path));
+            if (path.startsWith("http://") || path.startsWith("https://")) {
+                throw new IllegalArgumentException("Listing files over HTTP is not supported");
+            }
+            if (path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
+                return fileSystemFactory.create(session).listFiles(Location.of(path));
+            }
+            if (!allowLocalFiles) {
+                throw new TrinoException(PERMISSION_DENIED, "Reading local files is disabled");
+            }
+            if (path.startsWith("file://")) {
+                path = path.substring("file://".length());
+            }
+            else if (path.startsWith("file:")) {
+                path = path.substring("file:".length());
+            }
+            return new LocalFileSystem(Path.of(path)).listFiles(Location.of("local:///"));
         }
         catch (IOException e) {
             throw new UncheckedIOException(e);

@@ -51,6 +51,17 @@ public final class TestRestrictedStorageConnector
                 "VALUES (1658882660, 639, -5557347160648450358)");
     }
 
+    @Test
+    public void testList()
+    {
+        assertQuery(
+                "SELECT substr(name, strpos(name, '/', -1) + 1) FROM TABLE(storage.system.list('" + server.getHadoopServer().toHdfsPath("/tmp/") + "')) WHERE name LIKE '%numbers%'",
+                "VALUES ('numbers.tsv')");
+        assertQueryFails(
+                "SELECT substr(name, strpos(name, '/', -1) + 1) FROM TABLE(storage.system.list('" + toAbsolutePath("example-data/") + "')) WHERE name LIKE '%numbers__.csv'",
+                "Reading local files is disabled");
+    }
+
     private static String toAbsolutePath(String resourceName)
     {
         return Resources.getResource(resourceName).toString();

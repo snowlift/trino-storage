@@ -17,6 +17,7 @@ import io.airlift.log.Logger;
 import io.airlift.log.Logging;
 import io.trino.Session;
 import io.trino.plugin.tpch.TpchPlugin;
+import io.trino.spi.security.Identity;
 import io.trino.testing.DistributedQueryRunner;
 
 import java.util.Map;
@@ -63,6 +64,7 @@ public final class StorageQueryRunner
     private static Session createSession()
     {
         return testSessionBuilder()
+                .setIdentity(Identity.forUser("hive").build())
                 .setCatalog("storage")
                 .setSchema(TPCH_SCHEMA)
                 .build();
