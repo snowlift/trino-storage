@@ -37,18 +37,18 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>424</dep.trino.version>
+        <dep.trino.version>425</dep.trino.version>
         <dep.airlift.version>235</dep.airlift.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.532</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.537</dep.aws-sdk.version>
         <dep.errorprone.version>2.21.1</dep.errorprone.version>
         <dep.jackson.version>2.15.2</dep.jackson.version>
-        <dep.testcontainers.version>1.18.3</dep.testcontainers.version>
-        <dep.docker-java.version>3.3.2</dep.docker-java.version>
+        <dep.testcontainers.version>1.19.0</dep.testcontainers.version>
+        <dep.docker-java.version>3.3.3</dep.docker-java.version>
         <dep.testng.version>7.8.0</dep.testng.version>
         <dep.joda.version>2.12.5</dep.joda.version>
-        <dep.opentelemetry.version>1.26.0</dep.opentelemetry.version>
-        <dep.opentelemetry-instrumentation.version>1.25.1</dep.opentelemetry-instrumentation.version>
+        <dep.opentelemetry.version>1.29.0</dep.opentelemetry.version>
+        <dep.opentelemetry-instrumentation.version>1.29.0</dep.opentelemetry-instrumentation.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -81,7 +81,7 @@
             <dependency>
                 <groupId>io.airlift</groupId>
                 <artifactId>slice</artifactId>
-                <version>2.0</version>
+                <version>2.2</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
