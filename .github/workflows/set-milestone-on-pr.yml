@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Compute milestone
         run: |
           echo "MILESTONE_NUMBER=$(./mvnw -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive  exec:exec | cut -d- -f1)" >> $GITHUB_ENV
