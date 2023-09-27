@@ -20,6 +20,7 @@ import com.google.common.base.VerifyException;
 import com.google.common.collect.Streams;
 import io.airlift.slice.Slice;
 import io.trino.spi.TrinoException;
+import io.trino.spi.block.Block;
 import io.trino.spi.block.BlockBuilder;
 import io.trino.spi.block.RowBlockBuilder;
 import io.trino.spi.type.ArrayType;
@@ -178,7 +179,8 @@ public class JsonPlugin
                         writeObject(elementBuilder.get(i), fields.next().getValue());
                     }
                 });
-                return rowType.getObject(rowBlockBuilder, rowBlockBuilder.getPositionCount() - 1);
+                Block block = rowBlockBuilder.build();
+                return rowType.getObject(block, block.getPositionCount() - 1);
             }
             case NULL -> {
                 return null;
