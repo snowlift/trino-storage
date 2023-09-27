@@ -4,7 +4,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>426-SNAPSHOT</version>
+    <version>427-SNAPSHOT</version>
     <description>Trino - Storage Connector</description>
     <packaging>trino-plugin</packaging>
 
@@ -16,7 +16,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>144</version>
+        <version>145</version>
     </parent>
 
     <licenses>
@@ -37,18 +37,25 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>425</dep.trino.version>
+        <dep.trino.version>427</dep.trino.version>
         <dep.airlift.version>235</dep.airlift.version>
+        <dep.slice.version>2.2</dep.slice.version>
+        <dep.opentelemetry.version>1.30.1</dep.opentelemetry.version>
+        <dep.opentelemetry-instrumentation.version>1.30.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.537</dep.aws-sdk.version>
-        <dep.errorprone.version>2.21.1</dep.errorprone.version>
+        <dep.aws-sdk.version>1.12.558</dep.aws-sdk.version>
+        <dep.guava.version>32.1.2-jre</dep.guava.version>
+        <dep.guice.version>7.0.0</dep.guice.version>
+        <dep.errorprone.version>2.22.0</dep.errorprone.version>
         <dep.jackson.version>2.15.2</dep.jackson.version>
         <dep.testcontainers.version>1.19.0</dep.testcontainers.version>
         <dep.docker-java.version>3.3.3</dep.docker-java.version>
         <dep.testng.version>7.8.0</dep.testng.version>
         <dep.joda.version>2.12.5</dep.joda.version>
-        <dep.opentelemetry.version>1.29.0</dep.opentelemetry.version>
-        <dep.opentelemetry-instrumentation.version>1.29.0</dep.opentelemetry-instrumentation.version>
+        <dep.junit.version>5.10.0</dep.junit.version>
+        <dep.slf4j.version>2.0.9</dep.slf4j.version>
+        <dep.assertj-core.version>3.24.2</dep.assertj-core.version>
+        <dep.logback.version>1.4.11</dep.logback.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -76,12 +83,12 @@
             <dependency>
                 <groupId>net.bytebuddy</groupId>
                 <artifactId>byte-buddy</artifactId>
-                <version>1.14.5</version>
+                <version>1.14.8</version>
             </dependency>
             <dependency>
                 <groupId>io.airlift</groupId>
                 <artifactId>slice</artifactId>
-                <version>2.2</version>
+                <version>${dep.slice.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
@@ -157,7 +164,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>1.4.11</version>
+            <version>${dep.logback.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -196,13 +203,13 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>32.1.1-jre</version>
+            <version>${dep.guava.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>7.0.0</version>
+            <version>${dep.guice.version}</version>
         </dependency>
 
         <dependency>
@@ -260,7 +267,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.23.0</version>
+            <version>1.24.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -358,7 +365,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.24.2</version>
+            <version>${dep.assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -390,7 +397,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>3.5.1</version>
                 </plugin>
                 <plugin>
                     <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
@@ -515,6 +522,24 @@
                         <include>**/Test*.java</include>
                     </includes>
                 </configuration>
+                <dependencies>
+                    <!-- allow both JUnit and TestNG -->
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-junit-platform</artifactId>
+                        <version>${dep.plugin.surefire.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.maven.surefire</groupId>
+                        <artifactId>surefire-testng</artifactId>
+                        <version>${dep.plugin.surefire.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>${dep.junit.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
