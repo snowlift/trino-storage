@@ -43,7 +43,7 @@
         <dep.opentelemetry.version>1.30.1</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>1.30.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.558</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.560</dep.aws-sdk.version>
         <dep.guava.version>32.1.2-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.22.0</dep.errorprone.version>
