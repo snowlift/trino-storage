@@ -93,6 +93,9 @@ public class ReadFileTableFunction
             String path = ((Slice) ((ScalarArgument) arguments.get("PATH")).getValue()).toStringUtf8();
 
             StorageTable table = storageClient.getTable(session, type, path);
+            if (table == null) {
+                throw new IllegalArgumentException("Could not read path " + path);
+            }
 
             Descriptor returnedType = new Descriptor(table.getColumns().stream()
                     .map(column -> new Descriptor.Field(column.getName(), Optional.of(column.getType())))

@@ -1,23 +1,18 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>org.ebyhr</groupId>
-    <artifactId>trino-storage</artifactId>
-    <version>428-SNAPSHOT</version>
-    <description>Trino - Storage Connector</description>
-    <packaging>trino-plugin</packaging>
-
-    <scm>
-        <developerConnection>scm:git:https://github.com/snowlift/trino-storage.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
 
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>145</version>
+        <version>147</version>
     </parent>
+
+    <groupId>org.ebyhr</groupId>
+    <artifactId>trino-storage</artifactId>
+    <version>428-SNAPSHOT</version>
+    <packaging>trino-plugin</packaging>
+    <description>Trino - Storage Connector</description>
 
     <licenses>
         <license>
@@ -26,6 +21,19 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <scm>
+        <developerConnection>scm:git:https://github.com/snowlift/trino-storage.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>Trino Storage connector</name>
+            <url>https://maven.pkg.github.com/snowlift/trino-storage</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <project.build.targetJdk>17</project.build.targetJdk>
@@ -37,18 +45,18 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>427</dep.trino.version>
+        <dep.trino.version>428</dep.trino.version>
         <dep.airlift.version>235</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
         <dep.opentelemetry.version>1.30.1</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>1.30.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.558</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.561</dep.aws-sdk.version>
         <dep.guava.version>32.1.2-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.22.0</dep.errorprone.version>
         <dep.jackson.version>2.15.2</dep.jackson.version>
-        <dep.testcontainers.version>1.19.0</dep.testcontainers.version>
+        <dep.testcontainers.version>1.19.1</dep.testcontainers.version>
         <dep.docker-java.version>3.3.3</dep.docker-java.version>
         <dep.testng.version>7.8.0</dep.testng.version>
         <dep.joda.version>2.12.5</dep.joda.version>
@@ -60,16 +68,18 @@
         <project.scm.id>github</project.scm.id>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>Trino Storage connector</name>
-            <url>https://maven.pkg.github.com/snowlift/trino-storage</url>
-        </repository>
-    </distributionManagement>
-
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.airlift</groupId>
+                <artifactId>slice</artifactId>
+                <version>${dep.slice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>1.14.8</version>
+            </dependency>
             <dependency>
                 <groupId>net.java.dev.jna</groupId>
                 <artifactId>jna</artifactId>
@@ -81,16 +91,6 @@
                 <version>5.13.0</version>
             </dependency>
             <dependency>
-                <groupId>net.bytebuddy</groupId>
-                <artifactId>byte-buddy</artifactId>
-                <version>1.14.8</version>
-            </dependency>
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>slice</artifactId>
-                <version>${dep.slice.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.openjdk.jol</groupId>
                 <artifactId>jol-core</artifactId>
                 <version>0.17</version>
@@ -99,28 +99,29 @@
     </dependencyManagement>
 
     <dependencies>
+
         <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-filesystem</artifactId>
-            <version>${dep.trino.version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${dep.jackson.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-hdfs</artifactId>
-            <version>${dep.trino.version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${dep.jackson.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-memory-context</artifactId>
-            <version>${dep.trino.version}</version>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${dep.guava.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-orc</artifactId>
-            <version>${dep.trino.version}</version>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${dep.guice.version}</version>
         </dependency>
 
         <dependency>
@@ -155,10 +156,91 @@
         </dependency>
 
         <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-filesystem</artifactId>
+            <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-hdfs</artifactId>
+            <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-memory-context</artifactId>
+            <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-orc</artifactId>
+            <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${dep.joda.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.2.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-codec</groupId>
+                    <artifactId>commons-codec</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${dep.jackson.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>io.airlift</groupId>
-            <artifactId>log-manager</artifactId>
-            <version>${dep.airlift.version}</version>
-            <scope>runtime</scope>
+            <artifactId>slice</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api</artifactId>
+            <version>${dep.opentelemetry.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-context</artifactId>
+            <version>${dep.opentelemetry.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-spi</artifactId>
+            <version>${dep.trino.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjdk.jol</groupId>
+            <artifactId>jol-core</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -189,64 +271,16 @@
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${dep.jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${dep.jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${dep.guava.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>${dep.guice.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.trino.hadoop</groupId>
-            <artifactId>hadoop-apache</artifactId>
+            <groupId>com.google.errorprone</groupId>
+            <artifactId>error_prone_annotations</artifactId>
+            <version>${dep.errorprone.version}</version>
             <scope>runtime</scope>
-            <version>3.3.5-1</version>
         </dependency>
 
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${dep.joda.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>5.2.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-codec</groupId>
-                    <artifactId>commons-codec</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>5.2.3</version>
+            <groupId>io.airlift</groupId>
+            <artifactId>log-manager</artifactId>
+            <version>${dep.airlift.version}</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -258,10 +292,10 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.errorprone</groupId>
-            <artifactId>error_prone_annotations</artifactId>
+            <groupId>io.trino.hadoop</groupId>
+            <artifactId>hadoop-apache</artifactId>
+            <version>3.3.5-1</version>
             <scope>runtime</scope>
-            <version>${dep.errorprone.version}</version>
         </dependency>
 
         <dependency>
@@ -271,87 +305,52 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Trino SPI -->
         <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-spi</artifactId>
-            <scope>provided</scope>
-            <version>${dep.trino.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.airlift</groupId>
-            <artifactId>slice</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-api</artifactId>
-            <version>${dep.opentelemetry.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.opentelemetry</groupId>
-            <artifactId>opentelemetry-context</artifactId>
-            <version>${dep.opentelemetry.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <scope>provided</scope>
-            <version>${dep.jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.openjdk.jol</groupId>
-            <artifactId>jol-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- for testing -->
-        <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-main</artifactId>
-            <scope>test</scope>
-            <version>${dep.trino.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-testing</artifactId>
-            <scope>test</scope>
-            <version>${dep.trino.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-testing-services</artifactId>
-            <scope>test</scope>
-            <version>${dep.trino.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-tpch</artifactId>
-            <scope>test</scope>
-            <version>${dep.trino.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.airlift</groupId>
-            <artifactId>testing</artifactId>
-            <scope>test</scope>
-            <version>${dep.airlift.version}</version>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.4</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.docker-java</groupId>
             <artifactId>docker-java-api</artifactId>
             <version>${dep.docker-java.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>testing</artifactId>
+            <version>${dep.airlift.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-main</artifactId>
+            <version>${dep.trino.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-testing</artifactId>
+            <version>${dep.trino.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-testing-services</artifactId>
+            <version>${dep.trino.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-tpch</artifactId>
+            <version>${dep.trino.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -379,15 +378,15 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
-            <scope>test</scope>
             <version>${dep.testcontainers.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <scope>test</scope>
             <version>${dep.testng.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
