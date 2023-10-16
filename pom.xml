@@ -45,7 +45,7 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>428</dep.trino.version>
+        <dep.trino.version>429</dep.trino.version>
         <dep.airlift.version>235</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
         <dep.opentelemetry.version>1.30.1</dep.opentelemetry.version>
