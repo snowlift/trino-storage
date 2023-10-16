@@ -14,6 +14,7 @@
 package org.ebyhr.trino.storage;
 
 import com.google.inject.Inject;
+import io.trino.spi.Page;
 import io.trino.spi.connector.ColumnHandle;
 import io.trino.spi.connector.ConnectorPageSource;
 import io.trino.spi.connector.ConnectorPageSourceProvider;
@@ -29,8 +30,10 @@ import org.ebyhr.trino.storage.operator.FilePlugin;
 import org.ebyhr.trino.storage.operator.PluginFactory;
 
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 import static org.ebyhr.trino.storage.StorageSplit.Mode.LIST;
 
 public class StoragePageSourceProvider
@@ -65,7 +68,10 @@ public class StoragePageSourceProvider
         FilePlugin plugin = PluginFactory.create(schemaName);
 
         try {
-            return new FixedPageSource(plugin.getPagesIterator(tableName, path -> storageClient.getInputStream(session, path)));
+            Iterable<Page> iterable = plugin.getPagesIterator(tableName, path -> storageClient.getInputStream(session, path));
+            List<Page> pages = StreamSupport.stream(iterable.spliterator(), false)
+                    .collect(toList());
+            return new FixedPageSource(pages);
         }
         catch (UnsupportedOperationException ignored) {
             // Ignore it when a plugin doesn't implement getPagesIterator
