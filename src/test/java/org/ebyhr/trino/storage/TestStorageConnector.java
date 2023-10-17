@@ -46,6 +46,14 @@ public final class TestStorageConnector
     }
 
     @Test
+    public void testSelectSsv()
+    {
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('ssv', '" + toAbsolutePath("example-data/numbers-2.ssv") + "'))",
+                "VALUES ('eleven', '11'), ('twelve', '12')");
+    }
+
+    @Test
     public void testSelectTsv()
     {
         assertQuery(

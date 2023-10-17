@@ -31,12 +31,17 @@ import static io.trino.spi.type.VarcharType.VARCHAR;
 public class CsvPlugin
         implements FilePlugin
 {
-    private static final String DELIMITER = ",";
+    private final String delimiter;
+
+    public CsvPlugin(String delimiter)
+    {
+        this.delimiter = delimiter;
+    }
 
     @Override
     public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
-        Splitter splitter = Splitter.on(DELIMITER).trimResults();
+        Splitter splitter = Splitter.on(delimiter).trimResults();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(streamProvider.apply(path)))) {
             List<String> fields = splitter.splitToList(reader.readLine());
@@ -54,7 +59,7 @@ public class CsvPlugin
     {
         InputStream inputStream = streamProvider.apply(path);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        Splitter splitter = Splitter.on(DELIMITER).trimResults();
+        Splitter splitter = Splitter.on(delimiter).trimResults();
         return reader.lines()
                 .skip(1)
                 .map(splitter::splitToList);
