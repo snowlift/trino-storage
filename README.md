@@ -21,27 +21,14 @@ storage.csv."https://raw.githubusercontent.com/snowlift/trino-storage/master/src
 Supported schemas are below.
 - `tsv`
 - `csv`
+- `ssv`
 - `txt`
 - `raw`
 - `excel`
 - `orc`
 - `json`
 
-`tsv` plugin extract each line with `\t` delimiter. Currently first line is used as column names.
-```sql
-SELECT * FROM
-storage.tsv."https://raw.githubusercontent.com/snowlift/trino-storage/master/src/test/resources/example-data/numbers.tsv";
-``` 
-```
-  one  | 1 
--------+---
- two   | 2 
- three | 3
-(2 rows)
-```
-
-
-`csv` plugin extract each line with `,` delimiter. Currently first line is used as column names.
+`csv` plugin extracts each line, with columns separated by `,`. Currently the first line is used as column names.
 ```sql
 SELECT * FROM
 storage.csv."https://raw.githubusercontent.com/snowlift/trino-storage/master/src/test/resources/example-data/numbers-2.csv";
@@ -53,6 +40,8 @@ storage.csv."https://raw.githubusercontent.com/snowlift/trino-storage/master/src
  twelve | 12
 (2 rows)
 ```
+
+Tab (`\t`) and semicolon (`;`) delimiters are also supported, using the `tsv` and `ssv` plugins, respectively.
 
 `txt` plugin doesn't extract each line. Currently column name is always `value`.
 ```sql
