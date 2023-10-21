@@ -79,7 +79,7 @@ public final class StorageQueryRunner
             DistributedQueryRunner queryRunner = createStorageQueryRunner(
                     Optional.of(storageServer),
                     Map.of("http-server.http.port", "8080"),
-                    Map.of("hive.hdfs.socks-proxy", "hadoop-master:1180",
+                    Map.of(
                             "hive.s3.path-style-access", "true",
                             "hive.s3.endpoint", storageServer.getMinioServer().getEndpoint(),
                             "hive.s3.aws-access-key", TestingMinioServer.ACCESS_KEY,
