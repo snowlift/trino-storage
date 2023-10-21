@@ -21,6 +21,7 @@ import io.airlift.log.Logger;
 import io.trino.filesystem.FileIterator;
 import io.trino.filesystem.Location;
 import io.trino.filesystem.TrinoFileSystemFactory;
+import io.trino.spi.TrinoException;
 import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.type.VarcharType;
 import org.ebyhr.trino.storage.operator.FilePlugin;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.airlift.http.client.Request.Builder.prepareGet;
+import static io.trino.spi.StandardErrorCode.PERMISSION_DENIED;
 import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.ebyhr.trino.storage.ByteResponseHandler.createByteResponseHandler;
@@ -49,12 +51,14 @@ public class StorageClient
 
     private final TrinoFileSystemFactory fileSystemFactory;
     private final HttpClient httpClient;
+    private final boolean allowLocalFiles;
 
     @Inject
-    public StorageClient(TrinoFileSystemFactory fileSystemFactory, @ForStorage HttpClient httpClient)
+    public StorageClient(TrinoFileSystemFactory fileSystemFactory, @ForStorage HttpClient httpClient, StorageConfig storageConfig)
     {
         this.fileSystemFactory = requireNonNull(fileSystemFactory, "fileSystemFactory is null");
         this.httpClient = requireNonNull(httpClient, "httpClient is null");
+        this.allowLocalFiles = requireNonNull(storageConfig, "storageConfig is null").getAllowLocalFiles();
     }
 
     public List<String> getSchemaNames()
@@ -75,6 +79,9 @@ public class StorageClient
         requireNonNull(schema, "schema is null");
         requireNonNull(tableName, "tableName is null");
 
+        if (isLocalFile(tableName) && !allowLocalFiles) {
+            throw new TrinoException(PERMISSION_DENIED, "Reading local files is disabled");
+        }
         if (schema.equals(LIST_SCHEMA_NAME)) {
             return new StorageTable(StorageSplit.Mode.LIST, tableName, List.of(new StorageColumnHandle("path", VarcharType.VARCHAR)));
         }
@@ -88,6 +95,13 @@ public class StorageClient
             log.error(e, "Failed to get table: %s.%s", schema, tableName);
             return null;
         }
+    }
+
+    private boolean isLocalFile(String path)
+    {
+        return path.startsWith("file:") || !(
+                path.startsWith("http://") || path.startsWith("https://")
+                        || path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://"));
     }
 
     public InputStream getInputStream(ConnectorSession session, String path)
@@ -105,10 +119,13 @@ public class StorageClient
             if (path.startsWith("hdfs://") || path.startsWith("s3a://") || path.startsWith("s3://")) {
                 return fileSystemFactory.create(session).newInputFile(Location.of(path)).newStream();
             }
+
+            if (!allowLocalFiles) {
+                throw new TrinoException(PERMISSION_DENIED, "Reading local files is disabled");
+            }
             if (!path.startsWith("file:")) {
                 path = "file:" + path;
             }
-
             return URI.create(path).toURL().openStream();
         }
         catch (IOException e) {

@@ -31,6 +31,7 @@ import org.ebyhr.trino.storage.operator.PluginFactory;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.google.common.base.Preconditions.checkState;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
@@ -59,6 +60,8 @@ public class StorageRecordSetProvider
         String schemaName = storageSplit.getSchemaName();
         String tableName = storageSplit.getTableName();
         StorageTable storageTable = storageClient.getTable(session, schemaName, tableName);
+        // this can happen if table is removed during a query
+        checkState(storageTable != null, "Table %s.%s no longer exists", schemaName, tableName);
 
         FilePlugin plugin = PluginFactory.create(schemaName);
         Stream<List<?>> stream = plugin.getRecordsIterator(tableName, path -> storageClient.getInputStream(session, path));

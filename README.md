@@ -1,5 +1,5 @@
 # Trino Storage Connector [![Build Status](https://github.com/snowlift/trino-storage/workflows/CI/badge.svg)](https://github.com/snowlift/trino-storage/actions?query=workflow%3ACI+event%3Apush+branch%3Amaster)
-This is a [Trino](http://trino.io/) connector to access local file (e.g. csv, tsv). Please keep in mind that this is not production ready and it was created for tests.
+This is a [Trino](http://trino.io/) connector to access single file (e.g. csv, tsv). Please keep in mind that this is not production ready and it was created for tests.
 
 # Supported scheme
 - hdfs
@@ -7,6 +7,8 @@ This is a [Trino](http://trino.io/) connector to access local file (e.g. csv, ts
 - file
 - http
 - https
+
+> Note: reading local files (with the `file` or no schema) can be disabled by setting `allow-local-files=false` in the catalog configuration.
 
 # Query
 You need to specify file type by schema name and use absolute path.
