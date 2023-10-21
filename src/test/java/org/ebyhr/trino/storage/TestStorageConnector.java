@@ -34,7 +34,10 @@ public final class TestStorageConnector
             throws Exception
     {
         server = closeAfterClass(new TestingStorageServer());
-        return createStorageQueryRunner(Optional.of(server), ImmutableMap.of(), ImmutableMap.of("hive.hdfs.socks-proxy", server.getHadoopServer().getSocksProxy()));
+        return createStorageQueryRunner(
+                Optional.of(server),
+                ImmutableMap.of(),
+                ImmutableMap.of());
     }
 
     @Test
