@@ -65,6 +65,7 @@ public class StorageModule
         binder.bind(TrinoFileSystemFactory.class).to(HdfsFileSystemFactory.class).in(Scopes.SINGLETON);
         binder.bind(TrinoHdfsFileSystemStats.class).in(Scopes.SINGLETON);
         binder.bind(OpenTelemetry.class).toInstance(OpenTelemetry.noop());
+        configBinder(binder).bindConfig(StorageConfig.class);
 
         jsonBinder(binder).addDeserializerBinding(Type.class).to(TypeDeserializer.class);
         jsonCodecBinder(binder).bindMapJsonCodec(String.class, listJsonCodec(StorageTable.class));

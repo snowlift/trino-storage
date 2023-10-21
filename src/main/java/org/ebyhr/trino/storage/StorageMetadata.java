@@ -50,7 +50,7 @@ public class StorageMetadata
     @Inject
     public StorageMetadata(StorageClient storageClient)
     {
-        this.storageClient = requireNonNull(storageClient, "client is null");
+        this.storageClient = requireNonNull(storageClient, "storageClient is null");
     }
 
     @Override
