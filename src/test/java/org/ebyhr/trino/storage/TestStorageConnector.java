@@ -46,6 +46,13 @@ public final class TestStorageConnector
         assertQuery(
                 "SELECT * FROM TABLE(storage.system.read_file('csv', '" + toAbsolutePath("example-data/numbers-2.csv") + "'))",
                 "VALUES ('eleven', '11'), ('twelve', '12')");
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('csv', '" + toAbsolutePath("example-data/quoted_fields_with_separator.csv") + "'))",
+                "VALUES ('test','2','3','4'),('test,test,test,test','3','3','5'),(' even weirder, but still valid, value with extra whitespaces that remain due to quoting /  ','1','2','3'),('extra whitespaces that should get trimmed due to no quoting','1','2','3')");
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('csv', '" + toAbsolutePath("example-data/quoted_fields_with_newlines.csv") + "'))",
+                "VALUES ('test','2','3','4'),('test,test,test,test','3','3','5'),(' even weirder, but still valid, value with linebreaks and extra\n" +
+                        "whitespaces that should remain due to quoting   ','1','2','3'),('extra whitespaces that should get trimmed due to no quoting','1','2','3')");
     }
 
     @Test
@@ -54,6 +61,13 @@ public final class TestStorageConnector
         assertQuery(
                 "SELECT * FROM TABLE(storage.system.read_file('ssv', '" + toAbsolutePath("example-data/numbers-2.ssv") + "'))",
                 "VALUES ('eleven', '11'), ('twelve', '12')");
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('ssv', '" + toAbsolutePath("example-data/quoted_fields_with_separator.ssv") + "'))",
+                "VALUES ('test','2','3','4'),('test;test;test;test','3','3','5'),(' even weirder; but still valid; value with extra whitespaces that remain due to quoting /  ','1','2','3'),('extra whitespaces that should get trimmed due to no quoting','1','2','3')");
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('ssv', '" + toAbsolutePath("example-data/quoted_fields_with_newlines.ssv") + "'))",
+                "VALUES ('test','2','3','4'),('test;test;test;test','3','3','5'),(' even weirder, but still valid; value with linebreaks and extra\n" +
+                        " whitespaces that should remain due to quoting   ','1','2','3'),('extra whitespaces that should get trimmed due to no quoting','1','2','3')");
     }
 
     @Test
@@ -65,6 +79,13 @@ public final class TestStorageConnector
         assertQuery(
                 "SELECT * FROM TABLE(storage.system.read_file('tsv', '" + server.getHadoopServer().toHdfsPath("/tmp/numbers.tsv") + "'))",
                 "VALUES ('two', '2'), ('three', '3')");
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('tsv', '" + toAbsolutePath("example-data/quoted_fields_with_separator.tsv") + "'))",
+                "VALUES ('test','2','3','4'),('test\ttest\ttest\ttest','3','3','5'),(' even weirder\t but still valid\t value with extra whitespaces that remain due to quoting /  ','1','2','3'),('extra whitespaces that should get trimmed due to no quoting','1','2','3')");
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('tsv', '" + toAbsolutePath("example-data/quoted_fields_with_newlines.tsv") + "'))",
+                "VALUES ('test','2','3','4'),('test\ttest\ttest\ttest','3','3','5'),(' even weirder, but still valid, value with linebreaks and extra\n" +
+                        " whitespaces that should remain due to quoting   ','1','2','3'),('extra whitespaces that should get trimmed due to no quoting','1','2','3')");
     }
 
     @Test
