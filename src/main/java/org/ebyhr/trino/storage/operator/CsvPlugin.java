@@ -13,13 +13,15 @@
  */
 package org.ebyhr.trino.storage.operator;
 
-import com.google.common.base.Splitter;
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvParser;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import com.google.common.collect.Streams;
 import org.ebyhr.trino.storage.StorageColumnHandle;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.function.Function;
@@ -32,19 +34,24 @@ public class CsvPlugin
         implements FilePlugin
 {
     private final String delimiter;
+    private final CsvMapper mapper;
+    private final CsvSchema schema;
 
     public CsvPlugin(String delimiter)
     {
         this.delimiter = delimiter;
+        this.mapper = new CsvMapper();
+        this.mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY).enable(CsvParser.Feature.TRIM_SPACES);
+        this.schema = CsvSchema.emptySchema().withColumnSeparator(this.delimiter.charAt(0));
     }
 
     @Override
     public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
-        Splitter splitter = Splitter.on(delimiter).trimResults();
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(streamProvider.apply(path)))) {
-            List<String> fields = splitter.splitToList(reader.readLine());
+        try {
+            // Read the first line and use the values as column names
+            MappingIterator<List<String>> it = this.mapper.readerFor(List.class).with(schema).readValues(streamProvider.apply(path));
+            List<String> fields = it.next();
             return fields.stream()
                     .map(field -> new StorageColumnHandle(field, VARCHAR))
                     .collect(toImmutableList());
@@ -57,11 +64,13 @@ public class CsvPlugin
     @Override
     public Stream<List<?>> getRecordsIterator(String path, Function<String, InputStream> streamProvider)
     {
-        InputStream inputStream = streamProvider.apply(path);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        Splitter splitter = Splitter.on(delimiter).trimResults();
-        return reader.lines()
-                .skip(1)
-                .map(splitter::splitToList);
+        try {
+            // Read lines and skip the first one because that contains the column names
+            MappingIterator<List<?>> it = this.mapper.readerFor(List.class).with(schema).readValues(streamProvider.apply(path));
+            return Streams.stream(it).skip(1);
+        }
+        catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }
