@@ -33,16 +33,14 @@ import static io.trino.spi.type.VarcharType.VARCHAR;
 public class CsvPlugin
         implements FilePlugin
 {
-    private final String delimiter;
     private final CsvMapper mapper;
     private final CsvSchema schema;
 
-    public CsvPlugin(String delimiter)
+    public CsvPlugin(char delimiter)
     {
-        this.delimiter = delimiter;
         this.mapper = new CsvMapper();
         this.mapper.enable(CsvParser.Feature.WRAP_AS_ARRAY).enable(CsvParser.Feature.TRIM_SPACES);
-        this.schema = CsvSchema.emptySchema().withColumnSeparator(this.delimiter.charAt(0));
+        this.schema = CsvSchema.emptySchema().withColumnSeparator(delimiter);
     }
 
     @Override

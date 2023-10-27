@@ -25,11 +25,11 @@ public final class PluginFactory
     {
         switch (typeName.toLowerCase(ENGLISH)) {
             case "csv":
-                return new CsvPlugin(",");
+                return new CsvPlugin(',');
             case "tsv":
-                return new CsvPlugin("\t");
+                return new CsvPlugin('\t');
             case "ssv":
-                return new CsvPlugin(";");
+                return new CsvPlugin(';');
             case "txt":
                 return new TextPlugin();
             case "raw":
