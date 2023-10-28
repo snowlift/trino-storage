@@ -38,7 +38,7 @@ import org.apache.parquet.io.GroupColumnIO;
 import org.apache.parquet.io.MessageColumnIO;
 import org.apache.parquet.io.PrimitiveColumnIO;
 import org.apache.parquet.schema.MessageType;
-import org.ebyhr.trino.storage.StorageColumn;
+import org.ebyhr.trino.storage.StorageColumnHandle;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -73,12 +74,12 @@ public class ParquetPlugin
         implements FilePlugin
 {
     @Override
-    public List<StorageColumn> getFields(String path, Function<String, InputStream> streamProvider)
+    public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
         path = getLocalPath(path, streamProvider);
         MessageType schema = getSchema(new File(path));
         return schema.getFields().stream()
-                .map(field -> new StorageColumn(
+                .map(field -> new StorageColumnHandle(
                         field.getName(),
                         fromParquetType(field)))
                 .collect(Collectors.toList());
@@ -90,27 +91,17 @@ public class ParquetPlugin
         path = getLocalPath(path, streamProvider);
         ParquetReader reader = getReader(new File(path));
 
-        ImmutableList.Builder<Type> trinoTypes = ImmutableList.builder();
-        ImmutableList.Builder<Optional<Field>> internalFields = ImmutableList.builder();
-        ImmutableList.Builder<Boolean> rowIndexChannels = ImmutableList.builder();
-
-        // TODO assuming all columns are being read, populate the above lists
-        MessageType schema = getSchema(new File(path));
-        MessageColumnIO messageColumnIO = getColumnIO(schema, new MessageType(schema.getName(), schema.getFields()));
-        schema.getFields().forEach(field -> {
-            Type trinoType = fromParquetType(field);
-            trinoTypes.add(trinoType);
-            rowIndexChannels.add(false);
-            internalFields.add(constructField(trinoType, messageColumnIO.getChild(field.getName())));
-        });
-
-        ParquetPageSource pageSource = ParquetPageSource.builder().build(reader)(reader, trinoTypes.build(), rowIndexChannels.build(), internalFields.build());
-        List<Page> result = new LinkedList<>();
-        Page page;
-        while ((page = pageSource.getNextPage()) != null) {
-            result.add(page.getLoadedPage());
+        try {
+            List<Page> result = new ArrayList<>();
+            Page page;
+            while ((page = reader.nextPage()) != null) {
+                result.add(page.getLoadedPage());
+            }
+            return result;
         }
-        return result;
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private String getLocalPath(String path, Function<String, InputStream> streamProvider)
@@ -138,7 +129,7 @@ public class ParquetPlugin
         try {
             dataSource = new FileParquetDataSource(file, options);
 
-            ParquetMetadata parquetMetadata = MetadataReader.readFooter(dataSource);
+            ParquetMetadata parquetMetadata = MetadataReader.readFooter(dataSource, Optional.empty());
             FileMetaData fileMetaData = parquetMetadata.getFileMetaData();
             fileSchema = fileMetaData.getSchema();
         }
@@ -159,7 +150,7 @@ public class ParquetPlugin
         try {
             dataSource = new FileParquetDataSource(file, options);
 
-            ParquetMetadata parquetMetadata = MetadataReader.readFooter(dataSource);
+            ParquetMetadata parquetMetadata = MetadataReader.readFooter(dataSource, Optional.empty());
             FileMetaData fileMetaData = parquetMetadata.getFileMetaData();
             fileSchema = fileMetaData.getSchema();
 
@@ -174,6 +165,17 @@ public class ParquetPlugin
                 blockStarts.add(nextStart);
                 nextStart += block.getRowCount();
             }
+            /*
+            Optional<String> fileCreatedBy,
+            List<Field> columnFields,
+            List<BlockMetaData> blocks,
+            List<Long> firstRowsOfBlocks,
+            ParquetDataSource dataSource,
+            DateTimeZone timeZone,
+            AggregatedMemoryContext memoryContext,
+            ParquetReaderOptions options,
+            Function<Exception, RuntimeException> exceptionTransform)
+             */
             parquetReader = new ParquetReader(
                     Optional.ofNullable(fileMetaData.getCreatedBy()),
                     messageColumn,

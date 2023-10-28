@@ -48,6 +48,7 @@
         <dep.trino.version>431</dep.trino.version>
         <dep.airlift.version>237</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
+        <dep.aircompressor.version>0.25</dep.aircompressor.version>
         <dep.opentelemetry.version>1.31.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>1.31.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
@@ -64,12 +65,18 @@
         <dep.slf4j.version>2.0.9</dep.slf4j.version>
         <dep.assertj-core.version>3.24.2</dep.assertj-core.version>
         <dep.logback.version>1.4.11</dep.logback.version>
+        <dep.parquet.version>1.13.1</dep.parquet.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.airlift</groupId>
+                <artifactId>aircompressor</artifactId>
+                <version>${dep.aircompressor.version}</version>
+            </dependency>
             <dependency>
                 <groupId>io.airlift</groupId>
                 <artifactId>slice</artifactId>
@@ -89,6 +96,36 @@
                 <groupId>net.java.dev.jna</groupId>
                 <artifactId>jna-platform</artifactId>
                 <version>5.13.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.parquet</groupId>
+                <artifactId>parquet-column</artifactId>
+                <version>${dep.parquet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.parquet</groupId>
+                <artifactId>parquet-common</artifactId>
+                <version>${dep.parquet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.parquet</groupId>
+                <artifactId>parquet-encoding</artifactId>
+                <version>${dep.parquet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.parquet</groupId>
+                <artifactId>parquet-format-structures</artifactId>
+                <version>${dep.parquet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.parquet</groupId>
+                <artifactId>parquet-hadoop</artifactId>
+                <version>${dep.parquet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.parquet</groupId>
+                <artifactId>parquet-jackson</artifactId>
+                <version>${dep.parquet.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
@@ -156,6 +193,12 @@
         </dependency>
 
         <dependency>
+            <groupId>io.airlift</groupId>
+            <artifactId>units</artifactId>
+            <version>1.10</version>
+        </dependency>
+
+        <dependency>
             <groupId>io.trino</groupId>
             <artifactId>trino-filesystem</artifactId>
             <version>${dep.trino.version}</version>
@@ -174,15 +217,27 @@
         </dependency>
 
         <dependency>
-            <groupId>io.trino.hive</groupId>
-            <artifactId>hive-apache</artifactId>
-            <version>3.1.2-21</version>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-orc</artifactId>
+            <version>${dep.trino.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.trino</groupId>
-            <artifactId>trino-orc</artifactId>
+            <artifactId>trino-parquet</artifactId>
             <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino.hadoop</groupId>
+            <artifactId>hadoop-apache</artifactId>
+            <version>3.3.5-1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino.hive</groupId>
+            <artifactId>hive-apache</artifactId>
+            <version>3.1.2-22</version>
         </dependency>
 
         <dependency>
@@ -210,22 +265,10 @@
         </dependency>
 
         <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-parquet</artifactId>
-            <version>${dep.trino.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.trino.hadoop</groupId>
-            <artifactId>hadoop-apache</artifactId>
-            <version>3.2.0-18</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.airlift</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>${dep.airlift.version}</version>
-            <scope>compile</scope>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${dep.jackson.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -299,19 +342,6 @@
             <groupId>io.airlift</groupId>
             <artifactId>log-manager</artifactId>
             <version>${dep.airlift.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.airlift</groupId>
-            <artifactId>units</artifactId>
-            <version>1.10</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.trino.hadoop</groupId>
-            <artifactId>hadoop-apache</artifactId>
-            <version>3.3.5-1</version>
             <scope>runtime</scope>
         </dependency>
 
