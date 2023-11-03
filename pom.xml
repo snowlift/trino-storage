@@ -45,19 +45,19 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>431</dep.trino.version>
+        <dep.trino.version>432</dep.trino.version>
         <dep.airlift.version>237</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
         <dep.opentelemetry.version>1.31.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>1.31.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.576</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.580</dep.aws-sdk.version>
         <dep.guava.version>32.1.3-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.23.0</dep.errorprone.version>
         <dep.jackson.version>2.15.3</dep.jackson.version>
         <dep.testcontainers.version>1.19.1</dep.testcontainers.version>
-        <dep.docker-java.version>3.3.3</dep.docker-java.version>
+        <dep.docker-java.version>3.3.4</dep.docker-java.version>
         <dep.testng.version>7.8.0</dep.testng.version>
         <dep.joda.version>2.12.5</dep.joda.version>
         <dep.junit.version>5.10.0</dep.junit.version>
