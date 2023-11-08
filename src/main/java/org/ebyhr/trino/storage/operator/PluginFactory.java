@@ -38,6 +38,8 @@ public final class PluginFactory
                 return new ExcelPlugin();
             case "orc":
                 return new OrcPlugin();
+            case "parquet":
+                return new ParquetPlugin();
             case "json":
                 return new JsonPlugin();
             default:
