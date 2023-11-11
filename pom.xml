@@ -45,13 +45,13 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>432</dep.trino.version>
+        <dep.trino.version>433</dep.trino.version>
         <dep.airlift.version>237</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
         <dep.opentelemetry.version>1.31.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>1.31.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.580</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.587</dep.aws-sdk.version>
         <dep.guava.version>32.1.3-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.23.0</dep.errorprone.version>
@@ -60,16 +60,24 @@
         <dep.docker-java.version>3.3.4</dep.docker-java.version>
         <dep.testng.version>7.8.0</dep.testng.version>
         <dep.joda.version>2.12.5</dep.joda.version>
-        <dep.junit.version>5.10.0</dep.junit.version>
+        <dep.junit.version>5.10.1</dep.junit.version>
         <dep.slf4j.version>2.0.9</dep.slf4j.version>
         <dep.assertj-core.version>3.24.2</dep.assertj-core.version>
         <dep.logback.version>1.4.11</dep.logback.version>
+        <dep.plugin.surefire.version>3.1.2</dep.plugin.surefire.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-bom</artifactId>
+                <version>1.9.20</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>io.airlift</groupId>
                 <artifactId>slice</artifactId>
