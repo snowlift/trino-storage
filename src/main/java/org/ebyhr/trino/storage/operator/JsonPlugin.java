@@ -16,10 +16,13 @@ package org.ebyhr.trino.storage.operator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.VerifyException;
 import com.google.common.collect.Streams;
+import io.airlift.log.Logger;
 import io.airlift.slice.Slice;
 import io.trino.spi.TrinoException;
+import io.trino.spi.block.ArrayBlockBuilder;
 import io.trino.spi.block.Block;
 import io.trino.spi.block.BlockBuilder;
 import io.trino.spi.block.RowBlockBuilder;
@@ -37,11 +40,11 @@ import java.io.UncheckedIOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.google.common.base.Verify.verify;
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static io.trino.spi.StandardErrorCode.TYPE_MISMATCH;
 import static io.trino.spi.type.BigintType.BIGINT;
@@ -51,6 +54,8 @@ import static io.trino.spi.type.VarcharType.VARCHAR;
 public class JsonPlugin
         implements FilePlugin
 {
+    private static final Logger log = Logger.get(JsonPlugin.class);
+
     @Override
     public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
@@ -97,7 +102,7 @@ public class JsonPlugin
                 return node.canConvertToLong() ? BIGINT : DOUBLE;
             case OBJECT:
                 List<RowType.Field> fields = Streams.stream(node.fields())
-                        .map(entry -> new RowType.Field(Optional.of(entry.getKey()), mapType(entry.getValue())))
+                        .map(entry -> RowType.field(entry.getKey(), mapType(entry.getValue())))
                         .collect(toImmutableList());
                 return RowType.from(fields);
             case NULL:
@@ -119,12 +124,15 @@ public class JsonPlugin
             reader.mark(1024 * 1024);
             String firstLine = reader.readLine();
             try {
-                // try parsing the first line only to confirm this is a JSONL file, so throw away the result
-                objectMapper.readTree(firstLine);
+                // try parsing the first line to confirm this is a JSONL file
+                JsonNode firstNode = objectMapper.readTree(firstLine);
+                verify(firstNode instanceof ObjectNode, "JSON file does not contain a list of objects");
+                Type type = mapType(firstNode);
+                verify(type instanceof RowType, "type is not a RowType");
                 reader.reset();
-                return reader.lines().map(node -> {
+                return reader.lines().map(rawNode -> {
                     try {
-                        return nodeToRow(objectMapper.readTree(node));
+                        return nodeToRow(objectMapper.readTree(rawNode), (RowType) type);
                     }
                     catch (JsonProcessingException e) {
                         throw new TrinoException(TYPE_MISMATCH, e);
@@ -135,8 +143,13 @@ public class JsonPlugin
                 // try to read whole file and assume there's an array of objects, so get the first one
                 reader.reset();
                 JsonNode root = objectMapper.readTree(reader);
+                if (!root.elements().hasNext()) {
+                    return Stream.of();
+                }
+                Type type = mapType(root.elements().next());
+                verify(type instanceof RowType, "type is not a RowType");
                 return Streams.stream(root.elements())
-                        .map(this::nodeToRow);
+                        .map(node -> nodeToRow(node, (RowType) type));
             }
         }
         catch (IOException e) {
@@ -144,25 +157,36 @@ public class JsonPlugin
         }
     }
 
-    private List<?> nodeToRow(JsonNode node)
+    private List<?> nodeToRow(JsonNode node, RowType type)
     {
-        return Streams.stream(node.fields())
-                .map(entry -> mapValue(entry.getValue()))
+        verify(node instanceof ObjectNode, "Expected an object node but got %s".formatted(node.getNodeType()));
+        // all rows must have the same type, otherwise Trino will throw unexpected errors when decoding internal value representations
+        // type doesn't have to match node so iterate over it and ignore missing fields
+        // TODO this silently ignores properties not present in the first row, throw an exception or create a union of all rows
+        return type.getFields().stream()
+                .map(field -> mapValue(node.get(field.getName().orElseThrow()), field.getType()))
                 .collect(Collectors.toList());
     }
 
-    private Object mapValue(JsonNode node)
+    private Object mapValue(JsonNode node, Type type)
     {
+        if (node == null) {
+            return null;
+        }
+        Type actualType = mapType(node);
+        if (!actualType.equals(type)) {
+            // log as debug to avoid spamming logs
+            // TODO if the JSON file was converted from XML, it's common to see an object instead of an array - wrap it instead of ignoring it
+            log.debug("expected node %s to be of type %s but it is %s, ignoring".formatted(node, mapType(node), type));
+            return null;
+        }
         switch (node.getNodeType()) {
             case ARRAY -> {
-                Iterator<JsonNode> elements = node.elements();
-                if (!elements.hasNext()) {
-                    throw new VerifyException("Cannot infer the SQL type of an empty JSON array");
-                }
-                Type type = mapType(elements.next());
-                BlockBuilder values = type.createBlockBuilder(null, 10);
-                node.elements().forEachRemaining(value -> writeObject(values, value));
-                return values.build();
+                ArrayType arrayType = (ArrayType) type;
+                ArrayBlockBuilder arrayBlockBuilder = arrayType.createBlockBuilder(null, node.size());
+                arrayBlockBuilder.buildEntry(elementBuilder -> node.elements().forEachRemaining(value -> writeObject(elementBuilder, value, arrayType.getElementType())));
+                Block block = arrayBlockBuilder.build();
+                return arrayType.getObject(block, block.getPositionCount() - 1);
             }
             case BOOLEAN -> {
                 return node.asBoolean();
@@ -171,12 +195,12 @@ public class JsonPlugin
                 return node.canConvertToLong() ? node.asLong() : node.asDouble();
             }
             case OBJECT -> {
-                Type rowType = mapType(node);
-                RowBlockBuilder rowBlockBuilder = (RowBlockBuilder) rowType.createBlockBuilder(null, 10);
-                rowBlockBuilder.buildEntry(elementBuilder -> {
+                RowType rowType = (RowType) type;
+                RowBlockBuilder rowBlockBuilder = rowType.createBlockBuilder(null, node.size());
+                rowBlockBuilder.buildEntry(fieldBuilders -> {
                     Iterator<Map.Entry<String, JsonNode>> fields = node.fields();
                     for (int i = 0; fields.hasNext(); i++) {
-                        writeObject(elementBuilder.get(i), fields.next().getValue());
+                        writeObject(fieldBuilders.get(i), fields.next().getValue(), rowType.getFields().get(i).getType());
                     }
                 });
                 Block block = rowBlockBuilder.build();
@@ -194,17 +218,31 @@ public class JsonPlugin
         }
     }
 
-    private void writeObject(BlockBuilder blockBuilder, JsonNode node)
+    private void writeObject(BlockBuilder blockBuilder, JsonNode node, Type type)
     {
-        Type type = mapType(node);
-        Object value = mapValue(node);
+        if (node.isNull()) {
+            blockBuilder.appendNull();
+            return;
+        }
+        Object value = mapValue(node, type);
+        verify(value != null, "value is null");
         Class<?> javaType = type.getJavaType();
 
         if (javaType == long.class) {
-            BIGINT.writeLong(blockBuilder, (long) value);
+            if (value instanceof Double doubleValue) {
+                BIGINT.writeLong(blockBuilder, doubleValue.longValue());
+            }
+            else {
+                BIGINT.writeLong(blockBuilder, (long) value);
+            }
         }
         else if (javaType == double.class) {
-            DOUBLE.writeDouble(blockBuilder, (double) value);
+            if (value instanceof Long longValue) {
+                DOUBLE.writeDouble(blockBuilder, longValue.doubleValue());
+            }
+            else {
+                DOUBLE.writeDouble(blockBuilder, (double) value);
+            }
         }
         else if (javaType == boolean.class) {
             BooleanType.BOOLEAN.writeBoolean(blockBuilder, (Boolean) value);
@@ -213,7 +251,7 @@ public class JsonPlugin
             VARCHAR.writeString(blockBuilder, (String) value);
         }
         else if (!javaType.isPrimitive()) {
-            type.writeObject(blockBuilder, mapValue(node));
+            type.writeObject(blockBuilder, value);
         }
         else {
             throw new IllegalArgumentException("Unknown java type " + javaType + " from type " + type);
