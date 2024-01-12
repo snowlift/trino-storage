@@ -10,7 +10,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>436</version>
+    <version>437-SNAPSHOT</version>
     <packaging>trino-plugin</packaging>
     <description>Trino - Storage Connector</description>
 
@@ -24,7 +24,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/snowlift/trino-storage.git</developerConnection>
-        <tag>v436</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
