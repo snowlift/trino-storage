@@ -225,7 +225,11 @@ public class JsonPlugin
             return;
         }
         Object value = mapValue(node, type);
-        verify(value != null, "value is null");
+        if (value == null) {
+            // this can happen if the type is incompatible
+            blockBuilder.appendNull();
+            return;
+        }
         Class<?> javaType = type.getJavaType();
 
         if (javaType == long.class) {
