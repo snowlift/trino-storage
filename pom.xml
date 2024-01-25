@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>148</version>
+        <version>149</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -45,13 +45,13 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>436</dep.trino.version>
-        <dep.airlift.version>239</dep.airlift.version>
+        <dep.trino.version>437</dep.trino.version>
+        <dep.airlift.version>240</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
         <dep.opentelemetry.version>1.34.1</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>1.32.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.635</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.644</dep.aws-sdk.version>
         <dep.guava.version>33.0.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.24.1</dep.errorprone.version>
@@ -61,7 +61,7 @@
         <dep.joda.version>2.12.6</dep.joda.version>
         <dep.junit.version>5.10.1</dep.junit.version>
         <dep.slf4j.version>2.0.11</dep.slf4j.version>
-        <dep.assertj-core.version>3.25.1</dep.assertj-core.version>
+        <dep.assertj-core.version>3.25.2</dep.assertj-core.version>
         <dep.logback.version>1.4.14</dep.logback.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
         <dep.jna.version>5.14.0</dep.jna.version>
