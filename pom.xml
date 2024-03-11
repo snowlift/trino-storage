@@ -46,7 +46,7 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
         <dep.trino.version>440</dep.trino.version>
-        <dep.airlift.version>241</dep.airlift.version>
+        <dep.airlift.version>242</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
         <dep.opentelemetry.version>1.36.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.1.0</dep.opentelemetry-instrumentation.version>
