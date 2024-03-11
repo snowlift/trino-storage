@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>151</version>
+        <version>152</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
