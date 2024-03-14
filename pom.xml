@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>151</version>
+        <version>152</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -45,19 +45,19 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>440</dep.trino.version>
-        <dep.airlift.version>241</dep.airlift.version>
+        <dep.trino.version>441</dep.trino.version>
+        <dep.airlift.version>242</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
         <dep.opentelemetry.version>1.36.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.1.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.676</dep.aws-sdk.version>
-        <dep.guava.version>33.0.0-jre</dep.guava.version>
+        <dep.aws-sdk.version>1.12.679</dep.aws-sdk.version>
+        <dep.guava.version>33.1.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
-        <dep.errorprone.version>2.25.0</dep.errorprone.version>
-        <dep.jackson.version>2.16.1</dep.jackson.version>
+        <dep.errorprone.version>2.26.1</dep.errorprone.version>
+        <dep.jackson.version>2.17.0</dep.jackson.version>
         <dep.testcontainers.version>1.19.7</dep.testcontainers.version>
-        <dep.docker-java.version>3.3.5</dep.docker-java.version>
+        <dep.docker-java.version>3.3.6</dep.docker-java.version>
         <dep.joda.version>2.12.7</dep.joda.version>
         <dep.junit.version>5.10.2</dep.junit.version>
         <dep.slf4j.version>2.0.12</dep.slf4j.version>
@@ -87,6 +87,11 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>2.15.1</version>
+            </dependency>
+            <dependency>
+                <groupId>io.airlift</groupId>
+                <artifactId>jmx-http-rpc</artifactId>
+                <version>${dep.airlift.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.airlift</groupId>
@@ -424,7 +429,7 @@
                 <plugin>
                     <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
                     <artifactId>provisio-maven-plugin</artifactId>
-                    <version>1.0.20</version>
+                    <version>1.0.21</version>
                 </plugin>
                 <plugin>
                     <groupId>org.basepom.maven</groupId>
@@ -480,7 +485,7 @@
             <plugin>
                 <groupId>io.trino</groupId>
                 <artifactId>trino-maven-plugin</artifactId>
-                <version>12</version>
+                <version>13</version>
                 <extensions>true</extensions>
                 <configuration>
                     <pluginClassName>io.trino.spi.Plugin</pluginClassName>
