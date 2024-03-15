@@ -45,13 +45,13 @@
         <air.check.fail-checkstyle>true</air.check.fail-checkstyle>
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
 
-        <dep.trino.version>441</dep.trino.version>
+        <dep.trino.version>442</dep.trino.version>
         <dep.airlift.version>242</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
         <dep.opentelemetry.version>1.36.0</dep.opentelemetry.version>
-        <dep.opentelemetry-instrumentation.version>2.1.0</dep.opentelemetry-instrumentation.version>
+        <dep.opentelemetry-instrumentation.version>2.2.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.679</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.680</dep.aws-sdk.version>
         <dep.guava.version>33.1.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.26.1</dep.errorprone.version>
