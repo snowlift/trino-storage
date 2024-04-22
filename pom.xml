@@ -52,7 +52,7 @@
         <dep.opentelemetry.version>1.37.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.3.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.703</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.705</dep.aws-sdk.version>
         <dep.guava.version>33.1.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.26.1</dep.errorprone.version>
@@ -391,7 +391,7 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>5.13.0</version>
+            <version>5.14.0</version>
             <scope>test</scope>
         </dependency>
 
