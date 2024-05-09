@@ -36,8 +36,8 @@
     </distributionManagement>
 
     <properties>
-        <project.build.targetJdk>21</project.build.targetJdk>
-        <air.java.version>21.0.1</air.java.version>
+        <project.build.targetJdk>22</project.build.targetJdk>
+        <air.java.version>22.0.1</air.java.version>
 
         <air.check.skip-extended>true</air.check.skip-extended>
         <air.check.skip-license>false</air.check.skip-license>
@@ -46,18 +46,18 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>446</dep.trino.version>
-        <dep.airlift.version>246</dep.airlift.version>
+        <dep.trino.version>447</dep.trino.version>
+        <dep.airlift.version>248</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
         <dep.opentelemetry.version>1.37.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.3.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.713</dep.aws-sdk.version>
-        <dep.guava.version>33.1.0-jre</dep.guava.version>
+        <dep.aws-sdk.version>1.12.718</dep.aws-sdk.version>
+        <dep.guava.version>33.2.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.27.1</dep.errorprone.version>
-        <dep.jackson.version>2.17.0</dep.jackson.version>
-        <dep.testcontainers.version>1.19.7</dep.testcontainers.version>
+        <dep.jackson.version>2.17.1</dep.jackson.version>
+        <dep.testcontainers.version>1.19.8</dep.testcontainers.version>
         <dep.docker-java.version>3.3.6</dep.docker-java.version>
         <dep.joda.version>2.12.7</dep.joda.version>
         <dep.junit.version>5.10.2</dep.junit.version>
@@ -75,7 +75,7 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-bom</artifactId>
-                <version>1.9.23</version>
+                <version>1.9.24</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -102,7 +102,7 @@
             <dependency>
                 <groupId>net.bytebuddy</groupId>
                 <artifactId>byte-buddy</artifactId>
-                <version>1.14.14</version>
+                <version>1.14.15</version>
             </dependency>
             <dependency>
                 <groupId>net.java.dev.jna</groupId>
@@ -122,7 +122,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.42.0</version>
+                <version>3.43.0</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
@@ -328,7 +328,7 @@
         <dependency>
             <groupId>io.trino.hadoop</groupId>
             <artifactId>hadoop-apache</artifactId>
-            <version>3.3.5-2</version>
+            <version>3.3.5-3</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -435,7 +435,7 @@
                 <plugin>
                     <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
                     <artifactId>provisio-maven-plugin</artifactId>
-                    <version>1.0.24</version>
+                    <version>1.0.25</version>
                 </plugin>
                 <plugin>
                     <groupId>org.basepom.maven</groupId>
