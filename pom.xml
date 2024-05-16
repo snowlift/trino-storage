@@ -46,13 +46,13 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>447</dep.trino.version>
+        <dep.trino.version>448</dep.trino.version>
         <dep.airlift.version>248</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
-        <dep.opentelemetry.version>1.37.0</dep.opentelemetry.version>
+        <dep.opentelemetry.version>1.38.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.3.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.718</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.723</dep.aws-sdk.version>
         <dep.guava.version>33.2.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.27.1</dep.errorprone.version>
@@ -322,6 +322,13 @@
             <groupId>io.airlift</groupId>
             <artifactId>units</artifactId>
             <version>1.10</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-plugin-toolkit</artifactId>
+            <version>${dep.trino.version}</version>
             <scope>runtime</scope>
         </dependency>
 
