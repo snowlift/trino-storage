@@ -13,8 +13,8 @@
  */
 package org.ebyhr.trino.storage;
 
+import io.trino.plugin.base.util.AutoCloseableCloser;
 import io.trino.testing.ResourcePresence;
-import io.trino.util.AutoCloseableCloser;
 import org.testcontainers.containers.Network;
 
 import static org.testcontainers.containers.Network.newNetwork;
