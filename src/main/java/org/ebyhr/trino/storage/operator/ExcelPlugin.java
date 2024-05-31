@@ -44,9 +44,8 @@ public class ExcelPlugin
     @Override
     public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
-        InputStream inputStream = streamProvider.apply(path);
-        try {
-            Workbook workbook = WorkbookFactory.create(inputStream);
+        try (InputStream inputStream = streamProvider.apply(path);
+             Workbook workbook = WorkbookFactory.create(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rows = sheet.iterator();
             List<StorageColumnHandle> columnTypes = new LinkedList<>();
@@ -65,9 +64,8 @@ public class ExcelPlugin
     @Override
     public Stream<List<?>> getRecordsIterator(String path, Function<String, InputStream> streamProvider)
     {
-        try {
-            InputStream inputStream = streamProvider.apply(path);
-            Workbook workbook = WorkbookFactory.create(inputStream);
+        try (InputStream inputStream = streamProvider.apply(path);
+             Workbook workbook = WorkbookFactory.create(inputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
             Spliterator<Row> spliterator = Spliterators.spliteratorUnknownSize(sheet.iterator(), 0);
             return StreamSupport.stream(spliterator, false)
