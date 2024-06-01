@@ -15,12 +15,15 @@ package org.ebyhr.trino.storage;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
+import io.trino.spi.StandardErrorCode;
+import io.trino.spi.TrinoException;
 import io.trino.spi.connector.ColumnHandle;
 import io.trino.spi.connector.ColumnMetadata;
 import io.trino.spi.connector.ConnectorMetadata;
 import io.trino.spi.connector.ConnectorSession;
 import io.trino.spi.connector.ConnectorTableHandle;
 import io.trino.spi.connector.ConnectorTableMetadata;
+import io.trino.spi.connector.ConnectorTableVersion;
 import io.trino.spi.connector.SchemaTableName;
 import io.trino.spi.connector.SchemaTablePrefix;
 import io.trino.spi.connector.TableColumnsMetadata;
@@ -65,8 +68,11 @@ public class StorageMetadata
     }
 
     @Override
-    public StorageTableHandle getTableHandle(ConnectorSession session, SchemaTableName tableName)
+    public StorageTableHandle getTableHandle(ConnectorSession session, SchemaTableName tableName, Optional<ConnectorTableVersion> startVersion, Optional<ConnectorTableVersion> endVersion)
     {
+        if (startVersion.isPresent() || endVersion.isPresent()) {
+            throw new TrinoException(StandardErrorCode.NOT_SUPPORTED, "This connector does not support versioned tables");
+        }
         if (!listSchemaNames(session).contains(tableName.getSchemaName())) {
             return null;
         }
