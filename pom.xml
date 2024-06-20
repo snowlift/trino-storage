@@ -10,7 +10,7 @@
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>450-SNAPSHOT</version>
+    <version>450</version>
     <packaging>trino-plugin</packaging>
     <description>Trino - Storage Connector</description>
 
@@ -24,7 +24,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/snowlift/trino-storage.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v450</tag>
     </scm>
 
     <distributionManagement>
