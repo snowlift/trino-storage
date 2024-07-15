@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>157</version>
+        <version>158</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -46,23 +46,23 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>451</dep.trino.version>
-        <dep.airlift.version>249</dep.airlift.version>
+        <dep.trino.version>452</dep.trino.version>
+        <dep.airlift.version>250</dep.airlift.version>
         <dep.slice.version>2.2</dep.slice.version>
-        <dep.opentelemetry.version>1.38.0</dep.opentelemetry.version>
+        <dep.opentelemetry.version>1.40.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.4.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.755</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.761</dep.aws-sdk.version>
         <dep.guava.version>33.2.1-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.28.0</dep.errorprone.version>
-        <dep.jackson.version>2.17.1</dep.jackson.version>
+        <dep.jackson.version>2.17.2</dep.jackson.version>
         <dep.testcontainers.version>1.19.8</dep.testcontainers.version>
-        <dep.docker-java.version>3.3.6</dep.docker-java.version>
+        <dep.docker-java.version>3.4.0</dep.docker-java.version>
         <dep.joda.version>2.12.7</dep.joda.version>
         <dep.junit.version>5.10.3</dep.junit.version>
         <dep.slf4j.version>2.0.13</dep.slf4j.version>
-        <dep.assertj-core.version>3.26.0</dep.assertj-core.version>
+        <dep.assertj-core.version>3.26.3</dep.assertj-core.version>
         <dep.logback.version>1.5.6</dep.logback.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
         <dep.jna.version>5.14.0</dep.jna.version>
@@ -465,7 +465,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.1</version>
                 <configuration>
                     <scmCommentPrefix>[ci skip]</scmCommentPrefix>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
