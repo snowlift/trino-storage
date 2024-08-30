@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>165</version>
+        <version>170</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -46,16 +46,16 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>454</dep.trino.version>
-        <dep.airlift.version>260</dep.airlift.version>
+        <dep.trino.version>455</dep.trino.version>
+        <dep.airlift.version>261</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
-        <dep.opentelemetry.version>1.40.0</dep.opentelemetry.version>
-        <dep.opentelemetry-instrumentation.version>2.6.0</dep.opentelemetry-instrumentation.version>
+        <dep.opentelemetry.version>1.41.0</dep.opentelemetry.version>
+        <dep.opentelemetry-instrumentation.version>2.7.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.769</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.770</dep.aws-sdk.version>
         <dep.guava.version>33.3.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
-        <dep.errorprone.version>2.30.0</dep.errorprone.version>
+        <dep.errorprone.version>2.31.0</dep.errorprone.version>
         <dep.jackson.version>2.17.2</dep.jackson.version>
         <dep.testcontainers.version>1.20.1</dep.testcontainers.version>
         <dep.docker-java.version>3.4.0</dep.docker-java.version>
@@ -100,6 +100,11 @@
                 <version>${dep.slice.version}</version>
             </dependency>
             <!-- temporary to settle a version between airbase and airlift -->
+            <dependency>
+                <groupId>io.opentelemetry</groupId>
+                <artifactId>opentelemetry-api-incubator</artifactId>
+                <version>${dep.opentelemetry.version}-alpha</version>
+            </dependency>
             <dependency>
                 <groupId>io.opentelemetry.semconv</groupId>
                 <artifactId>opentelemetry-semconv</artifactId>
@@ -464,14 +469,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.1.3</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.1</version>
                 <configuration>
                     <scmCommentPrefix>[ci skip]</scmCommentPrefix>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
