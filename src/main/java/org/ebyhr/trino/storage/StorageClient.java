@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
-public class StorageClient
+public class StorageClient2
 {
     private static final Logger log = Logger.get(StorageClient.class);
 
