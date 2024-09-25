@@ -47,7 +47,7 @@ import static java.util.Objects.requireNonNull;
 import static org.ebyhr.trino.storage.ByteResponseHandler.createByteResponseHandler;
 import static org.ebyhr.trino.storage.ptf.ListTableFunction.LIST_SCHEMA_NAME;
 
-public class StorageClient
+public class StorageClient2
 {
     private static final Logger log = Logger.get(StorageClient.class);
 
