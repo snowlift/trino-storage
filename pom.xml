@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>176</version>
+        <version>185</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -46,21 +46,21 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>459</dep.trino.version>
+        <dep.trino.version>460</dep.trino.version>
         <dep.airlift.version>268</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
         <dep.opentelemetry.version>1.42.1</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.8.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.772</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.773</dep.aws-sdk.version>
         <dep.guava.version>33.3.1-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
-        <dep.errorprone.version>2.32.0</dep.errorprone.version>
+        <dep.errorprone.version>2.33.0</dep.errorprone.version>
         <dep.jackson.version>2.18.0</dep.jackson.version>
-        <dep.testcontainers.version>1.20.1</dep.testcontainers.version>
+        <dep.testcontainers.version>1.20.2</dep.testcontainers.version>
         <dep.docker-java.version>3.4.0</dep.docker-java.version>
         <dep.joda.version>2.13.0</dep.joda.version>
-        <dep.junit.version>5.11.1</dep.junit.version>
+        <dep.junit.version>5.11.2</dep.junit.version>
         <dep.slf4j.version>2.0.16</dep.slf4j.version>
         <dep.assertj-core.version>3.26.3</dep.assertj-core.version>
         <dep.logback.version>1.5.8</dep.logback.version>
@@ -113,12 +113,12 @@
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
-                <version>2.24.0</version>
+                <version>2.24.1</version>
             </dependency>
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.47.0</version>
+                <version>3.48.0</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
@@ -394,7 +394,7 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>5.14.0</version>
+            <version>5.15.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -438,7 +438,7 @@
                 <plugin>
                     <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
                     <artifactId>provisio-maven-plugin</artifactId>
-                    <version>1.0.25</version>
+                    <version>1.1.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.basepom.maven</groupId>
