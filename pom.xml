@@ -394,7 +394,7 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>5.14.0</version>
+            <version>5.15.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -438,7 +438,7 @@
                 <plugin>
                     <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
                     <artifactId>provisio-maven-plugin</artifactId>
-                    <version>1.0.25</version>
+                    <version>1.1.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.basepom.maven</groupId>
