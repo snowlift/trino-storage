@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>186</version>
+        <version>187</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -49,7 +49,7 @@
         <dep.trino.version>461</dep.trino.version>
         <dep.airlift.version>274</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
-        <dep.opentelemetry.version>1.42.1</dep.opentelemetry.version>
+        <dep.opentelemetry.version>1.43.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.8.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.773</dep.aws-sdk.version>
@@ -63,7 +63,7 @@
         <dep.junit.version>5.11.2</dep.junit.version>
         <dep.slf4j.version>2.0.16</dep.slf4j.version>
         <dep.assertj-core.version>3.26.3</dep.assertj-core.version>
-        <dep.logback.version>1.5.9</dep.logback.version>
+        <dep.logback.version>1.5.10</dep.logback.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
         <dep.jna.version>5.15.0</dep.jna.version>
 
@@ -103,7 +103,7 @@
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-api-incubator</artifactId>
-                <version>${dep.opentelemetry.version}-alpha</version>
+                <version>${dep.opentelemetry.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry.semconv</groupId>
@@ -118,7 +118,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.48.0</version>
+                <version>3.48.1</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
@@ -394,7 +394,7 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>5.14.0</version>
+            <version>5.15.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -438,7 +438,7 @@
                 <plugin>
                     <groupId>ca.vanzyl.provisio.maven.plugins</groupId>
                     <artifactId>provisio-maven-plugin</artifactId>
-                    <version>1.0.25</version>
+                    <version>1.1.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.basepom.maven</groupId>
