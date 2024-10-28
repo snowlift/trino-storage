@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>187</version>
+        <version>193</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -46,24 +46,24 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>462</dep.trino.version>
+        <dep.trino.version>463</dep.trino.version>
         <dep.airlift.version>275</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
         <dep.opentelemetry.version>1.43.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.9.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.775</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.777</dep.aws-sdk.version>
         <dep.guava.version>33.3.1-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
-        <dep.errorprone.version>2.33.0</dep.errorprone.version>
+        <dep.errorprone.version>2.35.1</dep.errorprone.version>
         <dep.jackson.version>2.18.0</dep.jackson.version>
-        <dep.testcontainers.version>1.20.2</dep.testcontainers.version>
+        <dep.testcontainers.version>1.20.3</dep.testcontainers.version>
         <dep.docker-java.version>3.4.0</dep.docker-java.version>
         <dep.joda.version>2.13.0</dep.joda.version>
-        <dep.junit.version>5.11.2</dep.junit.version>
+        <dep.junit.version>5.11.3</dep.junit.version>
         <dep.slf4j.version>2.0.16</dep.slf4j.version>
         <dep.assertj-core.version>3.26.3</dep.assertj-core.version>
-        <dep.logback.version>1.5.11</dep.logback.version>
+        <dep.logback.version>1.5.12</dep.logback.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
         <dep.jna.version>5.15.0</dep.jna.version>
 
