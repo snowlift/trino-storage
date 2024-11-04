@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>194</version>
+        <version>195</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -118,7 +118,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.48.1</version>
+                <version>3.48.2</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
