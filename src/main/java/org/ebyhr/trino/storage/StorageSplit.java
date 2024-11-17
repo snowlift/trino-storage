@@ -16,6 +16,7 @@ package org.ebyhr.trino.storage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
+import io.airlift.slice.SizeOf;
 import io.trino.spi.HostAddress;
 import io.trino.spi.connector.ConnectorSplit;
 
@@ -27,10 +28,12 @@ import static java.util.Objects.requireNonNull;
 public class StorageSplit
         implements ConnectorSplit
 {
+    private static final int INSTANCE_SIZE = SizeOf.instanceSize(StorageSplit.class);
+    private static final int MODE_SIZE = SizeOf.instanceSize(Mode.class);
+
     private final Mode mode;
     private final String schemaName;
     private final String tableName;
-    private final boolean remotelyAccessible;
 
     @JsonCreator
     public StorageSplit(
@@ -41,8 +44,6 @@ public class StorageSplit
         this.schemaName = requireNonNull(schemaName, "schema name is null");
         this.mode = requireNonNull(mode, "mode is null");
         this.tableName = requireNonNull(tableName, "table name is null");
-
-        remotelyAccessible = true;
     }
 
     @JsonProperty
@@ -64,13 +65,6 @@ public class StorageSplit
     }
 
     @Override
-    public boolean isRemotelyAccessible()
-    {
-        // only http or https is remotely accessible
-        return remotelyAccessible;
-    }
-
-    @Override
     public List<HostAddress> getAddresses()
     {
         return List.of();
@@ -84,6 +78,14 @@ public class StorageSplit
                 .put("schemaName", schemaName)
                 .put("tableName", tableName)
                 .buildOrThrow();
+    }
+
+    public long getRetainedSizeInBytes()
+    {
+        return INSTANCE_SIZE
+                + MODE_SIZE
+                + SizeOf.estimatedSizeOf(schemaName)
+                + SizeOf.estimatedSizeOf(tableName);
     }
 
     public enum Mode
