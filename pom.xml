@@ -46,17 +46,17 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>465</dep.trino.version>
-        <dep.airlift.version>285</dep.airlift.version>
+        <dep.trino.version>466</dep.trino.version>
+        <dep.airlift.version>287</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
         <dep.opentelemetry.version>1.44.1</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.10.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.778</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.779</dep.aws-sdk.version>
         <dep.guava.version>33.3.1-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.36.0</dep.errorprone.version>
-        <dep.jackson.version>2.18.1</dep.jackson.version>
+        <dep.jackson.version>2.18.2</dep.jackson.version>
         <dep.testcontainers.version>1.20.4</dep.testcontainers.version>
         <dep.docker-java.version>3.4.0</dep.docker-java.version>
         <dep.joda.version>2.13.0</dep.joda.version>
@@ -113,7 +113,7 @@
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
-                <version>2.24.1</version>
+                <version>2.24.2</version>
             </dependency>
             <dependency>
                 <groupId>org.checkerframework</groupId>
