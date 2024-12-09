@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>200</version>
+        <version>203</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -46,10 +46,10 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>466</dep.trino.version>
+        <dep.trino.version>467</dep.trino.version>
         <dep.airlift.version>287</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
-        <dep.opentelemetry.version>1.44.1</dep.opentelemetry.version>
+        <dep.opentelemetry.version>1.45.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.10.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.779</dep.aws-sdk.version>
@@ -103,7 +103,7 @@
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-api-incubator</artifactId>
-                <version>${dep.opentelemetry.version}-alpha</version>
+                <version>${dep.opentelemetry.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry.semconv</groupId>
@@ -118,7 +118,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.48.2</version>
+                <version>3.48.3</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
