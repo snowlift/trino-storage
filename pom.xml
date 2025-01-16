@@ -5,12 +5,12 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>200</version>
+        <version>206</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>467-SNAPSHOT</version>
+    <version>468-SNAPSHOT</version>
     <packaging>trino-plugin</packaging>
     <description>Trino - Storage Connector</description>
 
@@ -46,26 +46,26 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>466</dep.trino.version>
-        <dep.airlift.version>287</dep.airlift.version>
+        <dep.trino.version>468</dep.trino.version>
+        <dep.airlift.version>293</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
-        <dep.opentelemetry.version>1.44.1</dep.opentelemetry.version>
+        <dep.opentelemetry.version>1.45.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.10.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.779</dep.aws-sdk.version>
-        <dep.guava.version>33.3.1-jre</dep.guava.version>
+        <dep.aws-sdk.version>1.12.780</dep.aws-sdk.version>
+        <dep.guava.version>33.4.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.36.0</dep.errorprone.version>
         <dep.jackson.version>2.18.2</dep.jackson.version>
         <dep.testcontainers.version>1.20.4</dep.testcontainers.version>
-        <dep.docker-java.version>3.4.0</dep.docker-java.version>
+        <dep.docker-java.version>3.4.1</dep.docker-java.version>
         <dep.joda.version>2.13.0</dep.joda.version>
-        <dep.junit.version>5.11.3</dep.junit.version>
+        <dep.junit.version>5.11.4</dep.junit.version>
         <dep.slf4j.version>2.0.16</dep.slf4j.version>
-        <dep.assertj-core.version>3.26.3</dep.assertj-core.version>
-        <dep.logback.version>1.5.12</dep.logback.version>
+        <dep.assertj-core.version>3.27.2</dep.assertj-core.version>
+        <dep.logback.version>1.5.16</dep.logback.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
-        <dep.jna.version>5.15.0</dep.jna.version>
+        <dep.jna.version>5.16.0</dep.jna.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -82,7 +82,7 @@
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>1.17.1</version>
+                <version>1.17.2</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
@@ -99,26 +99,15 @@
                 <artifactId>slice</artifactId>
                 <version>${dep.slice.version}</version>
             </dependency>
-            <!-- temporary to settle a version between airbase and airlift -->
-            <dependency>
-                <groupId>io.opentelemetry</groupId>
-                <artifactId>opentelemetry-api-incubator</artifactId>
-                <version>${dep.opentelemetry.version}-alpha</version>
-            </dependency>
-            <dependency>
-                <groupId>io.opentelemetry.semconv</groupId>
-                <artifactId>opentelemetry-semconv</artifactId>
-                <version>${dep.opentelemetry-semconv-incubating.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-api</artifactId>
-                <version>2.24.2</version>
+                <version>2.24.3</version>
             </dependency>
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.48.2</version>
+                <version>3.48.4</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
@@ -230,7 +219,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>5.3.0</version>
+            <version>5.4.0</version>
         </dependency>
 
         <dependency>
