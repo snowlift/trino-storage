@@ -30,6 +30,8 @@ public final class PluginFactory
                 return new CsvPlugin('\t');
             case "ssv":
                 return new CsvPlugin(';');
+            case "psv":
+                return new CsvPlugin('|');
             case "txt":
                 return new TextPlugin();
             case "raw":

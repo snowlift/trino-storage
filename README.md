@@ -23,6 +23,7 @@ storage.csv."https://raw.githubusercontent.com/snowlift/trino-storage/master/src
 Supported schemas are below.
 - `tsv`
 - `csv`
+- `psv`
 - `ssv`
 - `txt`
 - `raw`
@@ -43,7 +44,7 @@ storage.csv."https://raw.githubusercontent.com/snowlift/trino-storage/master/src
 (2 rows)
 ```
 
-Tab (`\t`) and semicolon (`;`) delimiters are also supported, using the `tsv` and `ssv` plugins, respectively.
+Pipe (`|`), tab (`\t`), and semicolon (`;`) delimiters are also supported, using the `psv`, `tsv`, and `ssv` plugins, respectively.
 
 `txt` plugin doesn't extract each line. Currently column name is always `value`.
 ```sql
