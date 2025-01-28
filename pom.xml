@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>206</version>
+        <version>212</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -46,11 +46,11 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>468</dep.trino.version>
-        <dep.airlift.version>293</dep.airlift.version>
+        <dep.trino.version>469</dep.trino.version>
+        <dep.airlift.version>297</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
-        <dep.opentelemetry.version>1.45.0</dep.opentelemetry.version>
-        <dep.opentelemetry-instrumentation.version>2.10.0</dep.opentelemetry-instrumentation.version>
+        <dep.opentelemetry.version>1.46.0</dep.opentelemetry.version>
+        <dep.opentelemetry-instrumentation.version>2.12.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.780</dep.aws-sdk.version>
         <dep.guava.version>33.4.0-jre</dep.guava.version>
@@ -62,7 +62,7 @@
         <dep.joda.version>2.13.0</dep.joda.version>
         <dep.junit.version>5.11.4</dep.junit.version>
         <dep.slf4j.version>2.0.16</dep.slf4j.version>
-        <dep.assertj-core.version>3.27.2</dep.assertj-core.version>
+        <dep.assertj-core.version>3.27.3</dep.assertj-core.version>
         <dep.logback.version>1.5.16</dep.logback.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
         <dep.jna.version>5.16.0</dep.jna.version>
@@ -334,7 +334,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>5.3.0</version>
+            <version>5.4.0</version>
             <scope>runtime</scope>
         </dependency>
 
@@ -383,7 +383,7 @@
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
-            <version>5.15.0</version>
+            <version>${dep.jna.version}</version>
             <scope>test</scope>
         </dependency>
 
