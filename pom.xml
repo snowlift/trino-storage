@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>212</version>
+        <version>215</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -46,8 +46,8 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>469</dep.trino.version>
-        <dep.airlift.version>297</dep.airlift.version>
+        <dep.trino.version>470</dep.trino.version>
+        <dep.airlift.version>302</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
         <dep.opentelemetry.version>1.46.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.12.0</dep.opentelemetry-instrumentation.version>
@@ -59,7 +59,7 @@
         <dep.jackson.version>2.18.2</dep.jackson.version>
         <dep.testcontainers.version>1.20.4</dep.testcontainers.version>
         <dep.docker-java.version>3.4.1</dep.docker-java.version>
-        <dep.joda.version>2.13.0</dep.joda.version>
+        <dep.joda.version>2.13.1</dep.joda.version>
         <dep.junit.version>5.11.4</dep.junit.version>
         <dep.slf4j.version>2.0.16</dep.slf4j.version>
         <dep.assertj-core.version>3.27.3</dep.assertj-core.version>
@@ -82,7 +82,7 @@
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>1.17.2</version>
+                <version>1.18.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
@@ -107,7 +107,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.48.4</version>
+                <version>3.49.0</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
