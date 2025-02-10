@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>215</version>
+        <version>216</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -49,7 +49,7 @@
         <dep.trino.version>470</dep.trino.version>
         <dep.airlift.version>302</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
-        <dep.opentelemetry.version>1.46.0</dep.opentelemetry.version>
+        <dep.opentelemetry.version>1.47.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.12.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.780</dep.aws-sdk.version>
