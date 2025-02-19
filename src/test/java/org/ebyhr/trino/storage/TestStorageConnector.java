@@ -56,6 +56,21 @@ public final class TestStorageConnector
     }
 
     @Test
+    public void testSelectPsv()
+    {
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('psv', '" + toAbsolutePath("example-data/numbers-2.psv") + "'))",
+                "VALUES ('eleven', '11'), ('twelve', '12')");
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('psv', '" + toAbsolutePath("example-data/quoted_fields_with_separator.psv") + "'))",
+                "VALUES ('test','2','3','4'),('test|test|test|test','3','3','5'),(' even weirder| but still valid| value with extra whitespaces that remain due to quoting /  ','1','2','3'),('extra whitespaces that should get trimmed due to no quoting','1','2','3')");
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('psv', '" + toAbsolutePath("example-data/quoted_fields_with_newlines.psv") + "'))",
+                "VALUES ('test','2','3','4'),('test|test|test|test','3','3','5'),(' even weirder, but still valid| value with linebreaks and extra\n" +
+                        " whitespaces that should remain due to quoting   ','1','2','3'),('extra whitespaces that should get trimmed due to no quoting','1','2','3')");
+    }
+
+    @Test
     public void testSelectSsv()
     {
         assertQuery(
