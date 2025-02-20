@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>215</version>
+        <version>219</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -46,18 +46,18 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>470</dep.trino.version>
-        <dep.airlift.version>302</dep.airlift.version>
+        <dep.trino.version>471</dep.trino.version>
+        <dep.airlift.version>306</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
-        <dep.opentelemetry.version>1.46.0</dep.opentelemetry.version>
-        <dep.opentelemetry-instrumentation.version>2.12.0</dep.opentelemetry-instrumentation.version>
+        <dep.opentelemetry.version>1.47.0</dep.opentelemetry.version>
+        <dep.opentelemetry-instrumentation.version>2.13.1</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.780</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.782</dep.aws-sdk.version>
         <dep.guava.version>33.4.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.36.0</dep.errorprone.version>
         <dep.jackson.version>2.18.2</dep.jackson.version>
-        <dep.testcontainers.version>1.20.4</dep.testcontainers.version>
+        <dep.testcontainers.version>1.20.5</dep.testcontainers.version>
         <dep.docker-java.version>3.4.1</dep.docker-java.version>
         <dep.joda.version>2.13.1</dep.joda.version>
         <dep.junit.version>5.11.4</dep.junit.version>
@@ -239,6 +239,13 @@
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api</artifactId>
             <version>${dep.opentelemetry.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api-incubator</artifactId>
+            <version>${dep.opentelemetry.version}-alpha</version>
             <scope>provided</scope>
         </dependency>
 
