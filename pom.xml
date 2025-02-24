@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>219</version>
+        <version>223</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -60,7 +60,7 @@
         <dep.testcontainers.version>1.20.5</dep.testcontainers.version>
         <dep.docker-java.version>3.4.1</dep.docker-java.version>
         <dep.joda.version>2.13.1</dep.joda.version>
-        <dep.junit.version>5.11.4</dep.junit.version>
+        <dep.junit.version>5.12.0</dep.junit.version>
         <dep.slf4j.version>2.0.16</dep.slf4j.version>
         <dep.assertj-core.version>3.27.3</dep.assertj-core.version>
         <dep.logback.version>1.5.16</dep.logback.version>
