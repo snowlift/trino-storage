@@ -29,6 +29,16 @@ public final class TestStorageConnector
 {
     private TestingStorageServer server;
 
+    private static String toAbsolutePath(String resourceName)
+    {
+        return Resources.getResource(resourceName).toString();
+    }
+
+    private static String toRemotePath(String resourceName)
+    {
+        return format("https://github.com/snowlift/trino-storage/raw/4c381eca1fa44b22372300659a937a57550c90b9/src/test/resources/%s", resourceName);
+    }
+
     @Override
     protected QueryRunner createQueryRunner()
             throws Exception
@@ -108,6 +118,15 @@ public final class TestStorageConnector
     }
 
     @Test
+    public void testSelectParquet()
+    {
+        assertQuery(
+                format("SELECT int_col, long_col, varchar_col " +
+                        "FROM storage.parquet.\"%s\" WHERE id_col = 1", toAbsolutePath("example-data/parquet_data.parquet")),
+                "VALUES (11, 21, 'ant')");
+    }
+
+    @Test
     public void testSelectJson()
     {
         // note that empty arrays are not supported at all, because array types are inferred from the first array element
@@ -132,15 +151,5 @@ public final class TestStorageConnector
         assertQuery(
                 "SELECT substr(name, strpos(name, '/', -1) + 1) FROM TABLE(storage.system.list('" + toAbsolutePath("example-data/") + "')) WHERE name LIKE '%numbers__.csv'",
                 "VALUES ('numbers-1.csv'), ('numbers-2.csv')");
-    }
-
-    private static String toAbsolutePath(String resourceName)
-    {
-        return Resources.getResource(resourceName).toString();
-    }
-
-    private static String toRemotePath(String resourceName)
-    {
-        return format("https://github.com/snowlift/trino-storage/raw/4c381eca1fa44b22372300659a937a57550c90b9/src/test/resources/%s", resourceName);
     }
 }
