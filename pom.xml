@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>219</version>
+        <version>227</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -56,14 +56,14 @@
         <dep.guava.version>33.4.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.36.0</dep.errorprone.version>
-        <dep.jackson.version>2.18.2</dep.jackson.version>
+        <dep.jackson.version>2.18.3</dep.jackson.version>
         <dep.testcontainers.version>1.20.5</dep.testcontainers.version>
         <dep.docker-java.version>3.4.1</dep.docker-java.version>
         <dep.joda.version>2.13.1</dep.joda.version>
-        <dep.junit.version>5.11.4</dep.junit.version>
+        <dep.junit.version>5.12.0</dep.junit.version>
         <dep.slf4j.version>2.0.16</dep.slf4j.version>
         <dep.assertj-core.version>3.27.3</dep.assertj-core.version>
-        <dep.logback.version>1.5.16</dep.logback.version>
+        <dep.logback.version>1.5.17</dep.logback.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
         <dep.jna.version>5.16.0</dep.jna.version>
 
@@ -465,7 +465,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.1.3</version>
+                <version>3.1.4</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
