@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>219</version>
+        <version>229</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -46,24 +46,24 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>471</dep.trino.version>
-        <dep.airlift.version>306</dep.airlift.version>
+        <dep.trino.version>472</dep.trino.version>
+        <dep.airlift.version>312</dep.airlift.version>
         <dep.slice.version>2.3</dep.slice.version>
         <dep.opentelemetry.version>1.47.0</dep.opentelemetry.version>
-        <dep.opentelemetry-instrumentation.version>2.13.1</dep.opentelemetry-instrumentation.version>
+        <dep.opentelemetry-instrumentation.version>2.13.3</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.782</dep.aws-sdk.version>
         <dep.guava.version>33.4.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.36.0</dep.errorprone.version>
-        <dep.jackson.version>2.18.2</dep.jackson.version>
-        <dep.testcontainers.version>1.20.5</dep.testcontainers.version>
+        <dep.jackson.version>2.18.3</dep.jackson.version>
+        <dep.testcontainers.version>1.20.6</dep.testcontainers.version>
         <dep.docker-java.version>3.4.1</dep.docker-java.version>
         <dep.joda.version>2.13.1</dep.joda.version>
-        <dep.junit.version>5.11.4</dep.junit.version>
-        <dep.slf4j.version>2.0.16</dep.slf4j.version>
+        <dep.junit.version>5.12.0</dep.junit.version>
+        <dep.slf4j.version>2.0.17</dep.slf4j.version>
         <dep.assertj-core.version>3.27.3</dep.assertj-core.version>
-        <dep.logback.version>1.5.16</dep.logback.version>
+        <dep.logback.version>1.5.17</dep.logback.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
         <dep.jna.version>5.16.0</dep.jna.version>
 
@@ -107,7 +107,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.49.0</version>
+                <version>3.49.1</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
@@ -410,6 +410,13 @@
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${dep.junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${dep.junit.version}</version>
             <scope>test</scope>
@@ -465,7 +472,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>3.1.3</version>
+                <version>3.1.4</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
