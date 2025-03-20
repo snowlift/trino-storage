@@ -5,12 +5,12 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>229</version>
+        <version>234</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
     <artifactId>trino-storage</artifactId>
-    <version>473-SNAPSHOT</version>
+    <version>474-SNAPSHOT</version>
     <packaging>trino-plugin</packaging>
     <description>Trino - Storage Connector</description>
 
@@ -46,28 +46,28 @@
         <air.check.skip-checkstyle>false</air.check.skip-checkstyle>
         <air.build.jvmsize>4g</air.build.jvmsize>
 
-        <dep.trino.version>472</dep.trino.version>
-        <dep.airlift.version>312</dep.airlift.version>
+        <dep.trino.version>474</dep.trino.version>
+        <dep.airlift.version>319</dep.airlift.version>
         <dep.aircompressor.version>2.0.2</dep.aircompressor.version>
         <dep.slice.version>2.3</dep.slice.version>
-        <dep.opentelemetry.version>1.47.0</dep.opentelemetry.version>
-        <dep.opentelemetry-instrumentation.version>2.13.3</dep.opentelemetry-instrumentation.version>
+        <dep.opentelemetry.version>1.48.0</dep.opentelemetry.version>
+        <dep.opentelemetry-instrumentation.version>2.14.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.782</dep.aws-sdk.version>
-        <dep.guava.version>33.4.0-jre</dep.guava.version>
+        <dep.guava.version>33.4.5-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
-        <dep.errorprone.version>2.36.0</dep.errorprone.version>
+        <dep.errorprone.version>2.37.0</dep.errorprone.version>
         <dep.jackson.version>2.18.3</dep.jackson.version>
         <dep.testcontainers.version>1.20.6</dep.testcontainers.version>
-        <dep.docker-java.version>3.4.1</dep.docker-java.version>
+        <dep.docker-java.version>3.4.2</dep.docker-java.version>
         <dep.joda.version>2.13.1</dep.joda.version>
-        <dep.junit.version>5.12.0</dep.junit.version>
+        <dep.junit.version>5.12.1</dep.junit.version>
         <dep.slf4j.version>2.0.17</dep.slf4j.version>
         <dep.assertj-core.version>3.27.3</dep.assertj-core.version>
-        <dep.logback.version>1.5.17</dep.logback.version>
-        <dep.parquet.version>1.15.0</dep.parquet.version>
+        <dep.logback.version>1.5.18</dep.logback.version>
+        <dep.parquet.version>1.15.1</dep.parquet.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
-        <dep.jna.version>5.16.0</dep.jna.version>
+        <dep.jna.version>5.17.0</dep.jna.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -218,6 +218,12 @@
         </dependency>
 
         <dependency>
+            <groupId>io.trino</groupId>
+            <artifactId>trino-plugin-toolkit</artifactId>
+            <version>${dep.trino.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
@@ -333,13 +339,6 @@
             <groupId>io.airlift</groupId>
             <artifactId>units</artifactId>
             <version>1.10</version>
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.trino</groupId>
-            <artifactId>trino-plugin-toolkit</artifactId>
-            <version>${dep.trino.version}</version>
             <scope>runtime</scope>
         </dependency>
 

@@ -20,9 +20,11 @@ import io.trino.orc.OrcReader;
 import io.trino.orc.OrcReaderOptions;
 import io.trino.orc.OrcRecordReader;
 import io.trino.orc.metadata.ColumnMetadata;
+import io.trino.orc.metadata.CompressionKind;
 import io.trino.orc.metadata.OrcType;
-import io.trino.spi.Page;
+import io.trino.plugin.base.metrics.FileFormatDataSourceStats;
 import io.trino.spi.TrinoException;
+import io.trino.spi.connector.ConnectorPageSource;
 import io.trino.spi.type.Type;
 import org.ebyhr.trino.storage.StorageColumnHandle;
 
@@ -31,7 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -66,33 +67,30 @@ public class OrcPlugin
     }
 
     @Override
-    public Iterable<Page> getPagesIterator(String path, Function<String, InputStream> streamProvider)
+    public ConnectorPageSource getConnectorPageSource(String path, Function<String, InputStream> streamProvider)
     {
         try (ClosableFile file = getLocalFile(path, streamProvider)) {
             OrcReader reader = getReader(file.getFile());
+            OrcDataSource dataSource = new FileOrcDataSource(file.getFile(), new OrcReaderOptions());
+
             ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
             List<Type> readTypes = reader.getRootColumn().getNestedColumns().stream()
                     .map(orcColumn -> fromOrcType(types.get(orcColumn.getColumnId()), types))
                     .collect(Collectors.toList());
-            try {
-                OrcRecordReader recordReader = reader.createRecordReader(
-                        reader.getRootColumn().getNestedColumns(),
-                        readTypes,
-                        OrcPredicate.TRUE,
-                        UTC,
-                        newSimpleAggregatedMemoryContext(),
-                        INITIAL_BATCH_SIZE,
-                        OrcPlugin::handleException);
-                List<Page> result = new ArrayList<>();
-                Page page;
-                while ((page = recordReader.nextPage()) != null) {
-                    result.add(page.getLoadedPage());
-                }
-                return result;
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            OrcRecordReader recordReader = reader.createRecordReader(
+                    reader.getRootColumn().getNestedColumns(),
+                    readTypes,
+                    false,
+                    OrcPredicate.TRUE,
+                    UTC,
+                    newSimpleAggregatedMemoryContext(),
+                    INITIAL_BATCH_SIZE,
+                    OrcPlugin::handleException);
+            return new OrcPageSource(recordReader,
+                    dataSource,
+                    newSimpleAggregatedMemoryContext(),
+                    new FileFormatDataSourceStats(),
+                    CompressionKind.NONE);
         }
         catch (IOException e) {
             throw new RuntimeException(e);

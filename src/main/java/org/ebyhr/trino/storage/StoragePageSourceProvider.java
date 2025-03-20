@@ -68,6 +68,14 @@ public class StoragePageSourceProvider
         FilePlugin plugin = PluginFactory.create(schemaName);
 
         try {
+            return plugin.getConnectorPageSource(tableName, path -> storageClient.getInputStream(session, path));
+        }
+        catch (UnsupportedOperationException ignored) {
+            // Ignore it when a plugin doesn't implement getConnectorPageSource
+            // and assume it implements getPagesIterator or getRecordsIterator
+        }
+
+        try {
             Iterable<Page> iterable = plugin.getPagesIterator(tableName, path -> storageClient.getInputStream(session, path));
             List<Page> pages = StreamSupport.stream(iterable.spliterator(), false)
                     .collect(toList());
