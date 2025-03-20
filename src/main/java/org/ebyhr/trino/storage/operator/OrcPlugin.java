@@ -23,6 +23,7 @@ import io.trino.orc.metadata.ColumnMetadata;
 import io.trino.orc.metadata.OrcType;
 import io.trino.spi.Page;
 import io.trino.spi.TrinoException;
+import io.trino.spi.connector.SourcePage;
 import io.trino.spi.type.Type;
 import org.ebyhr.trino.storage.StorageColumnHandle;
 
@@ -78,15 +79,16 @@ public class OrcPlugin
                 OrcRecordReader recordReader = reader.createRecordReader(
                         reader.getRootColumn().getNestedColumns(),
                         readTypes,
+                        false,
                         OrcPredicate.TRUE,
                         UTC,
                         newSimpleAggregatedMemoryContext(),
                         INITIAL_BATCH_SIZE,
                         OrcPlugin::handleException);
                 List<Page> result = new ArrayList<>();
-                Page page;
+                SourcePage page;
                 while ((page = recordReader.nextPage()) != null) {
-                    result.add(page.getLoadedPage());
+                    result.add(page.getPage());
                 }
                 return result;
             }
