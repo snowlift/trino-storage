@@ -14,6 +14,7 @@
 package org.ebyhr.trino.storage.operator;
 
 import io.trino.spi.Page;
+import io.trino.spi.connector.ConnectorPageSource;
 import org.ebyhr.trino.storage.StorageColumnHandle;
 
 import java.io.InputStream;
@@ -27,11 +28,16 @@ public interface FilePlugin
 
     default Stream<List<?>> getRecordsIterator(String path, Function<String, InputStream> streamProvider)
     {
-        throw new UnsupportedOperationException("A FilePlugin must implement either getRecordsIterator or getPagesIterator");
+        throw new UnsupportedOperationException("A FilePlugin must implement getConnectorPageSource, getRecordsIterator or getPagesIterator");
     }
 
     default Iterable<Page> getPagesIterator(String path, Function<String, InputStream> streamProvider)
     {
-        throw new UnsupportedOperationException("A FilePlugin must implement either getPagesIterator or getRecordsIterator");
+        throw new UnsupportedOperationException("A FilePlugin must implement getConnectorPageSource, getRecordsIterator or getPagesIterator");
+    }
+
+    default ConnectorPageSource getConnectorPageSource(String path, Function<String, InputStream> streamProvider)
+    {
+        throw new UnsupportedOperationException("A FilePlugin must implement getConnectorPageSource, getRecordsIterator or getPagesIterator");
     }
 }

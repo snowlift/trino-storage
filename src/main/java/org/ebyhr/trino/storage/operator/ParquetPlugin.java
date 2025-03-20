@@ -26,8 +26,8 @@ import io.trino.parquet.metadata.ParquetMetadata;
 import io.trino.parquet.reader.MetadataReader;
 import io.trino.parquet.reader.ParquetReader;
 import io.trino.parquet.reader.RowGroupInfo;
-import io.trino.spi.Page;
 import io.trino.spi.TrinoException;
+import io.trino.spi.connector.ConnectorPageSource;
 import org.apache.parquet.column.ColumnDescriptor;
 import org.apache.parquet.io.MessageColumnIO;
 import org.apache.parquet.schema.MessageType;
@@ -40,7 +40,6 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -82,21 +81,11 @@ public class ParquetPlugin
     }
 
     @Override
-    public Iterable<Page> getPagesIterator(String path, Function<String, InputStream> streamProvider)
+    public ConnectorPageSource getConnectorPageSource(String path, Function<String, InputStream> streamProvider)
     {
         try (ClosableFile file = getLocalFile(path, streamProvider)) {
             ParquetReader reader = getReader(file.getFile());
-            try {
-                List<Page> result = new ArrayList<>();
-                Page page;
-                while ((page = reader.nextPage()) != null) {
-                    result.add(page.getLoadedPage());
-                }
-                return result;
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            return new ParquetPageSource(reader);
         }
         catch (IOException e) {
             throw new RuntimeException(e);
@@ -170,6 +159,7 @@ public class ParquetPlugin
         return new ParquetReader(
                 Optional.ofNullable(fileMetaData.getCreatedBy()),
                 columnFields.build(),
+                false,
                 rowGroupInfoBuilder.build(),
                 dataSource,
                 UTC,
