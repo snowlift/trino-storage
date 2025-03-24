@@ -28,6 +28,7 @@ import io.trino.parquet.reader.ParquetReader;
 import io.trino.parquet.reader.RowGroupInfo;
 import io.trino.spi.Page;
 import io.trino.spi.TrinoException;
+import io.trino.spi.connector.SourcePage;
 import org.apache.parquet.column.ColumnDescriptor;
 import org.apache.parquet.io.MessageColumnIO;
 import org.apache.parquet.schema.MessageType;
@@ -88,9 +89,9 @@ public class ParquetPlugin
             ParquetReader reader = getReader(file.getFile());
             try {
                 List<Page> result = new ArrayList<>();
-                Page page;
+                SourcePage page;
                 while ((page = reader.nextPage()) != null) {
-                    result.add(page.getLoadedPage());
+                    result.add(page.getPage());
                 }
                 return result;
             }
@@ -170,6 +171,7 @@ public class ParquetPlugin
         return new ParquetReader(
                 Optional.ofNullable(fileMetaData.getCreatedBy()),
                 columnFields.build(),
+                false,
                 rowGroupInfoBuilder.build(),
                 dataSource,
                 UTC,
