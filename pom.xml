@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>234</version>
+        <version>253</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -50,18 +50,18 @@
         <dep.airlift.version>319</dep.airlift.version>
         <dep.aircompressor.version>2.0.2</dep.aircompressor.version>
         <dep.slice.version>2.3</dep.slice.version>
-        <dep.opentelemetry.version>1.48.0</dep.opentelemetry.version>
+        <dep.opentelemetry.version>1.49.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.14.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
         <dep.aws-sdk.version>1.12.782</dep.aws-sdk.version>
-        <dep.guava.version>33.4.5-jre</dep.guava.version>
+        <dep.guava.version>33.4.8-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
-        <dep.errorprone.version>2.37.0</dep.errorprone.version>
+        <dep.errorprone.version>2.38.0</dep.errorprone.version>
         <dep.jackson.version>2.18.3</dep.jackson.version>
         <dep.testcontainers.version>1.20.6</dep.testcontainers.version>
-        <dep.docker-java.version>3.4.2</dep.docker-java.version>
-        <dep.joda.version>2.13.1</dep.joda.version>
-        <dep.junit.version>5.12.1</dep.junit.version>
+        <dep.docker-java.version>3.5.0</dep.docker-java.version>
+        <dep.joda.version>2.14.0</dep.joda.version>
+        <dep.junit.version>5.12.2</dep.junit.version>
         <dep.slf4j.version>2.0.17</dep.slf4j.version>
         <dep.assertj-core.version>3.27.3</dep.assertj-core.version>
         <dep.logback.version>1.5.18</dep.logback.version>
@@ -89,7 +89,7 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.18.0</version>
+                <version>2.19.0</version>
             </dependency>
             <dependency>
                 <groupId>io.airlift</groupId>
@@ -114,7 +114,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.49.1</version>
+                <version>3.49.2</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
@@ -244,7 +244,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>5.4.0</version>
+            <version>5.4.1</version>
         </dependency>
 
         <dependency>
@@ -270,7 +270,7 @@
         <dependency>
             <groupId>io.opentelemetry</groupId>
             <artifactId>opentelemetry-api-incubator</artifactId>
-            <version>${dep.opentelemetry.version}-alpha</version>
+            <version>${dep.opentelemetry.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -359,7 +359,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>5.4.0</version>
+            <version>5.4.1</version>
             <scope>runtime</scope>
         </dependency>
 
