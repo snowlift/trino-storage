@@ -81,10 +81,10 @@ public class ParquetPlugin
     }
 
     @Override
-    public ConnectorPageSource getConnectorPageSource(String path, Function<String, InputStream> streamProvider)
+    public ConnectorPageSource getConnectorPageSource(String path, List<String> handleColumns, Function<String, InputStream> streamProvider)
     {
         try (ClosableFile file = getLocalFile(path, streamProvider)) {
-            ParquetReader reader = getReader(file.getFile());
+            ParquetReader reader = getReader(file.getFile(), handleColumns);
             return new ParquetPageSource(reader);
         }
         catch (IOException e) {
@@ -124,7 +124,7 @@ public class ParquetPlugin
         return fileSchema;
     }
 
-    private ParquetReader getReader(File file)
+    private ParquetReader getReader(File file, List<String> handleColumns)
             throws IOException
     {
         ParquetReaderOptions options = new ParquetReaderOptions();
@@ -135,12 +135,14 @@ public class ParquetPlugin
         MessageColumnIO messageColumnIO = getColumnIO(fileMetaData.getSchema(), fileMetaData.getSchema());
         ImmutableList.Builder<Column> columnFields = ImmutableList.builder();
         for (org.apache.parquet.schema.Type type : fileMetaData.getSchema().getFields()) {
-            columnFields.add(new Column(
-                    messageColumnIO.getName(),
-                    constructField(
+            if (handleColumns.contains(type.getName().toLowerCase())) {
+                columnFields.add(new Column(
+                        messageColumnIO.getName(),
+                        constructField(
                             fromParquetType(type),
                             lookupColumnByName(messageColumnIO, type.getName()))
                             .orElseThrow()));
+            }
         }
         Map<List<String>, ColumnDescriptor> descriptorsByPath = getDescriptors(fileMetaData.getSchema(), fileMetaData.getSchema());
         long nextStart = 0;
