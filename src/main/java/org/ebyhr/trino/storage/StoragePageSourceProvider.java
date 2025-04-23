@@ -68,7 +68,11 @@ public class StoragePageSourceProvider
         FilePlugin plugin = PluginFactory.create(schemaName);
 
         try {
-            return plugin.getConnectorPageSource(tableName, path -> storageClient.getInputStream(session, path));
+            List<String> handles = columns.stream()
+                    .map(c -> (StorageColumnHandle) c)
+                    .map(c -> c.getName().toLowerCase())
+                    .toList();
+            return plugin.getConnectorPageSource(tableName, handles, path -> storageClient.getInputStream(session, path));
         }
         catch (UnsupportedOperationException ignored) {
             // Ignore it when a plugin doesn't implement getConnectorPageSource

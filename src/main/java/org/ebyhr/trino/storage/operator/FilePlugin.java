@@ -36,7 +36,7 @@ public interface FilePlugin
         throw new UnsupportedOperationException("A FilePlugin must implement getConnectorPageSource, getRecordsIterator or getPagesIterator");
     }
 
-    default ConnectorPageSource getConnectorPageSource(String path, Function<String, InputStream> streamProvider)
+    default ConnectorPageSource getConnectorPageSource(String path, List<String> handleColumns, Function<String, InputStream> streamProvider)
     {
         throw new UnsupportedOperationException("A FilePlugin must implement getConnectorPageSource, getRecordsIterator or getPagesIterator");
     }

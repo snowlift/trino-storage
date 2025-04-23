@@ -14,6 +14,7 @@
 package org.ebyhr.trino.storage.operator;
 
 import io.trino.orc.FileOrcDataSource;
+import io.trino.orc.OrcColumn;
 import io.trino.orc.OrcDataSource;
 import io.trino.orc.OrcPredicate;
 import io.trino.orc.OrcReader;
@@ -67,18 +68,21 @@ public class OrcPlugin
     }
 
     @Override
-    public ConnectorPageSource getConnectorPageSource(String path, Function<String, InputStream> streamProvider)
+    public ConnectorPageSource getConnectorPageSource(String path, List<String> handleColumns, Function<String, InputStream> streamProvider)
     {
         try (ClosableFile file = getLocalFile(path, streamProvider)) {
             OrcReader reader = getReader(file.getFile());
             OrcDataSource dataSource = new FileOrcDataSource(file.getFile(), new OrcReaderOptions());
 
             ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
-            List<Type> readTypes = reader.getRootColumn().getNestedColumns().stream()
+            List<OrcColumn> handleOrcColumns = reader.getRootColumn().getNestedColumns().stream()
+                    .filter(orcColumn -> handleColumns.contains(orcColumn.getColumnName().toLowerCase()))
+                    .toList();
+            List<Type> readTypes = handleOrcColumns.stream()
                     .map(orcColumn -> fromOrcType(types.get(orcColumn.getColumnId()), types))
                     .collect(Collectors.toList());
             OrcRecordReader recordReader = reader.createRecordReader(
-                    reader.getRootColumn().getNestedColumns(),
+                    handleOrcColumns,
                     readTypes,
                     false,
                     OrcPredicate.TRUE,
