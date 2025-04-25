@@ -152,4 +152,18 @@ public final class TestStorageConnector
                 "SELECT substr(name, strpos(name, '/', -1) + 1) FROM TABLE(storage.system.list('" + toAbsolutePath("example-data/") + "')) WHERE name LIKE '%numbers__.csv'",
                 "VALUES ('numbers-1.csv'), ('numbers-2.csv')");
     }
+
+    @Test
+    public void testSelectAvro()
+    {
+        assertQuery(
+                "SELECT * FROM TABLE(storage.system.read_file('avro', '" + toAbsolutePath("example-data/avro-data.avro") + "'))",
+                "VALUES ('Kim', 35, 1745565389925, 175.5, 70.2, true, 'MALE', ARRAY['kim@example.com', 'kim2@example.com'])");
+        assertQuery(
+                "SELECT age, active, gender FROM TABLE(storage.system.read_file('avro', '" + toAbsolutePath("example-data/avro-data.avro") + "'))",
+                "VALUES (35, true, 'MALE')");
+        assertQuery(
+                "SELECT count(*) FROM TABLE(storage.system.read_file('avro', '" + toAbsolutePath("example-data/avro-data.avro") + "'))",
+                "VALUES (1)");
+    }
 }

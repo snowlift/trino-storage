@@ -61,6 +61,7 @@
         <dep.testcontainers.version>1.21.0</dep.testcontainers.version>
         <dep.docker-java.version>3.5.0</dep.docker-java.version>
         <dep.joda.version>2.14.0</dep.joda.version>
+        <dep.avro.version>1.12.0</dep.avro.version>
         <dep.junit.version>5.12.2</dep.junit.version>
         <dep.slf4j.version>2.0.17</dep.slf4j.version>
         <dep.assertj-core.version>3.27.3</dep.assertj-core.version>
@@ -233,6 +234,12 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>${dep.joda.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${dep.avro.version}</version>
         </dependency>
 
         <dependency>

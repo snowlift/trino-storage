@@ -66,12 +66,12 @@ public class StoragePageSourceProvider
         String schemaName = storageSplit.getSchemaName();
         String tableName = storageSplit.getTableName();
         FilePlugin plugin = PluginFactory.create(schemaName);
+        List<String> handles = columns.stream()
+                .map(c -> (StorageColumnHandle) c)
+                .map(c -> c.getName().toLowerCase())
+                .toList();
 
         try {
-            List<String> handles = columns.stream()
-                    .map(c -> (StorageColumnHandle) c)
-                    .map(c -> c.getName().toLowerCase())
-                    .toList();
             return plugin.getConnectorPageSource(tableName, handles, path -> storageClient.getInputStream(session, path));
         }
         catch (UnsupportedOperationException ignored) {
@@ -80,7 +80,7 @@ public class StoragePageSourceProvider
         }
 
         try {
-            Iterable<Page> iterable = plugin.getPagesIterator(tableName, path -> storageClient.getInputStream(session, path));
+            Iterable<Page> iterable = plugin.getPagesIterator(tableName, handles, path -> storageClient.getInputStream(session, path));
             List<Page> pages = StreamSupport.stream(iterable.spliterator(), false)
                     .collect(toList());
             return new FixedPageSource(pages);
