@@ -38,39 +38,45 @@ public class AvroTypeTranslator
     public static Type fromAvroType(Schema schema)
     {
         switch (schema.getType()) {
-            case INT:
+            case INT -> {
                 return IntegerType.INTEGER;
-            case LONG:
+            }
+            case LONG -> {
                 return BigintType.BIGINT;
-            case BOOLEAN:
+            }
+            case BOOLEAN -> {
                 return BooleanType.BOOLEAN;
-            case FLOAT:
+            }
+            case FLOAT -> {
                 return RealType.REAL;
-            case DOUBLE:
+            }
+            case DOUBLE -> {
                 return DoubleType.DOUBLE;
-            case ENUM:
-            case STRING:
+            }
+            case ENUM, STRING -> {
                 return VarcharType.VARCHAR;
-            case BYTES:
-            case FIXED:
+            }
+            case BYTES, FIXED -> {
                 return VarbinaryType.VARBINARY;
-            case ARRAY:
+            }
+            case ARRAY -> {
                 return new ArrayType(fromAvroType(schema.getElementType()));
-            case MAP:
+            }
+            case MAP -> {
                 return new MapType(VarcharType.VARCHAR, fromAvroType(schema.getValueType()), new TypeOperators());
-            case RECORD:
+            }
+            case RECORD -> {
                 return RowType.from(
                         schema.getFields().stream()
                                 .map(field -> new RowType.Field(Optional.of(field.name()), fromAvroType(field.schema())))
                                 .toList());
-            case UNION:
+            }
+            case UNION -> {
                 Schema actualSchema = extractActualTypeFromUnion(schema);
                 if (actualSchema != null) {
                     return fromAvroType(actualSchema);
                 }
-                break;
-            case NULL:
-                break;
+            }
         }
 
         throw new VerifyException("Unsupported Avro type: " + schema.getType());

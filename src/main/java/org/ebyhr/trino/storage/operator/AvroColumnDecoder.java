@@ -58,6 +58,7 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.ebyhr.trino.storage.operator.AvroColumnDecoder.DecoderErrorCode.DECODER_CONVERSION_NOT_SUPPORTED;
 
+// ref: AvroColumnDecoder in trino.decoder.avro package
 public class AvroColumnDecoder
 {
     private AvroColumnDecoder() {}
@@ -69,11 +70,11 @@ public class AvroColumnDecoder
         }
 
         if (type instanceof VarbinaryType) {
-            if (value instanceof ByteBuffer) {
-                return Slices.wrappedHeapBuffer((ByteBuffer) value);
+            if (value instanceof ByteBuffer byteBuffer) {
+                return Slices.wrappedHeapBuffer(byteBuffer);
             }
-            if (value instanceof GenericFixed) {
-                return Slices.wrappedBuffer(((GenericFixed) value).bytes());
+            if (value instanceof GenericFixed genericFixed) {
+                return Slices.wrappedBuffer(genericFixed.bytes());
             }
         }
 

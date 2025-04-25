@@ -13,7 +13,6 @@
  */
 package org.ebyhr.trino.storage.operator;
 
-import io.airlift.log.Logger;
 import io.trino.spi.Page;
 import io.trino.spi.block.Block;
 import io.trino.spi.block.BlockBuilder;
@@ -35,7 +34,6 @@ import static org.ebyhr.trino.storage.operator.AvroTypeTranslator.fromAvroType;
 public class AvroPlugin
         implements FilePlugin
 {
-    private static final Logger log = Logger.get(AvroPlugin.class);
     private static final int INITIAL_BATCH_SIZE = 4 * 1024; // 4 KB
 
     @Override
