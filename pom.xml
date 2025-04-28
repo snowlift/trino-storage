@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>253</version>
+        <version>254</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -57,7 +57,7 @@
         <dep.guava.version>33.4.8-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.38.0</dep.errorprone.version>
-        <dep.jackson.version>2.18.3</dep.jackson.version>
+        <dep.jackson.version>2.19.0</dep.jackson.version>
         <dep.testcontainers.version>1.21.0</dep.testcontainers.version>
         <dep.docker-java.version>3.5.0</dep.docker-java.version>
         <dep.joda.version>2.14.0</dep.joda.version>
