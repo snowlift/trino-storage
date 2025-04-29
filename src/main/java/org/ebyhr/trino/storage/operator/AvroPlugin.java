@@ -37,6 +37,8 @@ import static org.ebyhr.trino.storage.operator.AvroTypeTranslator.fromAvroType;
 public class AvroPlugin
         implements FilePlugin
 {
+    private static final int INITIAL_BATCH_SIZE = 4 * 1024; // 4 KB
+
     @Override
     public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
@@ -77,17 +79,16 @@ public class AvroPlugin
                     .toList();
 
             List<Page> result = new ArrayList<>();
-            int batchSize = 1024 * 4; // 4 kb
             boolean hasMoreData = true;
 
             while (hasMoreData) {
                 BlockBuilder[] blockBuilders = new BlockBuilder[avroTypes.size()];
                 for (int i = 0; i < avroTypes.size(); i++) {
-                    blockBuilders[i] = avroTypes.get(i).createBlockBuilder(null, batchSize);
+                    blockBuilders[i] = avroTypes.get(i).createBlockBuilder(null, INITIAL_BATCH_SIZE);
                 }
 
                 int recordCount = 0;
-                while (dataFileStream.hasNext() && recordCount < batchSize) {
+                while (dataFileStream.hasNext() && recordCount < INITIAL_BATCH_SIZE) {
                     if (dataFileStream.next() instanceof GenericRecord record) {
                         processAvroRecord(record, handledFields, blockBuilders, avroTypes);
                         recordCount++;
