@@ -58,10 +58,26 @@ import static java.lang.String.format;
 import static java.util.Objects.requireNonNull;
 import static org.ebyhr.trino.storage.operator.AvroColumnDecoder.DecoderErrorCode.DECODER_CONVERSION_NOT_SUPPORTED;
 
-// ref: AvroColumnDecoder in trino.decoder.avro package
+// copied from io.trino.decoder.avro.AvroColumnDecoder
 public class AvroColumnDecoder
 {
-    private AvroColumnDecoder() {}
+    private static Slice getSlice(Object value, Type type, String columnName)
+    {
+        if (type instanceof VarcharType && (value instanceof CharSequence || value instanceof GenericEnumSymbol)) {
+            return truncateToLength(utf8Slice(value.toString()), type);
+        }
+
+        if (type instanceof VarbinaryType) {
+            if (value instanceof ByteBuffer) {
+                return Slices.wrappedHeapBuffer((ByteBuffer) value);
+            }
+            if (value instanceof GenericFixed) {
+                return Slices.wrappedBuffer(((GenericFixed) value).bytes());
+            }
+        }
+
+        throw new TrinoException(DECODER_CONVERSION_NOT_SUPPORTED, format("cannot decode object of '%s' as '%s' for column '%s'", value.getClass(), type, columnName));
+    }
 
     public static Object serializeObject(BlockBuilder builder, Object value, Type type, String columnName)
     {
@@ -100,7 +116,7 @@ public class AvroColumnDecoder
         return blockBuilder.build();
     }
 
-    public static void serializePrimitive(BlockBuilder blockBuilder, Object value, Type type, String columnName)
+    private static void serializePrimitive(BlockBuilder blockBuilder, Object value, Type type, String columnName)
     {
         requireNonNull(blockBuilder, "blockBuilder is null");
 
@@ -114,8 +130,7 @@ public class AvroColumnDecoder
             return;
         }
 
-        if ((value instanceof Integer || value instanceof Long) && (type instanceof BigintType
-                || type instanceof IntegerType || type instanceof SmallintType || type instanceof TinyintType)) {
+        if ((value instanceof Integer || value instanceof Long) && (type instanceof BigintType || type instanceof IntegerType || type instanceof SmallintType || type instanceof TinyintType)) {
             type.writeLong(blockBuilder, ((Number) value).longValue());
             return;
         }
@@ -135,25 +150,6 @@ public class AvroColumnDecoder
             return;
         }
 
-        throw new TrinoException(DECODER_CONVERSION_NOT_SUPPORTED,
-                format("cannot decode object of '%s' as '%s' for column '%s'", value.getClass(), type, columnName));
-    }
-
-    private static Slice getSlice(Object value, Type type, String columnName)
-    {
-        if (type instanceof VarcharType && (value instanceof CharSequence || value instanceof GenericEnumSymbol)) {
-            return truncateToLength(utf8Slice(value.toString()), type);
-        }
-
-        if (type instanceof VarbinaryType) {
-            if (value instanceof ByteBuffer byteBuffer) {
-                return Slices.wrappedHeapBuffer(byteBuffer);
-            }
-            if (value instanceof GenericFixed genericFixed) {
-                return Slices.wrappedBuffer(genericFixed.bytes());
-            }
-        }
-
         throw new TrinoException(DECODER_CONVERSION_NOT_SUPPORTED, format("cannot decode object of '%s' as '%s' for column '%s'", value.getClass(), type, columnName));
     }
 
@@ -170,17 +166,13 @@ public class AvroColumnDecoder
         Type valueType = type.getValueType();
 
         if (parentBlockBuilder != null) {
-            ((MapBlockBuilder) parentBlockBuilder).buildEntry(
-                    (keyBuilder, valueBuilder) -> buildMap(columnName, map, keyType, valueType, keyBuilder,
-                            valueBuilder));
+            ((MapBlockBuilder) parentBlockBuilder).buildEntry((keyBuilder, valueBuilder) -> buildMap(columnName, map, keyType, valueType, keyBuilder, valueBuilder));
             return null;
         }
-        return buildMapValue(type, map.size(),
-                (keyBuilder, valueBuilder) -> buildMap(columnName, map, keyType, valueType, keyBuilder, valueBuilder));
+        return buildMapValue(type, map.size(), (keyBuilder, valueBuilder) -> buildMap(columnName, map, keyType, valueType, keyBuilder, valueBuilder));
     }
 
-    private static void buildMap(String columnName, Map<?, ?> map, Type keyType, Type valueType,
-                                 BlockBuilder keyBuilder, BlockBuilder valueBuilder)
+    private static void buildMap(String columnName, Map<?, ?> map, Type keyType, Type valueType, BlockBuilder keyBuilder, BlockBuilder valueBuilder)
     {
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             if (entry.getKey() != null) {
@@ -200,17 +192,14 @@ public class AvroColumnDecoder
 
         RowType rowType = (RowType) type;
         if (blockBuilder == null) {
-            return buildRowValue(rowType,
-                    fieldBuilders -> buildRow(rowType, columnName, (GenericRecord) value, fieldBuilders));
+            return buildRowValue(rowType, fieldBuilders -> buildRow(rowType, columnName, (GenericRecord) value, fieldBuilders));
         }
 
-        ((RowBlockBuilder) blockBuilder).buildEntry(
-                fieldBuilders -> buildRow(rowType, columnName, (GenericRecord) value, fieldBuilders));
+        ((RowBlockBuilder) blockBuilder).buildEntry(fieldBuilders -> buildRow(rowType, columnName, (GenericRecord) value, fieldBuilders));
         return null;
     }
 
-    private static void buildRow(RowType type, String columnName, GenericRecord record,
-                                 List<BlockBuilder> fieldBuilders)
+    private static void buildRow(RowType type, String columnName, GenericRecord record, List<BlockBuilder> fieldBuilders)
     {
         List<Field> fields = type.getFields();
         for (int i = 0; i < fields.size(); i++) {
@@ -220,6 +209,7 @@ public class AvroColumnDecoder
         }
     }
 
+    // copied from io.trino.decoder.DecoderErrorCode
     enum DecoderErrorCode
             implements ErrorCodeSupplier
     {
