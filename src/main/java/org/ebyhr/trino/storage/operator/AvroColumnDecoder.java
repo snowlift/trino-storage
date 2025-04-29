@@ -63,24 +63,6 @@ public class AvroColumnDecoder
 {
     private AvroColumnDecoder() {}
 
-    private static Slice getSlice(Object value, Type type, String columnName)
-    {
-        if (type instanceof VarcharType && (value instanceof CharSequence || value instanceof GenericEnumSymbol)) {
-            return truncateToLength(utf8Slice(value.toString()), type);
-        }
-
-        if (type instanceof VarbinaryType) {
-            if (value instanceof ByteBuffer byteBuffer) {
-                return Slices.wrappedHeapBuffer(byteBuffer);
-            }
-            if (value instanceof GenericFixed genericFixed) {
-                return Slices.wrappedBuffer(genericFixed.bytes());
-            }
-        }
-
-        throw new TrinoException(DECODER_CONVERSION_NOT_SUPPORTED, format("cannot decode object of '%s' as '%s' for column '%s'", value.getClass(), type, columnName));
-    }
-
     public static Object serializeObject(BlockBuilder builder, Object value, Type type, String columnName)
     {
         if (type instanceof ArrayType) {
@@ -155,6 +137,24 @@ public class AvroColumnDecoder
 
         throw new TrinoException(DECODER_CONVERSION_NOT_SUPPORTED,
                 format("cannot decode object of '%s' as '%s' for column '%s'", value.getClass(), type, columnName));
+    }
+
+    private static Slice getSlice(Object value, Type type, String columnName)
+    {
+        if (type instanceof VarcharType && (value instanceof CharSequence || value instanceof GenericEnumSymbol)) {
+            return truncateToLength(utf8Slice(value.toString()), type);
+        }
+
+        if (type instanceof VarbinaryType) {
+            if (value instanceof ByteBuffer byteBuffer) {
+                return Slices.wrappedHeapBuffer(byteBuffer);
+            }
+            if (value instanceof GenericFixed genericFixed) {
+                return Slices.wrappedBuffer(genericFixed.bytes());
+            }
+        }
+
+        throw new TrinoException(DECODER_CONVERSION_NOT_SUPPORTED, format("cannot decode object of '%s' as '%s' for column '%s'", value.getClass(), type, columnName));
     }
 
     private static SqlMap serializeMap(BlockBuilder parentBlockBuilder, Object value, MapType type, String columnName)

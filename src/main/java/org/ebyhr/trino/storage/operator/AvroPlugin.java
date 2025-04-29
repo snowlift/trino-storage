@@ -14,6 +14,7 @@
 package org.ebyhr.trino.storage.operator;
 
 import io.trino.spi.Page;
+import io.trino.spi.TrinoException;
 import io.trino.spi.block.Block;
 import io.trino.spi.block.BlockBuilder;
 import io.trino.spi.type.Type;
@@ -29,13 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static io.trino.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
+import static java.lang.String.format;
 import static org.ebyhr.trino.storage.operator.AvroTypeTranslator.fromAvroType;
 
 public class AvroPlugin
         implements FilePlugin
 {
-    private static final int INITIAL_BATCH_SIZE = 4 * 1024; // 4 KB
-
     @Override
     public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
@@ -49,7 +50,7 @@ public class AvroPlugin
                     .toList();
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new TrinoException(GENERIC_INTERNAL_ERROR, format("Failed to read Avro file: %s", path), e);
         }
     }
 
@@ -62,7 +63,7 @@ public class AvroPlugin
                     .filter(field -> handleColumns.contains(field.name().toLowerCase()))
                     .toList();
             // select count(*)
-            if (handleColumns.isEmpty()) {
+            if (handledFields.isEmpty()) {
                 handledFields = dataFileStream.getSchema().getFields();
             }
             List<Type> avroTypes = handledFields.stream()
@@ -70,7 +71,7 @@ public class AvroPlugin
                     .toList();
 
             List<Page> result = new ArrayList<>();
-            int batchSize = INITIAL_BATCH_SIZE;
+            int batchSize = 1024 * 4; // 4 kb
             boolean hasMoreData = true;
 
             while (hasMoreData) {
@@ -100,7 +101,7 @@ public class AvroPlugin
             return result;
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new TrinoException(GENERIC_INTERNAL_ERROR, format("Failed to read Avro file: %s", path), e);
         }
     }
 

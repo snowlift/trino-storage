@@ -72,7 +72,10 @@ public class AvroTypeTranslator
                                 .toList());
             }
             case UNION -> {
-                Schema actualSchema = extractActualTypeFromUnion(schema);
+                Schema actualSchema = schema.getTypes().stream()
+                        .filter(s -> s.getType() != Schema.Type.NULL)
+                        .findFirst()
+                        .orElse(null);
                 if (actualSchema != null) {
                     return fromAvroType(actualSchema);
                 }
@@ -80,14 +83,5 @@ public class AvroTypeTranslator
         }
 
         throw new VerifyException("Unsupported Avro type: " + schema.getType());
-    }
-
-    private static Schema extractActualTypeFromUnion(Schema unionSchema)
-    {
-        // Extract the first non-null type from the union
-        return unionSchema.getTypes().stream()
-                .filter(s -> s.getType() != Schema.Type.NULL)
-                .findFirst()
-                .orElse(null);
     }
 }
