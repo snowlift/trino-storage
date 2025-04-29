@@ -61,6 +61,8 @@ import static org.ebyhr.trino.storage.operator.AvroColumnDecoder.DecoderErrorCod
 // copied from io.trino.decoder.avro.AvroColumnDecoder
 public class AvroColumnDecoder
 {
+    private AvroColumnDecoder() {}
+
     private static Slice getSlice(Object value, Type type, String columnName)
     {
         if (type instanceof VarcharType && (value instanceof CharSequence || value instanceof GenericEnumSymbol)) {
