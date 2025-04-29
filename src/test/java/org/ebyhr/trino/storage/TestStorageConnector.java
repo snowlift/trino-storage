@@ -165,5 +165,8 @@ public final class TestStorageConnector
         assertQuery(
                 "SELECT count(*) FROM TABLE(storage.system.read_file('avro', '" + toAbsolutePath("example-data/avro-data.avro") + "'))",
                 "VALUES (1)");
+        assertQuery(
+                "SELECT count(*) FROM TABLE(storage.system.read_file('avro', '" + toAbsolutePath("example-data/avro-data.avro") + "')) WHERE age = 36",
+                "VALUES (0)");
     }
 }

@@ -62,9 +62,15 @@ public class AvroPlugin
             List<Schema.Field> handledFields = dataFileStream.getSchema().getFields().stream()
                     .filter(field -> handleColumns.contains(field.name().toLowerCase()))
                     .toList();
-            // select count(*)
+            /*
+            Define BlockBuilder based on handledFields(avroTypes) and process avro record,
+            if handleFields has a size of 0, add at least 1 field to prevent `blocks is empty` error
+            handleFields can be empty when `select count (*)`
+             */
             if (handledFields.isEmpty()) {
-                handledFields = dataFileStream.getSchema().getFields();
+                handledFields = dataFileStream.getSchema().getFields().stream()
+                        .limit(1)
+                        .toList();
             }
             List<Type> avroTypes = handledFields.stream()
                     .map(field -> fromAvroType(field.schema()))
