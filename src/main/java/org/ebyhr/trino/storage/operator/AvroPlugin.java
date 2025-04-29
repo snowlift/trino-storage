@@ -32,7 +32,7 @@ import java.util.function.Function;
 
 import static io.trino.spi.StandardErrorCode.GENERIC_INTERNAL_ERROR;
 import static java.lang.String.format;
-import static org.ebyhr.trino.storage.operator.AvroTypeTranslator.fromAvroType;
+import static org.ebyhr.trino.storage.operator.AvroSchemaConverter.convert;
 
 public class AvroPlugin
         implements FilePlugin
@@ -48,7 +48,7 @@ public class AvroPlugin
             return schema.getFields().stream()
                     .map(field -> new StorageColumnHandle(
                             field.name(),
-                            fromAvroType(field.schema())))
+                            convert(field.schema()).orElseThrow(() -> new UnsupportedOperationException(format("Field Schema %s not convertable", field.schema())))))
                     .toList();
         }
         catch (IOException e) {
@@ -75,7 +75,7 @@ public class AvroPlugin
                         .toList();
             }
             List<Type> avroTypes = handledFields.stream()
-                    .map(field -> fromAvroType(field.schema()))
+                    .map(field -> convert(field.schema()).orElseThrow(() -> new UnsupportedOperationException(format("Field Schema %s not convertable", field.schema()))))
                     .toList();
 
             List<Page> result = new ArrayList<>();
