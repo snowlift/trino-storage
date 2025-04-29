@@ -42,6 +42,8 @@ public final class PluginFactory
                 return new ParquetPlugin();
             case "json":
                 return new JsonPlugin();
+            case "avro":
+                return new AvroPlugin();
             default:
                 throw new SchemaNotFoundException(typeName);
         }
