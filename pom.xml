@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>253</version>
+        <version>257</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -53,11 +53,11 @@
         <dep.opentelemetry.version>1.49.0</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.15.0</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.782</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.783</dep.aws-sdk.version>
         <dep.guava.version>33.4.8-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.38.0</dep.errorprone.version>
-        <dep.jackson.version>2.18.3</dep.jackson.version>
+        <dep.jackson.version>2.19.0</dep.jackson.version>
         <dep.testcontainers.version>1.21.0</dep.testcontainers.version>
         <dep.docker-java.version>3.5.0</dep.docker-java.version>
         <dep.joda.version>2.14.0</dep.joda.version>
@@ -66,7 +66,7 @@
         <dep.slf4j.version>2.0.17</dep.slf4j.version>
         <dep.assertj-core.version>3.27.3</dep.assertj-core.version>
         <dep.logback.version>1.5.18</dep.logback.version>
-        <dep.parquet.version>1.15.1</dep.parquet.version>
+        <dep.parquet.version>1.15.2</dep.parquet.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
         <dep.jna.version>5.17.0</dep.jna.version>
 
@@ -115,7 +115,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.49.2</version>
+                <version>3.49.3</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
