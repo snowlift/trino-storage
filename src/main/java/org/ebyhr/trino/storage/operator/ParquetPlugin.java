@@ -108,11 +108,10 @@ public class ParquetPlugin
 
     private MessageType getSchema(File file)
     {
-        ParquetReaderOptions options = new ParquetReaderOptions();
         MessageType fileSchema = null;
         ParquetDataSource dataSource = null;
         try {
-            dataSource = new FileParquetDataSource(file, options);
+            dataSource = new FileParquetDataSource(file, ParquetReaderOptions.builder().build());
 
             ParquetMetadata parquetMetadata = MetadataReader.readFooter(dataSource, Optional.empty());
             FileMetadata fileMetaData = parquetMetadata.getFileMetaData();
@@ -127,9 +126,8 @@ public class ParquetPlugin
     private ParquetReader getReader(File file, List<String> handleColumns)
             throws IOException
     {
-        ParquetReaderOptions options = new ParquetReaderOptions();
         ParquetDataSource dataSource;
-        dataSource = new FileParquetDataSource(file, options);
+        dataSource = new FileParquetDataSource(file, ParquetReaderOptions.builder().build());
         ParquetMetadata parquetMetadata = MetadataReader.readFooter(dataSource, Optional.empty());
         FileMetadata fileMetaData = parquetMetadata.getFileMetaData();
         MessageColumnIO messageColumnIO = getColumnIO(fileMetaData.getSchema(), fileMetaData.getSchema());
@@ -166,7 +164,7 @@ public class ParquetPlugin
                 dataSource,
                 UTC,
                 newSimpleAggregatedMemoryContext(),
-                new ParquetReaderOptions(),
+                ParquetReaderOptions.builder().build(),
                 exception -> {
                     throwIfUnchecked(exception);
                     return new RuntimeException(exception);
