@@ -54,7 +54,8 @@ public class OrcPlugin
     public List<StorageColumnHandle> getFields(String path, Function<String, InputStream> streamProvider)
     {
         try (ClosableFile file = getLocalFile(path, streamProvider)) {
-            OrcReader reader = getReader(file.getFile());
+            OrcDataSource dataSource = new FileOrcDataSource(file.getFile(), new OrcReaderOptions());
+            OrcReader reader = getReader(dataSource);
             ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
             return reader.getRootColumn().getNestedColumns().stream()
                     .map(orcColumn -> new StorageColumnHandle(
@@ -71,8 +72,8 @@ public class OrcPlugin
     public ConnectorPageSource getConnectorPageSource(String path, List<String> handleColumns, Function<String, InputStream> streamProvider)
     {
         try (ClosableFile file = getLocalFile(path, streamProvider)) {
-            OrcReader reader = getReader(file.getFile());
             OrcDataSource dataSource = new FileOrcDataSource(file.getFile(), new OrcReaderOptions());
+            OrcReader reader = getReader(dataSource);
 
             ColumnMetadata<OrcType> types = reader.getFooter().getTypes();
             List<OrcColumn> handleOrcColumns = reader.getRootColumn().getNestedColumns().stream()
@@ -115,15 +116,8 @@ public class OrcPlugin
         throw new IllegalArgumentException(format("Unsupported schema %s", path.split(":", 2)[0]));
     }
 
-    private OrcReader getReader(File file)
+    private OrcReader getReader(OrcDataSource dataSource)
     {
-        OrcDataSource dataSource;
-        try {
-            dataSource = new FileOrcDataSource(file, new OrcReaderOptions());
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         Optional<OrcReader> reader;
         try {
             reader = createOrcReader(dataSource, new OrcReaderOptions());
