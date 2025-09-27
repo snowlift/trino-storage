@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>305</version>
+        <version>306</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -601,7 +601,7 @@
                     <dependency>
                         <groupId>com.github.ferstl</groupId>
                         <artifactId>pedantic-pom-enforcers</artifactId>
-                        <version>2.2.0</version>
+                        <version>2.3.0</version>
                     </dependency>
                 </dependencies>
             </plugin>
