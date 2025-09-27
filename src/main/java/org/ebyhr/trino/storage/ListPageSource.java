@@ -16,11 +16,11 @@ package org.ebyhr.trino.storage;
 import io.airlift.slice.Slices;
 import io.trino.filesystem.FileEntry;
 import io.trino.filesystem.FileIterator;
-import io.trino.spi.Page;
 import io.trino.spi.PageBuilder;
 import io.trino.spi.connector.ColumnHandle;
 import io.trino.spi.connector.ConnectorPageSource;
 import io.trino.spi.connector.ConnectorSession;
+import io.trino.spi.connector.SourcePage;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -66,7 +66,7 @@ public class ListPageSource
     }
 
     @Override
-    public Page getNextPage()
+    public SourcePage getNextSourcePage()
     {
         if (done) {
             return null;
@@ -93,7 +93,7 @@ public class ListPageSource
         catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-        return page.build();
+        return SourcePage.create(page.build());
     }
 
     @Override

@@ -113,7 +113,7 @@ public class ParquetPlugin
         try {
             dataSource = new FileParquetDataSource(file, ParquetReaderOptions.builder().build());
 
-            ParquetMetadata parquetMetadata = MetadataReader.readFooter(dataSource, Optional.empty());
+            ParquetMetadata parquetMetadata = MetadataReader.readFooter(dataSource);
             FileMetadata fileMetaData = parquetMetadata.getFileMetaData();
             fileSchema = fileMetaData.getSchema();
         }
@@ -128,7 +128,7 @@ public class ParquetPlugin
     {
         ParquetDataSource dataSource;
         dataSource = new FileParquetDataSource(file, ParquetReaderOptions.builder().build());
-        ParquetMetadata parquetMetadata = MetadataReader.readFooter(dataSource, Optional.empty());
+        ParquetMetadata parquetMetadata = MetadataReader.readFooter(dataSource);
         FileMetadata fileMetaData = parquetMetadata.getFileMetaData();
         MessageColumnIO messageColumnIO = getColumnIO(fileMetaData.getSchema(), fileMetaData.getSchema());
         ImmutableList.Builder<Column> columnFields = ImmutableList.builder();

@@ -10,7 +10,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-java@v5
         with:
           java-version: '24'
@@ -25,6 +25,20 @@ jobs:
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
+
+      - name: Get Trino version
+        id: trino_tag
+        run: |
+          trino_tag=$(./mvnw -B help:evaluate -Dexpression=dep.trino.version -q -DforceStdout)
+          echo "trino_tag=$trino_tag" >> $GITHUB_OUTPUT
+      - uses: actions/checkout@v5
+        with:
+          repository: trinodb/trino
+          path: trino
+          ref: ${{ steps.trino_tag.outputs.trino_tag }}
+      - name: Build Trino
+        run: cd trino && ./mvnw -B install -DskipTests -Dair.check.skip-all -Dskip.npm -pl ':trino-filesystem,:trino-hdfs,:trino-memory-context,:trino-orc,:trino-parquet,:trino-plugin-toolkit,:trino-main,:trino-testing,:trino-testing-services,:trino-tpch' -am
+
       - name: Prepare release
         run: ./mvnw -B release:prepare
       - name: Save version number in env
