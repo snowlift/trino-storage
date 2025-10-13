@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.airlift</groupId>
         <artifactId>airbase</artifactId>
-        <version>306</version>
+        <version>314</version>
     </parent>
 
     <groupId>org.ebyhr</groupId>
@@ -53,7 +53,7 @@
         <dep.opentelemetry.version>1.54.1</dep.opentelemetry.version>
         <dep.opentelemetry-instrumentation.version>2.20.1</dep.opentelemetry-instrumentation.version>
         <dep.packaging.version>${dep.airlift.version}</dep.packaging.version>
-        <dep.aws-sdk.version>1.12.791</dep.aws-sdk.version>
+        <dep.aws-sdk.version>1.12.792</dep.aws-sdk.version>
         <dep.guava.version>33.5.0-jre</dep.guava.version>
         <dep.guice.version>7.0.0</dep.guice.version>
         <dep.errorprone.version>2.42.0</dep.errorprone.version>
@@ -63,13 +63,13 @@
         <dep.docker-java.version>3.6.0</dep.docker-java.version>
         <dep.joda.version>2.14.0</dep.joda.version>
         <dep.avro.version>1.12.0</dep.avro.version>
-        <dep.junit.version>5.13.4</dep.junit.version>
+        <dep.junit.version>6.0.0</dep.junit.version>
         <dep.slf4j.version>2.0.17</dep.slf4j.version>
         <dep.assertj-core.version>3.27.6</dep.assertj-core.version>
-        <dep.logback.version>1.5.18</dep.logback.version>
+        <dep.logback.version>1.5.19</dep.logback.version>
         <dep.parquet.version>1.16.0</dep.parquet.version>
         <dep.plugin.surefire.version>3.2.5</dep.plugin.surefire.version>
-        <dep.jna.version>5.18.0</dep.jna.version>
+        <dep.jna.version>5.18.1</dep.jna.version>
 
         <project.scm.id>github</project.scm.id>
     </properties>
@@ -79,7 +79,7 @@
             <dependency>
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>okhttp-bom</artifactId>
-                <version>5.1.0</version>
+                <version>5.2.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -93,7 +93,7 @@
             <dependency>
                 <groupId>com.squareup.okio</groupId>
                 <artifactId>okio-jvm</artifactId>
-                <version>3.16.0</version>
+                <version>3.16.1</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>
@@ -128,7 +128,7 @@
             <dependency>
                 <groupId>org.checkerframework</groupId>
                 <artifactId>checker-qual</artifactId>
-                <version>3.51.0</version>
+                <version>3.51.1</version>
             </dependency>
             <dependency>
                 <groupId>org.openjdk.jol</groupId>
@@ -359,7 +359,7 @@
         <dependency>
             <groupId>io.airlift</groupId>
             <artifactId>units</artifactId>
-            <version>1.10</version>
+            <version>1.12</version>
             <scope>runtime</scope>
         </dependency>
 
