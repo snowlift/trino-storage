@@ -15,13 +15,11 @@ package org.ebyhr.trino.storage;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.ImmutableMap;
 import io.airlift.slice.SizeOf;
 import io.trino.spi.HostAddress;
 import io.trino.spi.connector.ConnectorSplit;
 
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
@@ -68,16 +66,6 @@ public class StorageSplit
     public List<HostAddress> getAddresses()
     {
         return List.of();
-    }
-
-    @Override
-    public Map<String, String> getSplitInfo()
-    {
-        return ImmutableMap.<String, String>builder()
-                .put("mode", mode.name())
-                .put("schemaName", schemaName)
-                .put("tableName", tableName)
-                .buildOrThrow();
     }
 
     public long getRetainedSizeInBytes()
